@@ -1,5 +1,7 @@
 # author: Adrián Kálazi (xkalaz00)
 
+TARGET = mqtt-explorer
+
 SRC_DIR = src
 BUILD_DIR = build
 
@@ -18,7 +20,13 @@ cmake-gen: $(BUILD_DIR) CMakeLists.txt
 $(BUILD_DIR):
 	mkdir $@
 
+run:
+	./$(TARGET)
+
 doxygen:
+	echo TODO
+
+pack:
 	echo TODO
 
 clean:
