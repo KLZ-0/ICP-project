@@ -1,3 +1,7 @@
+/**
+ * @author Adrián Kálazi (xkalaz00)
+ */
+
 #include <QApplication>
 #include <QPushButton>
 
