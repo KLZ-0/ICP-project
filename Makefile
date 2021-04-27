@@ -31,3 +31,4 @@ pack:
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -f $(TARGET)
