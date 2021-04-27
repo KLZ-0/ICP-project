@@ -18,5 +18,8 @@ cmake-gen: $(BUILD_DIR) CMakeLists.txt
 $(BUILD_DIR):
 	mkdir $@
 
+doxygen:
+	echo TODO
+
 clean:
 	rm -rf $(BUILD_DIR)
