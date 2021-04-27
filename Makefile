@@ -1,3 +1,5 @@
+# author: Adrián Kálazi (xkalaz00)
+
 SRC_DIR = src
 BUILD_DIR = build
 
