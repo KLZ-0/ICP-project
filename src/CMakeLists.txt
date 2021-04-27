@@ -1,0 +1,7 @@
+set(SOURCES main.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_SOURCE_DIR})
