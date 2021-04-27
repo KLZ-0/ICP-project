@@ -6,8 +6,6 @@ BUILDFLAGS = -j 8
 all: Release
 .PHONY: all Release Debug
 
-# phony because cmake will only build if sources differ
-
 Release Debug: cmake-gen
 	cmake --build $(BUILD_DIR) --config $@ $(BUILDFLAGS)
 	cmake --install $(BUILD_DIR) --config $@
