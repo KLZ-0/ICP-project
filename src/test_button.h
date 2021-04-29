@@ -10,7 +10,7 @@
 
 class TestButton : public QPushButton
 {
-Q_OBJECT
+	Q_OBJECT
 public:
 	TestButton(const QString &text, QWidget *parent);
 

@@ -5,6 +5,7 @@
 // TODO: add .clang-format
 
 #include <QApplication>
+
 #include "test_button.h"
 
 int main(int argc, char *argv[]) {

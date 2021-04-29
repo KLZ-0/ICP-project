@@ -7,7 +7,8 @@
 #include <mqtt/async_client.h>
 #include <mqtt/client.h>
 
-TestButton::TestButton(const QString &text, QWidget *parent) : QPushButton(text, parent) {
+TestButton::TestButton(const QString &text, QWidget *parent)
+	: QPushButton(text, parent) {
 	connect(this, SIGNAL(clicked()),
 			this, SLOT(pahotest()));
 }
@@ -49,8 +50,7 @@ void TestButton::pahotest() {
 		// Disconnect
 
 		cli.disconnect();
-	}
-	catch (const mqtt::exception &exc) {
+	} catch (const mqtt::exception &exc) {
 		std::cerr << "Error: " << exc.what() << " ["
 				  << exc.get_reason_code() << "]" << std::endl;
 	}
