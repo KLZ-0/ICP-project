@@ -10,8 +10,13 @@ set(CMAKE_AUTOUIC ON)
 
 set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
+set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets paho-mqtt3c paho-mqtt3a paho-mqttpp3 Threads::Threads)
 
+# Threads required by PAHO
+set (THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+find_package(PahoMqttCpp)
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
 add_subdirectory(src)
