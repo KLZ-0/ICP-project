@@ -16,7 +16,7 @@ class DashboardItem : public QWidget
 
 public:
 	DashboardItem();
-	DashboardItem(QString content);
+	explicit DashboardItem(QString content);
 
 private:
 	Ui::DashboardItem ui;
