@@ -1,6 +1,12 @@
 # author: Adrián Kálazi (xkalaz00)
 
-set(SOURCES main.cpp test_button.cpp test_button.h)
+set(SOURCES
+    main.cpp
+    test_button.cpp
+    test_button.h
+    gui/main_window.cpp
+    gui/main_window.hpp
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_executable(publish publish.cpp)
