@@ -6,7 +6,11 @@ set(SOURCES
     test_button.h
     gui/main_window.cpp
     gui/main_window.hpp
-)
+    gui/explorer.cpp
+    gui/explorer.hpp
+    )
+
+include_directories(gui)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_executable(publish publish.cpp)

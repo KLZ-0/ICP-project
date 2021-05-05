@@ -29,7 +29,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="explorer_tab">
+      <widget class="Explorer" name="explorer_tab">
        <attribute name="title">
         <string>Explorer</string>
        </attribute>
@@ -55,6 +55,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Explorer</class>
+   <extends>QWidget</extends>
+   <header>explorer.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
