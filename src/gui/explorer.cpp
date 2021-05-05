@@ -20,4 +20,10 @@ Explorer::Explorer() {
 	ui.treeWidget->addTopLevelItem(item);
 	item->addChild(subItem);
 	subItem->addChild(subsubItem);
+
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::setContent);
+}
+
+void Explorer::setContent(QTreeWidgetItem *item, int column) {
+	ui.plainTextEdit->setPlainText(item->text(column));
 }

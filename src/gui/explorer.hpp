@@ -19,6 +19,9 @@ public:
 
 private:
 	Ui::Explorer ui;
+
+private slots:
+	void setContent(QTreeWidgetItem *item, int column);
 };
 
 
