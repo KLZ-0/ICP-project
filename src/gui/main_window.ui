@@ -27,14 +27,14 @@
        <enum>QTabWidget::East</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="Explorer" name="explorer_tab">
        <attribute name="title">
         <string>Explorer</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="dahboard_tab">
+      <widget class="Dashboard" name="dahboard_tab">
        <attribute name="title">
         <string>Dashboard</string>
        </attribute>
@@ -60,6 +60,12 @@
    <class>Explorer</class>
    <extends>QWidget</extends>
    <header>explorer.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Dashboard</class>
+   <extends>QWidget</extends>
+   <header>dashboard.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
