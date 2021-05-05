@@ -10,6 +10,8 @@ set(SOURCES
     gui/explorer.hpp
     gui/dashboard.cpp
     gui/dashboard.hpp
+    gui/dashboard_item.cpp
+    gui/dashboard_item.hpp
     )
 
 include_directories(gui)

@@ -13,6 +13,7 @@
 class Explorer : public QWidget
 {
 	Q_OBJECT
+
 public:
 	Explorer();
 
