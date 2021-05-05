@@ -8,15 +8,17 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 
+#include "ui_main_window.h"
+
 class MainWindow : public QMainWindow
 {
-Q_OBJECT
+	Q_OBJECT
 
 public:
 	MainWindow();
 
 private:
-	QWidget *mainWidget;
+	Ui::MainWindow ui;
 };
 
 

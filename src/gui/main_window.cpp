@@ -6,6 +6,6 @@
 
 #include <QPushButton>
 
-MainWindow::MainWindow() : mainWidget(new QWidget) {
-	setCentralWidget(mainWidget);
+MainWindow::MainWindow() {
+	ui.setupUi(this);
 }
