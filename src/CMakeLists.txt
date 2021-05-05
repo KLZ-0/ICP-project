@@ -1,4 +1,5 @@
 # author: Adrián Kálazi (xkalaz00)
+# author: Kevin Lackó (xlacko08)
 
 set(SOURCES main.cpp test_button.cpp test_button.h)
 
