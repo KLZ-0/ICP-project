@@ -3,9 +3,10 @@
 set(SOURCES main.cpp test_button.cpp test_button.h)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(publish publish.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
-
+target_link_libraries(publish ${REQUIRED_LIBS_QUALIFIED})
 
 if (MSVC)
     install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_SOURCE_DIR}/exe)
