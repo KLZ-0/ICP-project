@@ -9,6 +9,7 @@
 #include <mqtt/message.h>
 #include <QWidget>
 
+#include "explorer_item.hpp"
 #include "ui_explorer.h"
 
 class Explorer : public QWidget
@@ -21,6 +22,9 @@ public:
 private:
 	Ui::Explorer ui;
 	int dummyCount = 0;
+
+	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
+	ExplorerItem *findOrCreateRootChild(QString &name);
 
 private slots:
 	void updateContentBlock(QTreeWidgetItem *tree_item, int column);

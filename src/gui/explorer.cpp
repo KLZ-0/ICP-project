@@ -6,7 +6,6 @@
 
 #include <iostream>
 
-#include "explorer_item.hpp"
 Explorer::Explorer() {
 	ui.setupUi(this);
 
@@ -35,12 +34,45 @@ void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
 }
 
 void Explorer::receiveMessage(mqtt::message &message) {
-	auto item = new ExplorerItem(ui.treeWidget);
-
-	item->setText(0, QString::fromStdString(message.get_topic()));
+	QString topic = QString::fromStdString(message.get_topic());
+	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
 	item->setPayload(QString::fromStdString(message.get_payload_str()));
+}
+
+/**
+ * Finds the parent node where the new subtopic should be attached
+ * @param topic topic string (e.g. "/topic/subtopic/subsubtopic")
+ * @return null if root topic, a valid parent ExplorerItem pointer otherwise
+ */
+ExplorerItem *Explorer::findOrCreateItemFromTopic(QString &topic) {
+	ExplorerItem *root = nullptr;
+	for (QString &subtopic : topic.split("/")) {
+		if (root == nullptr) {
+			root = findOrCreateRootChild(subtopic);
+		} else {
+			root = root->findOrCreateChild(subtopic);
+		}
+	}
+
+	return root;
+}
+
+ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
+	auto rootItems = ui.treeWidget->findItems(name, Qt::MatchExactly, 0);
+
+	ExplorerItem *root;
+	if (rootItems.empty()) {
+		// adding a new root topic
+		root = new ExplorerItem(ui.treeWidget);
+		root->setText(0, name);
+	} else {
+		// root topic found
+		root = dynamic_cast<ExplorerItem *>(rootItems.at(0));
+	}
+
+	return root;
 }
 
 void Explorer::dummyCallback() {

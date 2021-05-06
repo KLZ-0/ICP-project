@@ -22,6 +22,8 @@ public:
 	void setMessageCount(int messageCount);
 	int messageCount() const;
 
+	ExplorerItem *findOrCreateChild(QString &name);
+
 private:
 	int count = 0;   ///< message count for this topic
 	QString payload; ///< last message payload for this topic

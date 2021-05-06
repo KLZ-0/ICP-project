@@ -30,3 +30,16 @@ void ExplorerItem::setMessageCount(int messageCount) {
 int ExplorerItem::messageCount() const {
 	return count;
 }
+
+ExplorerItem *ExplorerItem::findOrCreateChild(QString &name) {
+	for (int i = 0; i < childCount(); i++) {
+		QTreeWidgetItem *item = child(i);
+		if (item->text(0) == name) {
+			return dynamic_cast<ExplorerItem *>(item);
+		}
+	}
+
+	auto item = new ExplorerItem(this);
+	item->setText(0, name);
+	return item;
+}
