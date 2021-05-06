@@ -25,6 +25,7 @@ private:
 private slots:
 	void openTopicsWindow();
 	void handleTopicChange(const QVector<QString> &new_topics);
+	void cancelTopicChange();
 };
 
 

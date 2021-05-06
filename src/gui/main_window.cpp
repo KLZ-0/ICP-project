@@ -22,6 +22,7 @@ void MainWindow::openTopicsWindow() {
 
 	auto topicsWindow = new TopicSelectionWindow(topics);
 	connect(topicsWindow, &TopicSelectionWindow::topicsSelected, this, &MainWindow::handleTopicChange);
+	connect(topicsWindow, SIGNAL(destroyed()), this, SLOT(cancelTopicChange()));
 	topicsWindow->show();
 
 	topics_window_open = true;
@@ -35,5 +36,9 @@ void MainWindow::handleTopicChange(const QVector<QString> &new_topics) {
 		qDebug() << topic;
 	}
 
+	topics_window_open = false;
+}
+
+void MainWindow::cancelTopicChange() {
 	topics_window_open = false;
 }
