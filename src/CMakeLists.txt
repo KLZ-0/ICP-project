@@ -14,6 +14,8 @@ set(SOURCES
     gui/dashboard_item.hpp
     gui/topic_selection_window.cpp
     gui/topic_selection_window.hpp
+    gui/explorer_item.cpp
+    gui/explorer_item.hpp
     )
 
 include_directories(gui)
