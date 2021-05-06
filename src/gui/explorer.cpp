@@ -18,6 +18,7 @@ Explorer::Explorer() {
 		content_ui.setupUi(widget);
 
 		ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+		ui.tabWidget->setTabVisible(ui.tabWidget->indexOf(widget), false);
 
 		contentEdits.append(content_ui.plainTextEdit);
 	}
@@ -54,6 +55,7 @@ void Explorer::setMessageLimit() {
 			content_ui.setupUi(widget);
 
 			ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+			ui.tabWidget->setTabVisible(ui.tabWidget->indexOf(widget), false);
 
 			contentEdits.insert(i, content_ui.plainTextEdit);
 		}
@@ -77,7 +79,9 @@ void Explorer::updateContentBlock() {
 	}
 
 	for (int i = 0; i < messageLimit; i++) {
-		contentEdits.at(i)->setPlainText(currentItem->getPayload(i));
+		QString payload = currentItem->getPayload(i);
+		ui.tabWidget->setTabVisible(i, payload != "");
+		contentEdits.at(i)->setPlainText(payload);
 	}
 }
 
