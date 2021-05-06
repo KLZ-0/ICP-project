@@ -21,7 +21,7 @@ private:
 	Ui::Explorer ui;
 
 private slots:
-	void setContent(QTreeWidgetItem *tree_item, int column);
+	void updateContentBlock(QTreeWidgetItem *tree_item, int column);
 };
 
 

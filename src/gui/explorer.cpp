@@ -22,10 +22,10 @@ Explorer::Explorer() {
 	subsubItem->setText(0, "even lower level item");
 	subsubItem->setPayload("data3");
 
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::setContent);
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlock);
 }
 
-void Explorer::setContent(QTreeWidgetItem *tree_item, int column) {
+void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
 	auto item = dynamic_cast<ExplorerItem *>(tree_item);
 
 	ui.plainTextEdit->setPlainText(item->getPayload());
