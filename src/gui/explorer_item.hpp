@@ -18,8 +18,13 @@ public:
 	void setPayload(QString &&new_payload);
 	QString &getPayload();
 
+	void incrementMessageCount();
+	void setMessageCount(int messageCount);
+	int messageCount() const;
+
 private:
-	QString payload;
+	int count = 0;   ///< message count for this topic
+	QString payload; ///< last message payload for this topic
 };
 
 

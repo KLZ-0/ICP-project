@@ -18,3 +18,15 @@ void ExplorerItem::setPayload(QString &&new_payload) {
 QString &ExplorerItem::getPayload() {
 	return payload;
 }
+
+void ExplorerItem::incrementMessageCount() {
+	count++;
+}
+
+void ExplorerItem::setMessageCount(int messageCount) {
+	count = messageCount;
+}
+
+int ExplorerItem::messageCount() const {
+	return count;
+}
