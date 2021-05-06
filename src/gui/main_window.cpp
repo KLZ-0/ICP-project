@@ -16,9 +16,15 @@ MainWindow::MainWindow() {
 }
 
 void MainWindow::openTopicsWindow() {
+	if (topics_window_open) {
+		return;
+	}
+
 	auto topicsWindow = new TopicSelectionWindow(topics);
 	connect(topicsWindow, &TopicSelectionWindow::topicsSelected, this, &MainWindow::handleTopicChange);
 	topicsWindow->show();
+
+	topics_window_open = true;
 }
 
 void MainWindow::handleTopicChange(const QVector<QString> &new_topics) {
@@ -28,4 +34,6 @@ void MainWindow::handleTopicChange(const QVector<QString> &new_topics) {
 	for (const QString &topic : topics) {
 		qDebug() << topic;
 	}
+
+	topics_window_open = false;
 }

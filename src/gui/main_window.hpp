@@ -20,6 +20,7 @@ public:
 private:
 	Ui::MainWindow ui;
 	QVector<QString> topics;
+	bool topics_window_open = false;
 
 private slots:
 	void openTopicsWindow();
