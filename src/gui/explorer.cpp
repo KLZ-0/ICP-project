@@ -106,6 +106,7 @@ void Explorer::receiveMessage(mqtt::message &message) {
 	// TODO: probably use message.get_payload()
 	item->incrementMessageCount();
 	item->addPayload(QString::fromStdString(message.get_payload_str()));
+	updateContentBlock();
 }
 
 /**
