@@ -5,9 +5,22 @@
 #include "explorer.hpp"
 
 #include <iostream>
+#include <qdebug.h>
+
+#include "ui_content_widget.h"
 
 Explorer::Explorer() {
 	ui.setupUi(this);
+
+	for (int i = 0; i < messageLimit; ++i) {
+		auto widget = new QWidget;
+		Ui::ContentWidget content_ui;
+		content_ui.setupUi(widget);
+
+		ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+
+		contentEdits.append(content_ui.plainTextEdit);
+	}
 
 	auto item = new ExplorerItem(ui.treeWidget, messageLimit);
 	item->setText(0, "top level item");
@@ -36,7 +49,9 @@ Explorer::Explorer() {
 void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
 	auto item = dynamic_cast<ExplorerItem *>(tree_item);
 
-	ui.plainTextEdit->setPlainText(item->getPayload());
+	for (int i = 0; i < item->payloadCount(); i++) {
+		contentEdits.at(i)->setPlainText(item->getPayload(i));
+	}
 }
 
 /**

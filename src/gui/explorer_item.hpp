@@ -16,7 +16,8 @@ public:
 	explicit ExplorerItem(QTreeWidgetItem *parent, int messageLimit);
 
 	void addPayload(QString &&new_payload);
-	QString getPayload();
+	QString getPayload(int index);
+	int payloadCount();
 
 	void incrementMessageCount();
 	void setMessageCount(int messageCount);

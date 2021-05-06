@@ -7,6 +7,7 @@
 
 
 #include <mqtt/message.h>
+#include <QPlainTextEdit>
 #include <QWidget>
 
 #include "explorer_item.hpp"
@@ -24,6 +25,7 @@ private:
 	int dummyCount = 0;
 
 	int messageLimit = 3;
+	QVector<QPlainTextEdit *> contentEdits;
 
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);

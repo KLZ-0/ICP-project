@@ -15,18 +15,18 @@ ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, int messageLimit)
 }
 
 void ExplorerItem::addPayload(QString &&new_payload) {
-	if (count >= limit) {
-		payloads.removeFirst();
+	if (count > limit) {
+		payloads.removeLast();
 	}
-	payloads.append(new_payload);
+	payloads.push_front(new_payload);
 }
 
-QString ExplorerItem::getPayload() {
-	if (!payloads.empty()) {
-		return payloads.back();
-	}
+QString ExplorerItem::getPayload(int index) {
+	return payloads.at(index);
+}
 
-	return "";
+int ExplorerItem::payloadCount() {
+	return payloads.size();
 }
 
 void ExplorerItem::incrementMessageCount() {
