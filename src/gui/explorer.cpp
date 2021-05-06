@@ -49,7 +49,7 @@ Explorer::Explorer() {
 void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
 	auto item = dynamic_cast<ExplorerItem *>(tree_item);
 
-	for (int i = 0; i < item->payloadCount(); i++) {
+	for (int i = 0; i < messageLimit; i++) {
 		contentEdits.at(i)->setPlainText(item->getPayload(i));
 	}
 }

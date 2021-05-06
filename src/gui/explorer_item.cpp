@@ -7,11 +7,13 @@
 ExplorerItem::ExplorerItem(QTreeWidget *treeview, int messageLimit)
 	: QTreeWidgetItem(treeview) {
 	limit = messageLimit;
+	payloads.reserve(messageLimit);
 }
 
 ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, int messageLimit)
 	: QTreeWidgetItem(parent) {
 	limit = messageLimit;
+	payloads.reserve(messageLimit);
 }
 
 void ExplorerItem::addPayload(QString &&new_payload) {
@@ -22,11 +24,11 @@ void ExplorerItem::addPayload(QString &&new_payload) {
 }
 
 QString ExplorerItem::getPayload(int index) {
-	return payloads.at(index);
-}
-
-int ExplorerItem::payloadCount() {
-	return payloads.size();
+	if (index < payloads.size()) {
+		return payloads.at(index);
+	} else {
+		return "";
+	}
 }
 
 void ExplorerItem::incrementMessageCount() {
