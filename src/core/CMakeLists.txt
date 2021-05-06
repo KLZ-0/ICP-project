@@ -4,6 +4,8 @@
 set(SOURCES 
 	client.cpp
 	client.hpp
+	action_listener.cpp
+	action_listener.hpp
 	)
 
 add_library(mqtt-core STATIC ${SOURCES})
