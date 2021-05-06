@@ -13,8 +13,17 @@ TopicSelectionWindow::TopicSelectionWindow() {
 }
 
 void TopicSelectionWindow::addNewTopic() {
-	auto item = new QTreeWidgetItem(ui.treeWidget);
+	QString topic = ui.lineEdit->text();
+	QTreeWidgetItem *item;
+
+	auto search_items = ui.treeWidget->findItems(topic, Qt::MatchExactly, 0);
+	if (search_items.empty()) {
+		item = new QTreeWidgetItem(ui.treeWidget);
+	} else {
+		item = search_items[0];
+	}
+
 	item->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-	item->setText(0, ui.lineEdit->text());
+	item->setText(0, topic);
 	ui.lineEdit->selectAll();
 }
