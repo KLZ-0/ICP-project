@@ -34,11 +34,51 @@ Explorer::Explorer() {
 	subsubItem->setText(0, "even lower level item");
 	subsubItem->addPayload("data3");
 
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlock);
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlockFromItem);
 
 	// TODO: dummy
 	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
 	connect(ui.dummyEdit, SIGNAL(returnPressed()), this, SLOT(dummyCallback()));
+}
+
+void Explorer::setMessageLimit() {
+	// TODO: fix this shit
+	int limit = 4;
+
+	if (limit == messageLimit) {
+		return;
+	} else if (limit > messageLimit) {
+		for (int i = messageLimit; i < limit; ++i) {
+			auto widget = new QWidget;
+			Ui::ContentWidget content_ui;
+			content_ui.setupUi(widget);
+
+			ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+
+			contentEdits.insert(i, content_ui.plainTextEdit);
+		}
+	} else {
+		for (int i = messageLimit - 1; i >= limit; --i) {
+			ui.tabWidget->removeTab(i);
+		}
+		contentEdits.resize(limit);
+	}
+
+	messageLimit = limit;
+}
+
+/**
+ * Updates the last message content view with the last message payload
+ * Could be used after content change to update the content view
+ */
+void Explorer::updateContentBlock() {
+	if (currentItem == nullptr) {
+		return;
+	}
+
+	for (int i = 0; i < messageLimit; i++) {
+		contentEdits.at(i)->setPlainText(currentItem->getPayload(i));
+	}
 }
 
 /**
@@ -46,12 +86,9 @@ Explorer::Explorer() {
  * @param tree_item tree item from which the payload should be loaded
  * @param column always 0
  */
-void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
-	auto item = dynamic_cast<ExplorerItem *>(tree_item);
-
-	for (int i = 0; i < messageLimit; i++) {
-		contentEdits.at(i)->setPlainText(item->getPayload(i));
-	}
+void Explorer::updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column) {
+	currentItem = dynamic_cast<ExplorerItem *>(tree_item);
+	updateContentBlock();
 }
 
 /**
