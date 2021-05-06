@@ -17,11 +17,11 @@ public:
 
 	void addPayload(QString &&new_payload);
 	QString getPayload(int index);
-	int payloadCount();
 
 	void incrementMessageCount();
 	void setMessageCount(int messageCount);
 	int messageCount() const;
+	void setMessageLimit(int messageLimit);
 
 	ExplorerItem *findOrCreateChild(QString &name);
 

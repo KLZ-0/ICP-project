@@ -7,18 +7,18 @@
 ExplorerItem::ExplorerItem(QTreeWidget *treeview, int messageLimit)
 	: QTreeWidgetItem(treeview) {
 	limit = messageLimit;
-	payloads.reserve(messageLimit);
+	payloads.resize(messageLimit);
 }
 
 ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, int messageLimit)
 	: QTreeWidgetItem(parent) {
 	limit = messageLimit;
-	payloads.reserve(messageLimit);
+	payloads.resize(messageLimit);
 }
 
 void ExplorerItem::addPayload(QString &&new_payload) {
 	if (count > limit) {
-		payloads.removeLast();
+		payloads.resize(limit - 1);
 	}
 	payloads.push_front(new_payload);
 }
@@ -41,6 +41,11 @@ void ExplorerItem::setMessageCount(int messageCount) {
 
 int ExplorerItem::messageCount() const {
 	return count;
+}
+
+void ExplorerItem::setMessageLimit(int messageLimit) {
+	limit = messageLimit;
+	payloads.resize(limit);
 }
 
 /**
