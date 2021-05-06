@@ -29,13 +29,21 @@ void MainWindow::openTopicsWindow() {
 }
 
 void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
-	topics = new_topics;
 
-	qDebug() << "------";
-	for (const QString &topic : topics) {
+	QSet<QString> subscribe = new_topics - topics;
+	QSet<QString> unsubscribe = topics - new_topics;
+
+	qDebug() << "--- subscribe ---";
+	for (const QString &topic : subscribe) {
 		qDebug() << topic;
 	}
 
+	qDebug() << "--- unsubscribe ---";
+	for (const QString &topic : unsubscribe) {
+		qDebug() << topic;
+	}
+
+	topics = new_topics;
 	topics_window_open = false;
 }
 
