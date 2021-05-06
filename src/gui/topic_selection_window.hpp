@@ -18,6 +18,9 @@ public:
 
 private:
 	Ui::TopicSelectionWindow ui;
+
+private slots:
+	void addNewTopic();
 };
 
 
