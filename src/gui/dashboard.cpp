@@ -8,7 +8,7 @@
 Dashboard::Dashboard() {
 	ui.setupUi(this);
 
-	ui.mdiArea->addSubWindow(new DashboardItem);
-	ui.mdiArea->addSubWindow(new DashboardItem("very nice!!!"));
-	ui.mdiArea->addSubWindow(new DashboardItem("another subwindow"));
+	ui.mdiArea->addSubWindow(new DashboardItem(this));
+	ui.mdiArea->addSubWindow(new DashboardItem(this, "very nice!!!"));
+	ui.mdiArea->addSubWindow(new DashboardItem(this, "another subwindow"));
 }

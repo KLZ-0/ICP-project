@@ -4,12 +4,10 @@
 
 #include "dashboard_item.hpp"
 
-DashboardItem::DashboardItem() {
+DashboardItem::DashboardItem(QWidget *parent, QString content)
+	: QWidget(parent) {
 	ui.setupUi(this);
-}
-
-DashboardItem::DashboardItem(QString content) {
-	ui.setupUi(this);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	ui.label->setText(content);
 }
