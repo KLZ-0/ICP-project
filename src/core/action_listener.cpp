@@ -7,21 +7,21 @@
 
 #include <mqtt/token.h>
 
+#include "utils.hpp"
+
 namespace Core
 {
 	void ActionListener::on_success(const mqtt::token &tok) {
-		std::cout << " success";
 		if (tok.get_message_id() != 0)
-			std::cout << " for token: [" << tok.get_message_id() << "]" << std::endl;
+			LOG("Success for token: [" << tok.get_message_id() << "]\n");
 		auto top = tok.get_topics();
 		if (top && !top->empty())
-			std::cout << "\ttoken topic: '" << (*top)[0] << "', ..." << std::endl;
-		std::cout << std::endl;
+			LOG("\ttoken topic: '" << (*top)[0] << "', ...\n");
+		LOG("\n");
 	}
 	void ActionListener::on_failure(const mqtt::token &tok) {
-		std::cout << "Failure";
 		if (tok.get_message_id() != 0)
-			std::cout << " for token: [" << tok.get_message_id() << "]" << std::endl;
-		std::cout << std::endl;
+			LOG("Failure for token: [" << tok.get_message_id() << "]\n");
+		LOG("\n");
 	}
 } // namespace Core

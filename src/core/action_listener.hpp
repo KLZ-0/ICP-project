@@ -11,5 +11,5 @@ namespace Core
 	{
 		void on_success(const mqtt::token &tok) override;
 		void on_failure(const mqtt::token &tok) override;
-	}
+	};
 } // namespace Core

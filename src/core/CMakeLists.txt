@@ -2,6 +2,7 @@
 # author: Kevin Lackó (xlacko08)
 
 set(SOURCES 
+	utils.hpp
 	client.cpp
 	client.hpp
 	action_listener.cpp
