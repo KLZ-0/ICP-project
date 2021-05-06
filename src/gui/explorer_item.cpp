@@ -4,19 +4,29 @@
 
 #include "explorer_item.hpp"
 
-ExplorerItem::ExplorerItem(QTreeWidget *treeview)
+ExplorerItem::ExplorerItem(QTreeWidget *treeview, int messageLimit)
 	: QTreeWidgetItem(treeview) {
+	limit = messageLimit;
 }
 
-ExplorerItem::ExplorerItem(QTreeWidgetItem *parent)
+ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, int messageLimit)
 	: QTreeWidgetItem(parent) {
+	limit = messageLimit;
 }
 
-void ExplorerItem::setPayload(QString &&new_payload) {
-	payload = new_payload;
+void ExplorerItem::addPayload(QString &&new_payload) {
+	if (count >= limit) {
+		payloads.removeFirst();
+	}
+	payloads.append(new_payload);
 }
-QString &ExplorerItem::getPayload() {
-	return payload;
+
+QString ExplorerItem::getPayload() {
+	if (!payloads.empty()) {
+		return payloads.back();
+	}
+
+	return "";
 }
 
 void ExplorerItem::incrementMessageCount() {
@@ -45,7 +55,7 @@ ExplorerItem *ExplorerItem::findOrCreateChild(QString &name) {
 		}
 	}
 
-	auto item = new ExplorerItem(this);
+	auto item = new ExplorerItem(this, this->limit);
 	item->setText(0, name);
 	return item;
 }

@@ -12,11 +12,11 @@
 class ExplorerItem : public QTreeWidgetItem
 {
 public:
-	explicit ExplorerItem(QTreeWidget *treeview);
-	explicit ExplorerItem(QTreeWidgetItem *parent);
+	explicit ExplorerItem(QTreeWidget *treeview, int messageLimit);
+	explicit ExplorerItem(QTreeWidgetItem *parent, int messageLimit);
 
-	void setPayload(QString &&new_payload);
-	QString &getPayload();
+	void addPayload(QString &&new_payload);
+	QString getPayload();
 
 	void incrementMessageCount();
 	void setMessageCount(int messageCount);
@@ -25,8 +25,9 @@ public:
 	ExplorerItem *findOrCreateChild(QString &name);
 
 private:
-	int count = 0;   ///< message count for this topic
-	QString payload; ///< last message payload for this topic
+	int limit;
+	int count = 0;             ///< message count for this topic
+	QVector<QString> payloads; ///< last message payload for this topic
 };
 
 

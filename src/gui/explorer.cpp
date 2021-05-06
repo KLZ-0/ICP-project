@@ -9,17 +9,17 @@
 Explorer::Explorer() {
 	ui.setupUi(this);
 
-	auto item = new ExplorerItem(ui.treeWidget);
+	auto item = new ExplorerItem(ui.treeWidget, messageLimit);
 	item->setText(0, "top level item");
-	item->setPayload("data1");
+	item->addPayload("data1");
 
-	auto subItem = new ExplorerItem(item);
+	auto subItem = new ExplorerItem(item, messageLimit);
 	subItem->setText(0, "lower level item");
-	subItem->setPayload("data2");
+	subItem->addPayload("data2");
 
-	auto subsubItem = new ExplorerItem(subItem);
+	auto subsubItem = new ExplorerItem(subItem, messageLimit);
 	subsubItem->setText(0, "even lower level item");
-	subsubItem->setPayload("data3");
+	subsubItem->addPayload("data3");
 
 	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlock);
 
@@ -48,7 +48,8 @@ void Explorer::receiveMessage(mqtt::message &message) {
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
-	item->setPayload(QString::fromStdString(message.get_payload_str()));
+	item->incrementMessageCount();
+	item->addPayload(QString::fromStdString(message.get_payload_str()));
 }
 
 /**
@@ -82,7 +83,7 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	ExplorerItem *root;
 	if (rootItems.empty()) {
 		// adding a new root topic
-		root = new ExplorerItem(ui.treeWidget);
+		root = new ExplorerItem(ui.treeWidget, messageLimit);
 		root->setText(0, name);
 	} else {
 		// root topic found

@@ -23,6 +23,8 @@ private:
 	Ui::Explorer ui;
 	int dummyCount = 0;
 
+	int messageLimit = 3;
+
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
