@@ -4,7 +4,7 @@
 
 #include "topic_selection_window.hpp"
 
-TopicSelectionWindow::TopicSelectionWindow(const QVector<QString> &topics) {
+TopicSelectionWindow::TopicSelectionWindow(const QSet<QString> &topics) {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -67,11 +67,11 @@ void TopicSelectionWindow::checkForDuplicates(QTreeWidgetItem *item, int column)
 }
 
 void TopicSelectionWindow::confirmChanges() {
-	QVector<QString> topics;
+	QSet<QString> topics;
 
 	auto search_items = ui.treeWidget->findItems("*", Qt::MatchWildcard, 0);
 	for (QTreeWidgetItem *item : search_items) {
-		topics.append(item->text(0));
+		topics.insert(item->text(0));
 	}
 
 	emit topicsSelected(topics);

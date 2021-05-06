@@ -19,12 +19,12 @@ public:
 
 private:
 	Ui::MainWindow ui;
-	QVector<QString> topics;
+	QSet<QString> topics;
 	bool topics_window_open = false;
 
 private slots:
 	void openTopicsWindow();
-	void handleTopicChange(const QVector<QString> &new_topics);
+	void handleTopicChange(const QSet<QString> &new_topics);
 	void cancelTopicChange();
 };
 

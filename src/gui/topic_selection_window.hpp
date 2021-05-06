@@ -14,13 +14,13 @@ class TopicSelectionWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit TopicSelectionWindow(const QVector<QString> &topics);
+	explicit TopicSelectionWindow(const QSet<QString> &topics);
 
 private:
 	Ui::TopicSelectionWindow ui;
 
 signals:
-	void topicsSelected(const QVector<QString> &topics);
+	void topicsSelected(const QSet<QString> &topics);
 
 private slots:
 	void addNewTopic(QString topic = nullptr);

@@ -28,7 +28,7 @@ void MainWindow::openTopicsWindow() {
 	topics_window_open = true;
 }
 
-void MainWindow::handleTopicChange(const QVector<QString> &new_topics) {
+void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 	topics = new_topics;
 
 	qDebug() << "------";
