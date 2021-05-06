@@ -14,7 +14,7 @@ class TopicSelectionWindow : public QWidget
 	Q_OBJECT
 
 public:
-	TopicSelectionWindow(const QVector<QString> &topics);
+	explicit TopicSelectionWindow(const QVector<QString> &topics);
 
 private:
 	Ui::TopicSelectionWindow ui;
