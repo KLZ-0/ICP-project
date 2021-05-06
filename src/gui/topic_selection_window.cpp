@@ -4,20 +4,28 @@
 
 #include "topic_selection_window.hpp"
 
-TopicSelectionWindow::TopicSelectionWindow() {
+TopicSelectionWindow::TopicSelectionWindow(const QVector<QString> &topics) {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	for (const QString &topic : topics) {
+		addNewTopic(topic);
+	}
 
 	connect(ui.addButton, SIGNAL(clicked(bool)), this, SLOT(addNewTopic()));
 	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(addNewTopic()));
 	connect(ui.removeButton, SIGNAL(clicked(bool)), this, SLOT(removeSelectedTopic()));
+	connect(ui.saveButton, SIGNAL(clicked(bool)), this, SLOT(confirmChanges()));
 
 	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, ui.treeWidget, &QTreeWidget::editItem);
 	connect(ui.treeWidget, &QTreeWidget::itemChanged, this, &TopicSelectionWindow::checkForDuplicates);
 }
 
-void TopicSelectionWindow::addNewTopic() {
-	QString topic = ui.lineEdit->text();
+void TopicSelectionWindow::addNewTopic(QString topic) {
+	if (topic == nullptr) {
+		topic = ui.lineEdit->text();
+	}
+
 	QTreeWidgetItem *item;
 
 	auto search_items = ui.treeWidget->findItems(topic, Qt::MatchExactly, 0);
@@ -56,4 +64,16 @@ void TopicSelectionWindow::checkForDuplicates(QTreeWidgetItem *item, int column)
 			}
 		}
 	}
+}
+
+void TopicSelectionWindow::confirmChanges() {
+	QVector<QString> topics;
+
+	auto search_items = ui.treeWidget->findItems("*", Qt::MatchWildcard, 0);
+	for (QTreeWidgetItem *item : search_items) {
+		topics.append(item->text(0));
+	}
+
+	emit topicsSelected(topics);
+	close();
 }

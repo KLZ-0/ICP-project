@@ -14,15 +14,19 @@ class TopicSelectionWindow : public QWidget
 	Q_OBJECT
 
 public:
-	TopicSelectionWindow();
+	TopicSelectionWindow(const QVector<QString> &topics);
 
 private:
 	Ui::TopicSelectionWindow ui;
 
+signals:
+	void topicsSelected(const QVector<QString> &topics);
+
 private slots:
-	void addNewTopic();
+	void addNewTopic(QString topic = nullptr);
 	void removeSelectedTopic();
 	void checkForDuplicates(QTreeWidgetItem *item, int column);
+	void confirmChanges();
 };
 
 
