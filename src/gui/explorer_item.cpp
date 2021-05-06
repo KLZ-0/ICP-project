@@ -31,6 +31,12 @@ int ExplorerItem::messageCount() const {
 	return count;
 }
 
+/**
+ * Finds or creates an immediate child item
+ * @note should be analogous to Explorer::findOrCreateRootChild
+ * @param name name of the item
+ * @return pointer to a new or existing item
+ */
 ExplorerItem *ExplorerItem::findOrCreateChild(QString &name) {
 	for (int i = 0; i < childCount(); i++) {
 		QTreeWidgetItem *item = child(i);

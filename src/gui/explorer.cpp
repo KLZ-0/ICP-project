@@ -25,14 +25,24 @@ Explorer::Explorer() {
 
 	// TODO: dummy
 	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
+	connect(ui.dummyEdit, SIGNAL(returnPressed()), this, SLOT(dummyCallback()));
 }
 
+/**
+ * Updates the last message content view with the message payload
+ * @param tree_item tree item from which the payload should be loaded
+ * @param column always 0
+ */
 void Explorer::updateContentBlock(QTreeWidgetItem *tree_item, int column) {
 	auto item = dynamic_cast<ExplorerItem *>(tree_item);
 
 	ui.plainTextEdit->setPlainText(item->getPayload());
 }
 
+/**
+ * Hierarchically displays the received message in the explorer
+ * @param message MQTT message
+ */
 void Explorer::receiveMessage(mqtt::message &message) {
 	QString topic = QString::fromStdString(message.get_topic());
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
@@ -42,9 +52,10 @@ void Explorer::receiveMessage(mqtt::message &message) {
 }
 
 /**
- * Finds the parent node where the new subtopic should be attached
- * @param topic topic string (e.g. "/topic/subtopic/subsubtopic")
- * @return null if root topic, a valid parent ExplorerItem pointer otherwise
+ * Finds or creates an item with path topic
+ * Also creates sub-level items if they don't exist
+ * @param topic topic path string (e.g. "/topic/subtopic/subsubtopic")
+ * @return item to which a payload can be attached
  */
 ExplorerItem *Explorer::findOrCreateItemFromTopic(QString &topic) {
 	ExplorerItem *root = nullptr;
@@ -59,6 +70,12 @@ ExplorerItem *Explorer::findOrCreateItemFromTopic(QString &topic) {
 	return root;
 }
 
+/**
+ * Finds or creates an immediate child item
+ * @note should be analogous to ExplorerItem::findOrCreateChild
+ * @param name name of the item
+ * @return pointer to a new or existing item
+ */
 ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	auto rootItems = ui.treeWidget->findItems(name, Qt::MatchExactly, 0);
 
