@@ -21,6 +21,7 @@ private:
 
 private slots:
 	void addNewTopic();
+	void checkForDuplicates(QTreeWidgetItem *item, int column);
 };
 
 
