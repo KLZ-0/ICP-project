@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
 	QApplication a(argc, argv);
 
-
+	Core::Client client("explorer");
 	//TestButton button("Hello world!", nullptr);
 	//button.resize(200, 100);
 	//button.show();

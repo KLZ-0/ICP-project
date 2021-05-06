@@ -3,8 +3,9 @@
 
 set(SOURCES 
 	utils.hpp
-	client.cpp
 	client.hpp
+	callback.cpp
+	callback.hpp
 	action_listener.cpp
 	action_listener.hpp
 	)
