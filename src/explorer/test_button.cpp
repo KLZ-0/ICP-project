@@ -2,7 +2,7 @@
  * @author Adrián Kálazi (xkalaz00)
  */
 
-#include "test_button.h"
+#include "test_button.hpp"
 
 #include <mqtt/async_client.h>
 #include <mqtt/client.h>
