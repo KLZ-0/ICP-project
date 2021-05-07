@@ -68,9 +68,9 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::statusConnected() {
-	qDebug() << "connected";
+	ui.statusbar->showMessage("Connected", 0);
 }
 
 void MainWindow::statusDisconnected(const QString &reason) {
-	qDebug() << "disconnected" << reason;
+	ui.statusbar->showMessage("Disconnected, reason: " + reason, 0);
 }
