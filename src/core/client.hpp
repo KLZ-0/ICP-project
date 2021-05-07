@@ -19,9 +19,11 @@ namespace Core
 		Client() = delete;
 		Client(const std::string &clientId);
 
+	public slots:
 		void Connect();
 
-	public slots:
+		void Disconnect();
+
 		void Subscribe(const QSet<QString> &topics);
 
 		void Unsubscribe(const QSet<QString> &topics);

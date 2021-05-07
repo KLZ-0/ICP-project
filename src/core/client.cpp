@@ -2,8 +2,10 @@
  * @author Kevin Lackó (xlacko08)
  */
 #include "client.hpp"
-#include <qset.h>
+
 #include <algorithm>
+#include <qdebug.h>
+#include <qset.h>
 
 namespace Core
 {
@@ -26,14 +28,27 @@ namespace Core
 			emit ServerUnreachable();
 		}
 	}
+	void Client::Disconnect() {
+		try {
+			qDebug() << "Disconnecting from the chat server...";
+			client_.disconnect(nullptr, actionListener_)->wait();
+			qDebug() << "OK";
+		} catch (const mqtt::exception &exc) {
+			qDebug() << exc.what();
+		}
+	}
 	void Client::Subscribe(const QSet<QString> &topics) {
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
 		mqtt::iasync_client::qos_collection qos;
-		std::for_each(topics.begin(), topics.end(), [&topicFilters,&qos](const QString &tf) {
+		std::for_each(topics.begin(), topics.end(), [&topicFilters, &qos](const QString &tf) {
 			topicFilters->push_back(tf.toStdString());
 			qos.push_back(kQos);
 		});
-		client_.subscribe(topicFilters, qos, nullptr, actionListener_);
+		try {
+			client_.subscribe(topicFilters, qos, nullptr, actionListener_);
+		} catch (const mqtt::exception &exc) {
+			qDebug() << exc.what();
+		}
 	}
 	void Client::Unsubscribe(const QSet<QString> &topics) {
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
@@ -42,6 +57,10 @@ namespace Core
 			topicFilters->push_back(tf.toStdString());
 			qos.push_back(kQos);
 		});
-		client_.unsubscribe(topicFilters);
+		try {
+			client_.unsubscribe(topicFilters);
+		} catch (const mqtt::exception &exc) {
+			qDebug() << exc.what();
+		}
 	}
 } // namespace Core
