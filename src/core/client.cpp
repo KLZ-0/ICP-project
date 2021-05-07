@@ -1,5 +1,5 @@
 /**
- * @author Kevin Lackó (xlacko08)
+ * @author Kevin LackÃ³ (xlacko08)
  */
 #include "client.hpp"
 
