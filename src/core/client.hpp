@@ -28,6 +28,8 @@ namespace Core
 
 		void Unsubscribe(const QSet<QString> &topics);
 
+		void Publish(mqtt::const_message_ptr msg);
+
 	signals:
 		void Connected();
 

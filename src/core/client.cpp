@@ -34,7 +34,7 @@ namespace Core
 			client_.disconnect(nullptr, actionListener_)->wait();
 			qDebug() << "OK";
 		} catch (const mqtt::exception &exc) {
-			qDebug() << exc.what();
+			qDebug() << "disconnect failed: " << exc.what();
 		}
 	}
 	void Client::Subscribe(const QSet<QString> &topics) {
@@ -47,7 +47,7 @@ namespace Core
 		try {
 			client_.subscribe(topicFilters, qos, nullptr, actionListener_);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << exc.what();
+			qDebug() << "subscribe failed: " << exc.what();
 		}
 	}
 	void Client::Unsubscribe(const QSet<QString> &topics) {
@@ -60,7 +60,14 @@ namespace Core
 		try {
 			client_.unsubscribe(topicFilters);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << exc.what();
+			qDebug() << "unsubscribe failed: " << exc.what();
+		}
+	}
+	void Client::Publish(mqtt::const_message_ptr msg) {
+		try {
+			client_.publish(msg);
+		} catch (const mqtt::exception &exc) {
+			qDebug() << "publish failed: " << exc.what();
 		}
 	}
 } // namespace Core
