@@ -11,6 +11,7 @@
 
 /**
  * Holds the hierarchical structure of messages
+ * Manages the lifecycle of topics
  */
 class DataModel : public QObject
 {
