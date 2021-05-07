@@ -16,9 +16,14 @@ set(SOURCES
     gui/topic_selection_window.hpp
     gui/explorer_item.cpp
     gui/explorer_item.hpp
+    data/data_model.cpp
+    data/data_model.hpp
+    data/topic.cpp
+    data/topic.hpp
     )
 
 include_directories(gui)
+include_directories(data)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_executable(publish publish.cpp)

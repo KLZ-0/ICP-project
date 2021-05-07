@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 
+#include "data_model.hpp"
 #include "ui_main_window.h"
 
 class MainWindow : public QMainWindow
@@ -16,11 +17,13 @@ class MainWindow : public QMainWindow
 
 public:
 	MainWindow();
+	~MainWindow() override;
 
 private:
 	Ui::MainWindow ui;
 	QSet<QString> topics;
 	bool topics_window_open = false;
+	DataModel *dataModel;
 
 private slots:
 	void openTopicsWindow();
