@@ -28,6 +28,7 @@ MainWindow::MainWindow() {
 	connect(client, &Core::Client::MessageArrived, ui.explorer_tab, &Explorer::receiveMessage);
 
 	client->Connect();
+	ui.explorer_tab->setClient(client);
 }
 
 void MainWindow::openTopicsWindow() {

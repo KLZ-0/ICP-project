@@ -6,8 +6,9 @@
 
 #include <QDebug>
 
-PublishWindow::PublishWindow(Topic *initialTopic) {
+PublishWindow::PublishWindow(Topic *initialTopic, Core::Client *mqttClient) {
 	topic = initialTopic;
+	client = mqttClient;
 
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -30,6 +31,13 @@ void PublishWindow::sendMessage() {
 	QString send_topic = ui.lineEdit->text();
 	QString send_payload = ui.plainTextEdit->toPlainText();
 
-	qDebug() << send_topic << send_payload;
+	mqtt::message_ptr_builder builder;
+
+	builder.topic(send_topic.toStdString());
+	builder.payload(send_payload.toStdString());
+
+	client->Publish(builder.finalize());
+
+	qDebug() << "sent" << send_topic << send_payload;
 	close();
 }

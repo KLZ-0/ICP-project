@@ -33,6 +33,10 @@ void Explorer::setDataModel(DataModel *model) {
 	dataModel = model;
 }
 
+void Explorer::setClient(Core::Client *mqttClient) {
+	client = mqttClient;
+}
+
 void Explorer::setMessageLimit() {
 	// TODO: fix this shit
 	int limit = 4;
@@ -176,7 +180,7 @@ void Explorer::saveState(const QString &directory) {
 void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
 	auto explorerItem = dynamic_cast<ExplorerItem *>(item);
 
-	auto publishWindow = new PublishWindow(explorerItem->getTopic());
+	auto publishWindow = new PublishWindow(explorerItem->getTopic(), client);
 	publishWindow->show();
 	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
 }
