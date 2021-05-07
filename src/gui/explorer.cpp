@@ -93,12 +93,12 @@ void Explorer::updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column
  * Hierarchically displays the received message in the explorer
  * @param message MQTT message
  */
-void Explorer::receiveMessage(mqtt::message &message) {
-	QString topic = QString::fromStdString(message.get_topic());
+void Explorer::receiveMessage(mqtt::const_message_ptr message) {
+	QString topic = QString::fromStdString(message->get_topic());
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
-	QString payload = QString::fromStdString(message.get_payload_str());
+	QString payload = QString::fromStdString(message->get_payload_str());
 	item->getTopic()->addPayload(payload);
 	updateContentBlock();
 }
@@ -145,10 +145,10 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 }
 
 void Explorer::dummyCallback() {
-	mqtt::message message;
-
-	message.set_topic(ui.dummyEdit->text().toUtf8().data());
-	message.set_payload(std::to_string(dummyCount++).c_str());
-
-	receiveMessage(message);
+	//	mqtt::message message;
+	//
+	//	message.set_topic(ui.dummyEdit->text().toUtf8().data());
+	//	message.set_payload(std::to_string(dummyCount++).c_str());
+	//
+	//	receiveMessage(message);
 }

@@ -21,6 +21,7 @@ MainWindow::MainWindow() {
 
 	connect(client, SIGNAL(Connected()), this, SLOT(statusConnected()));
 	connect(client, SIGNAL(ConnectionLost(const QString &)), this, SLOT(statusDisconnected(const QString &)));
+	connect(client, SIGNAL(MessageArrived(mqtt::const_message_ptr)), ui.explorer_tab, SLOT(receiveMessage(mqtt::const_message_ptr)));
 
 	client->Connect();
 }
@@ -43,13 +44,15 @@ void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 	QSet<QString> subscribe = new_topics - topics;
 	QSet<QString> unsubscribe = topics - new_topics;
 
-	qDebug() << "--- subscribe ---";
-	for (const QString &topic : subscribe) {
+	client->Unsubscribe(unsubscribe);
+	qDebug() << "--- unsubscribe ---";
+	for (const QString &topic : unsubscribe) {
 		qDebug() << topic;
 	}
 
-	qDebug() << "--- unsubscribe ---";
-	for (const QString &topic : unsubscribe) {
+	client->Subscribe(subscribe);
+	qDebug() << "--- subscribe ---";
+	for (const QString &topic : subscribe) {
 		qDebug() << topic;
 	}
 

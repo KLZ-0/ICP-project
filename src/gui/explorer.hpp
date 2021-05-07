@@ -37,10 +37,10 @@ private:
 public slots:
 	void setMessageLimit();
 	void updateContentBlock();
+	void receiveMessage(mqtt::const_message_ptr message);
 
 private slots:
 	void updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column);
-	void receiveMessage(mqtt::message &message);
 	void dummyCallback();
 };
 
