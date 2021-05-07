@@ -10,6 +10,7 @@
 #include <QPlainTextEdit>
 #include <QWidget>
 
+#include "data_model.hpp"
 #include "explorer_item.hpp"
 #include "ui_explorer.h"
 
@@ -19,10 +20,12 @@ class Explorer : public QWidget
 
 public:
 	Explorer();
+	void setDataModel(DataModel *model);
 
 private:
 	Ui::Explorer ui;
 	int dummyCount = 0;
+	DataModel *dataModel;
 
 	int messageLimit = 3;
 	QVector<QPlainTextEdit *> contentEdits;

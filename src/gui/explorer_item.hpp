@@ -6,29 +6,24 @@
 #define MQTT_EXPLORER_EXPLORER_ITEM_HPP
 
 #include <QTreeWidgetItem>
+
+#include "data_model.hpp"
+#include "topic.hpp"
+
 /**
  * Represents one topic as an item in the explorer QTreeWidget
  */
 class ExplorerItem : public QTreeWidgetItem
 {
 public:
-	explicit ExplorerItem(QTreeWidget *treeview, int messageLimit);
-	explicit ExplorerItem(QTreeWidgetItem *parent, int messageLimit);
+	explicit ExplorerItem(QTreeWidget *treeview, Topic *topic);
+	explicit ExplorerItem(QTreeWidgetItem *parent, Topic *topic);
 
-	void addPayload(QString &&new_payload);
-	QString getPayload(int index);
-
-	void incrementMessageCount();
-	void setMessageCount(int messageCount);
-	int messageCount() const;
-	void setMessageLimit(int messageLimit);
-
-	ExplorerItem *findOrCreateChild(QString &name);
+	ExplorerItem *findOrCreateChild(QString &name, DataModel *model);
+	Topic *getTopic();
 
 private:
-	int limit;
-	int count = 0;             ///< message count for this topic
-	QVector<QString> payloads; ///< last message payload for this topic
+	Topic *topic;
 };
 
 

@@ -4,48 +4,16 @@
 
 #include "explorer_item.hpp"
 
-ExplorerItem::ExplorerItem(QTreeWidget *treeview, int messageLimit)
+ExplorerItem::ExplorerItem(QTreeWidget *treeview, Topic *topic)
 	: QTreeWidgetItem(treeview) {
-	limit = messageLimit;
-	payloads.resize(messageLimit);
+	this->topic = topic;
+	setText(0, topic->getName());
 }
 
-ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, int messageLimit)
+ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, Topic *topic)
 	: QTreeWidgetItem(parent) {
-	limit = messageLimit;
-	payloads.resize(messageLimit);
-}
-
-void ExplorerItem::addPayload(QString &&new_payload) {
-	if (count > limit) {
-		payloads.resize(limit - 1);
-	}
-	payloads.push_front(new_payload);
-}
-
-QString ExplorerItem::getPayload(int index) {
-	if (index < payloads.size()) {
-		return payloads.at(index);
-	} else {
-		return "";
-	}
-}
-
-void ExplorerItem::incrementMessageCount() {
-	count++;
-}
-
-void ExplorerItem::setMessageCount(int messageCount) {
-	count = messageCount;
-}
-
-int ExplorerItem::messageCount() const {
-	return count;
-}
-
-void ExplorerItem::setMessageLimit(int messageLimit) {
-	limit = messageLimit;
-	payloads.resize(limit);
+	this->topic = topic;
+	setText(0, topic->getName());
 }
 
 /**
@@ -54,7 +22,7 @@ void ExplorerItem::setMessageLimit(int messageLimit) {
  * @param name name of the item
  * @return pointer to a new or existing item
  */
-ExplorerItem *ExplorerItem::findOrCreateChild(QString &name) {
+ExplorerItem *ExplorerItem::findOrCreateChild(QString &name, DataModel *model) {
 	for (int i = 0; i < childCount(); i++) {
 		QTreeWidgetItem *item = child(i);
 		if (item->text(0) == name) {
@@ -62,7 +30,11 @@ ExplorerItem *ExplorerItem::findOrCreateChild(QString &name) {
 		}
 	}
 
-	auto item = new ExplorerItem(this, this->limit);
+	auto item = new ExplorerItem(this, model->addTopic(name));
 	item->setText(0, name);
 	return item;
+}
+
+Topic *ExplorerItem::getTopic() {
+	return topic;
 }

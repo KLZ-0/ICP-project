@@ -12,6 +12,9 @@
 MainWindow::MainWindow() {
 	ui.setupUi(this);
 
+	dataModel = new DataModel(3);
+	ui.explorer_tab->setDataModel(dataModel);
+
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
 }
 
@@ -49,4 +52,8 @@ void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 
 void MainWindow::cancelTopicChange() {
 	topics_window_open = false;
+}
+
+MainWindow::~MainWindow() {
+	delete dataModel;
 }

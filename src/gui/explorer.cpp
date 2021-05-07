@@ -23,23 +23,15 @@ Explorer::Explorer() {
 		contentEdits.append(content_ui.plainTextEdit);
 	}
 
-	auto item = new ExplorerItem(ui.treeWidget, messageLimit);
-	item->setText(0, "top level item");
-	item->addPayload("data1");
-
-	auto subItem = new ExplorerItem(item, messageLimit);
-	subItem->setText(0, "lower level item");
-	subItem->addPayload("data2");
-
-	auto subsubItem = new ExplorerItem(subItem, messageLimit);
-	subsubItem->setText(0, "even lower level item");
-	subsubItem->addPayload("data3");
-
 	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlockFromItem);
 
 	// TODO: dummy
 	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
 	connect(ui.dummyEdit, SIGNAL(returnPressed()), this, SLOT(dummyCallback()));
+}
+
+void Explorer::setDataModel(DataModel *model) {
+	dataModel = model;
 }
 
 void Explorer::setMessageLimit() {
@@ -79,7 +71,7 @@ void Explorer::updateContentBlock() {
 	}
 
 	for (int i = 0; i < messageLimit; i++) {
-		QString payload = currentItem->getPayload(i);
+		QString payload = currentItem->getTopic()->getPayload(i);
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}
@@ -104,8 +96,8 @@ void Explorer::receiveMessage(mqtt::message &message) {
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
-	item->incrementMessageCount();
-	item->addPayload(QString::fromStdString(message.get_payload_str()));
+	QString payload = QString::fromStdString(message.get_payload_str());
+	item->getTopic()->addPayload(payload);
 	updateContentBlock();
 }
 
@@ -121,7 +113,7 @@ ExplorerItem *Explorer::findOrCreateItemFromTopic(QString &topic) {
 		if (root == nullptr) {
 			root = findOrCreateRootChild(subtopic);
 		} else {
-			root = root->findOrCreateChild(subtopic);
+			root = root->findOrCreateChild(subtopic, dataModel);
 		}
 	}
 
@@ -140,8 +132,8 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	ExplorerItem *root;
 	if (rootItems.empty()) {
 		// adding a new root topic
-		root = new ExplorerItem(ui.treeWidget, messageLimit);
-		root->setText(0, name);
+		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name));
+
 	} else {
 		// root topic found
 		root = dynamic_cast<ExplorerItem *>(rootItems.at(0));
