@@ -23,6 +23,7 @@ set(SOURCES
     )
 
 include_directories(gui)
+include_directories(data)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_executable(publish publish.cpp)

@@ -15,6 +15,17 @@
 class DataModel : QObject
 {
 	Q_OBJECT
+
+public:
+	DataModel(int messageLimit);
+	~DataModel() override;
+
+	void addTopic(QString &name);
+	void setTopicMessageLimit(int newLimit);
+
+private:
+	int limit;
+	QVector<Topic *> topics;
 };
 
 
