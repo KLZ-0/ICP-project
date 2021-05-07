@@ -69,9 +69,8 @@ void TopicSelectionWindow::checkForDuplicates(QTreeWidgetItem *item, int column)
 void TopicSelectionWindow::confirmChanges() {
 	QSet<QString> topics;
 
-	auto search_items = ui.treeWidget->findItems("*", Qt::MatchWildcard, 0);
-	for (QTreeWidgetItem *item : search_items) {
-		topics.insert(item->text(0));
+	for (int i = 0; i < ui.treeWidget->topLevelItemCount(); ++i) {
+		topics.insert(ui.treeWidget->topLevelItem(i)->text(0));
 	}
 
 	emit topicsSelected(topics);
