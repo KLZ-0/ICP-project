@@ -38,6 +38,8 @@ public slots:
 	void setMessageLimit();
 	void updateContentBlock();
 	void receiveMessage(mqtt::const_message_ptr message);
+	void saveState(const QString &directory);
+	void dummyCallback();
 };
 
 

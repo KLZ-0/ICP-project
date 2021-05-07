@@ -133,3 +133,14 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 
 	return root;
 }
+
+void Explorer::dummyCallback() {
+	saveState("/tmp/directory");
+}
+
+void Explorer::saveState(const QString &directory) {
+	for (int i = 0; i < ui.treeWidget->topLevelItemCount(); ++i) {
+		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
+		explorerItem->saveSubtree(directory);
+	}
+}

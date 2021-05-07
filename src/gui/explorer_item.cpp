@@ -4,6 +4,8 @@
 
 #include "explorer_item.hpp"
 
+#include <QDebug>
+
 ExplorerItem::ExplorerItem(QTreeWidget *treeview, Topic *topic)
 	: QTreeWidgetItem(treeview) {
 	this->topic = topic;
@@ -37,4 +39,19 @@ ExplorerItem *ExplorerItem::findOrCreateChild(QString &name, DataModel *model) {
 
 Topic *ExplorerItem::getTopic() {
 	return topic;
+}
+
+void ExplorerItem::saveSubtree(const QString &parents) {
+	QString newParent = parents + "/" + topic->getName();
+	qDebug() << "mkdir" << newParent;
+
+	if (topic->getPayload(0) != "") {
+		// save payload
+		qDebug() << "save" << newParent + "/payload.txt";
+	}
+
+	for (int i = 0; i < childCount(); ++i) {
+		auto explorerItem = dynamic_cast<ExplorerItem *>(child(i));
+		explorerItem->saveSubtree(newParent);
+	}
 }
