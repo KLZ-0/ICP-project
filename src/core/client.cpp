@@ -23,7 +23,7 @@ namespace Core
 			client_.connect(connOpts_, nullptr, callback_);
 		} catch (const mqtt::exception &exc) {
 			qDebug() << "ERROR: Unable to connect to MQTT server: '"
-					 << kServerUri.data() << "'" << exc;
+					 << kServerUri.data() << "'" << exc.what();
 			emit ServerUnreachable();
 		}
 	}
