@@ -38,6 +38,9 @@ namespace Core
 		}
 	}
 	void Client::Subscribe(const QSet<QString> &topics) {
+		if (topics.isEmpty()) {
+			return;
+		}
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
 		mqtt::iasync_client::qos_collection qos;
 		std::for_each(topics.begin(), topics.end(), [&topicFilters, &qos](const QString &tf) {
@@ -51,6 +54,9 @@ namespace Core
 		}
 	}
 	void Client::Unsubscribe(const QSet<QString> &topics) {
+		if (topics.isEmpty()) {
+			return;
+		}
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
 		mqtt::iasync_client::qos_collection qos;
 		std::for_each(topics.begin(), topics.end(), [&topicFilters, &qos](const QString &tf) {
