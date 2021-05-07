@@ -17,7 +17,7 @@ class DataModel : QObject
 	Q_OBJECT
 
 public:
-	DataModel(int messageLimit);
+	explicit DataModel(int messageLimit);
 	~DataModel() override;
 
 	void addTopic(QString &name);
