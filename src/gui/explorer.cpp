@@ -127,7 +127,7 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	ExplorerItem *root;
 	if (rootItems.empty()) {
 		// adding a new root topic
-		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name));
+		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name, nullptr));
 
 	} else {
 		// root topic found

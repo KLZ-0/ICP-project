@@ -12,7 +12,14 @@ PublishWindow::PublishWindow(Topic *initialTopic) {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	ui.lineEdit->setText(topic->getName());
+	QString topicString = topic->getName();
+	Topic *parent = topic->getParent();
+	while (parent != nullptr) {
+		topicString = parent->getName() + "/" + topicString;
+		parent = parent->getParent();
+	}
+
+	ui.lineEdit->setText(topicString);
 	ui.plainTextEdit->setPlainText(topic->getPayload(0));
 
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &PublishWindow::close);

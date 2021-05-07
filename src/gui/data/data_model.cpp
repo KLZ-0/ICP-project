@@ -10,8 +10,8 @@ DataModel::DataModel(int messageLimit) {
 	limit = messageLimit;
 }
 
-Topic *DataModel::addTopic(QString &name) {
-	auto topic = new Topic(name, limit);
+Topic *DataModel::addTopic(QString &name, Topic *parentTopic) {
+	auto topic = new Topic(name, limit, parentTopic);
 	topics.append(topic);
 	return topic;
 }

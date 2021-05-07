@@ -21,7 +21,7 @@ public:
 	explicit DataModel(int messageLimit);
 	~DataModel() override;
 
-	Topic *addTopic(QString &name);
+	Topic *addTopic(QString &name, Topic *parentTopic);
 	void setTopicMessageLimit(int newLimit);
 
 private:
