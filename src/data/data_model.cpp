@@ -4,12 +4,16 @@
 
 #include "data_model.hpp"
 
+#include <QDebug>
+
 DataModel::DataModel(int messageLimit) {
 	limit = messageLimit;
 }
 
-void DataModel::addTopic(QString &name) {
-	topics.append(new Topic(name, limit));
+Topic *DataModel::addTopic(QString &name) {
+	auto topic = new Topic(name, limit);
+	topics.append(topic);
+	return topic;
 }
 
 void DataModel::setTopicMessageLimit(int newLimit) {

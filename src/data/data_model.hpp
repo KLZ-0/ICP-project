@@ -12,7 +12,7 @@
 /**
  * Holds the hierarchical structure of messages
  */
-class DataModel : QObject
+class DataModel : public QObject
 {
 	Q_OBJECT
 
@@ -20,7 +20,7 @@ public:
 	explicit DataModel(int messageLimit);
 	~DataModel() override;
 
-	void addTopic(QString &name);
+	Topic *addTopic(QString &name);
 	void setTopicMessageLimit(int newLimit);
 
 private:

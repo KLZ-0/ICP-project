@@ -4,13 +4,15 @@
 
 #include "topic.hpp"
 
+#include <QDebug>
+
 Topic::Topic(QString &name, int messageLimit) {
 	this->name = name;
 	limit = messageLimit;
 	payloads.resize(messageLimit);
 }
 
-void Topic::addPayload(QString &&new_payload) {
+void Topic::addPayload(const QString &new_payload) {
 	if (count > limit) {
 		payloads.resize(limit - 1);
 	}
@@ -35,4 +37,8 @@ int Topic::messageCount() const {
 void Topic::setMessageLimit(int messageLimit) {
 	limit = messageLimit;
 	payloads.resize(limit);
+}
+
+QString Topic::getName() {
+	return name;
 }

@@ -7,18 +7,20 @@
 
 #include <QObject>
 
-class Topic : QObject
+class Topic : public QObject
 {
 	Q_OBJECT
 
 public:
 	explicit Topic(QString &name, int messageLimit);
 
-	void addPayload(QString &&new_payload);
+	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
 
 	int messageCount() const;
 	void setMessageLimit(int messageLimit);
+
+	QString getName();
 
 private:
 	QString name;
