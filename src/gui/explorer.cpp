@@ -135,7 +135,15 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	return root;
 }
 
-void Explorer::dummyCallback() {
+void Explorer::saveStructure() {
+	if (lastSaveDir == "") {
+		saveStructureAs();
+	} else {
+		saveState(lastSaveDir);
+	}
+}
+
+void Explorer::saveStructureAs() {
 	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
 														"/home",
 														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -150,10 +158,13 @@ void Explorer::dummyCallback() {
 	}
 
 	saveState(userDir);
-	qInfo() << "Saving structure to" << userDir;
+
+	lastSaveDir = userDir;
 }
 
 void Explorer::saveState(const QString &directory) {
+	qInfo() << "Saving structure to" << directory;
+
 	for (int i = 0; i < ui.treeWidget->topLevelItemCount(); ++i) {
 		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
 		explorerItem->saveSubtree(directory);

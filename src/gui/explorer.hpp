@@ -25,6 +25,7 @@ public:
 private:
 	Ui::Explorer ui;
 	DataModel *dataModel;
+	QString lastSaveDir = "";
 
 	int messageLimit = 3;
 	QVector<QPlainTextEdit *> contentEdits;
@@ -39,7 +40,8 @@ public slots:
 	void updateContentBlock();
 	void receiveMessage(mqtt::const_message_ptr message);
 	void saveState(const QString &directory);
-	void dummyCallback();
+	void saveStructure();
+	void saveStructureAs();
 };
 
 

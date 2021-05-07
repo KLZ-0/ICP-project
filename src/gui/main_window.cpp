@@ -17,7 +17,8 @@ MainWindow::MainWindow() {
 	ui.explorer_tab->setDataModel(dataModel);
 
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
-	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::dummyCallback);
+	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructure);
+	connect(ui.actionSave_As, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructureAs);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 
