@@ -8,6 +8,7 @@
 #include <iostream>
 #include <qdebug.h>
 
+#include "publish_window.hpp"
 #include "ui_content_widget.h"
 
 Explorer::Explorer() {
@@ -174,5 +175,8 @@ void Explorer::saveState(const QString &directory) {
 
 void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
 	auto explorerItem = dynamic_cast<ExplorerItem *>(item);
+
+	auto publishWindow = new PublishWindow(explorerItem->getTopic());
+	publishWindow->show();
 	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
 }
