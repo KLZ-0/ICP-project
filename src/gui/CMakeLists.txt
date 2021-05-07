@@ -19,6 +19,8 @@ set(SOURCES
     data/data_model.hpp
     data/topic.cpp
     data/topic.hpp
+    publish_window.cpp
+    publish_window.hpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

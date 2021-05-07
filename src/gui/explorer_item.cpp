@@ -34,7 +34,7 @@ ExplorerItem *ExplorerItem::findOrCreateChild(QString &name, DataModel *model) {
 		}
 	}
 
-	auto item = new ExplorerItem(this, model->addTopic(name));
+	auto item = new ExplorerItem(this, model->addTopic(name, this->topic));
 	item->setText(0, name);
 	return item;
 }

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <qdebug.h>
 
+#include "publish_window.hpp"
 #include "ui_content_widget.h"
 
 Explorer::Explorer() {
@@ -25,10 +26,15 @@ Explorer::Explorer() {
 	}
 
 	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
+	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &Explorer::openPublishWindow);
 }
 
 void Explorer::setDataModel(DataModel *model) {
 	dataModel = model;
+}
+
+void Explorer::setClient(Core::Client *mqttClient) {
+	client = mqttClient;
 }
 
 void Explorer::setMessageLimit() {
@@ -125,7 +131,7 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	ExplorerItem *root;
 	if (rootItems.empty()) {
 		// adding a new root topic
-		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name));
+		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name, nullptr));
 
 	} else {
 		// root topic found
@@ -169,4 +175,12 @@ void Explorer::saveState(const QString &directory) {
 		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
 		explorerItem->saveSubtree(directory);
 	}
+}
+
+void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
+	auto explorerItem = dynamic_cast<ExplorerItem *>(item);
+
+	auto publishWindow = new PublishWindow(explorerItem->getTopic(), client);
+	publishWindow->show();
+	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
 }

@@ -12,7 +12,7 @@ class Topic : public QObject
 	Q_OBJECT
 
 public:
-	explicit Topic(QString &name, int messageLimit);
+	explicit Topic(QString &name, int messageLimit, Topic *parentTopic);
 
 	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
@@ -21,8 +21,10 @@ public:
 	void setMessageLimit(int messageLimit);
 
 	QString getName();
+	Topic *getParent();
 
 private:
+	Topic *parent;
 	QString name;
 	int limit;                         ///< message limit
 	int count = 0;                     ///< message count for this topic

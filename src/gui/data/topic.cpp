@@ -6,9 +6,10 @@
 
 #include <QDebug>
 
-Topic::Topic(QString &name, int messageLimit) {
+Topic::Topic(QString &name, int messageLimit, Topic *parentTopic) {
 	this->name = name;
 	limit = messageLimit;
+	parent = parentTopic;
 }
 
 void Topic::addPayload(const QString &new_payload) {
@@ -39,4 +40,8 @@ void Topic::setMessageLimit(int messageLimit) {
 
 QString Topic::getName() {
 	return name;
+}
+
+Topic *Topic::getParent() {
+	return parent;
 }

@@ -6,9 +6,10 @@
 #define MQTT_EXPLORER_EXPLORER_HPP
 
 
-#include <mqtt/message.h>
 #include <QPlainTextEdit>
 #include <QWidget>
+#include <client.hpp>
+#include <mqtt/message.h>
 
 #include "data_model.hpp"
 #include "explorer_item.hpp"
@@ -21,10 +22,12 @@ class Explorer : public QWidget
 public:
 	Explorer();
 	void setDataModel(DataModel *model);
+	void setClient(Core::Client *mqttClient);
 
 private:
 	Ui::Explorer ui;
 	DataModel *dataModel;
+	Core::Client *client;
 	QString lastSaveDir = "";
 
 	int messageLimit = 3;
@@ -42,6 +45,7 @@ public slots:
 	void saveState(const QString &directory);
 	void saveStructure();
 	void saveStructureAs();
+	void openPublishWindow(QTreeWidgetItem *item, int column);
 };
 
 
