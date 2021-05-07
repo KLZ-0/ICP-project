@@ -24,10 +24,6 @@ Explorer::Explorer() {
 	}
 
 	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
-
-	// TODO: dummy
-	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
-	connect(ui.dummyEdit, SIGNAL(returnPressed()), this, SLOT(dummyCallback()));
 }
 
 void Explorer::setDataModel(DataModel *model) {
@@ -135,13 +131,4 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	}
 
 	return root;
-}
-
-void Explorer::dummyCallback() {
-	//	mqtt::message message;
-	//
-	//	message.set_topic(ui.dummyEdit->text().toUtf8().data());
-	//	message.set_payload(std::to_string(dummyCount++).c_str());
-	//
-	//	receiveMessage(message);
 }
