@@ -42,6 +42,7 @@ public slots:
 	void saveState(const QString &directory);
 	void saveStructure();
 	void saveStructureAs();
+	void openPublishWindow(QTreeWidgetItem *item, int column);
 };
 
 

@@ -25,6 +25,7 @@ Explorer::Explorer() {
 	}
 
 	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
+	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &Explorer::openPublishWindow);
 }
 
 void Explorer::setDataModel(DataModel *model) {
@@ -169,4 +170,9 @@ void Explorer::saveState(const QString &directory) {
 		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
 		explorerItem->saveSubtree(directory);
 	}
+}
+
+void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
+	auto explorerItem = dynamic_cast<ExplorerItem *>(item);
+	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
 }
