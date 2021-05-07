@@ -8,11 +8,12 @@
 
 namespace Core
 {
+	class Client;
 	class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_listener
 	{
 	public:
 		Callback() = delete;
-		Callback(mqtt::async_client &client);
+		Callback(Client* caller, mqtt::async_client &client);
 		/**
 		 * This method is called when the client is connected. 
 		 * Note that, in response to an initial connect(), the token from the 
@@ -36,7 +37,6 @@ namespace Core
 
 		virtual ~Callback() {}
 
-		private:
 		/**
 		 * This method is invoked when (re)connection fails
 		 * @param asyncActionToken
@@ -53,5 +53,6 @@ namespace Core
 		static constexpr int kRetryLimit = 5;
 		int nRetry_ = 0;
 		mqtt::async_client &client_;
+		Client *sig_;
 	};
 } // namespace Core

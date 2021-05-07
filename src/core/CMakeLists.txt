@@ -1,8 +1,8 @@
 # folder: icp-project/src/core
 # author: Kevin Lackó (xlacko08)
 
-set(SOURCES 
-	utils.hpp
+set(SOURCES
+	client.cpp
 	client.hpp
 	callback.cpp
 	callback.hpp
