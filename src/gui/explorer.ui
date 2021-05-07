@@ -14,9 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="dummyEdit"/>
-   </item>
    <item row="0" column="1">
     <widget class="QTreeWidget" name="treeWidget">
      <attribute name="headerVisible">
@@ -27,13 +24,6 @@
        <string notr="true">1</string>
       </property>
      </column>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="dummyButton">
-     <property name="text">
-      <string>Dummy</string>
-     </property>
     </widget>
    </item>
    <item row="0" column="2">

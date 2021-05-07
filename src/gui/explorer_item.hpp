@@ -22,6 +22,8 @@ public:
 	ExplorerItem *findOrCreateChild(QString &name, DataModel *model);
 	Topic *getTopic();
 
+	void saveSubtree(const QString &parents);
+
 private:
 	Topic *topic;
 };

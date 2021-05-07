@@ -24,9 +24,9 @@ public:
 
 private:
 	QString name;
-	int limit;                 ///< message limit
-	int count = 0;             ///< message count for this topic
-	QVector<QString> payloads; ///< last message payload for this topic
+	int limit;                         ///< message limit
+	int count = 0;                     ///< message count for this topic
+	QVarLengthArray<QString> payloads; ///< last message payload for this topic
 
 signals:
 	void changed(Topic *topic);

@@ -4,6 +4,7 @@
 
 #include "explorer.hpp"
 
+#include <QFileDialog>
 #include <iostream>
 #include <qdebug.h>
 
@@ -23,11 +24,7 @@ Explorer::Explorer() {
 		contentEdits.append(content_ui.plainTextEdit);
 	}
 
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlockFromItem);
-
-	// TODO: dummy
-	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
-	connect(ui.dummyEdit, SIGNAL(returnPressed()), this, SLOT(dummyCallback()));
+	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
 }
 
 void Explorer::setDataModel(DataModel *model) {
@@ -64,41 +61,35 @@ void Explorer::setMessageLimit() {
 }
 
 /**
- * Updates the last message content view with the last message payload
+ * Updates the last message content view with the selected message payload
  * Could be used after content change to update the content view
  */
 void Explorer::updateContentBlock() {
-	if (currentItem == nullptr) {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
 		return;
 	}
 
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
 	for (int i = 0; i < messageLimit; i++) {
 		QString payload = currentItem->getTopic()->getPayload(i);
+		payload.truncate(MAX_MESSAGE_RENDER_LENGTH);
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}
 }
 
 /**
- * Updates the last message content view with the message payload
- * @param tree_item tree item from which the payload should be loaded
- * @param column always 0
- */
-void Explorer::updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column) {
-	currentItem = dynamic_cast<ExplorerItem *>(tree_item);
-	updateContentBlock();
-}
-
-/**
  * Hierarchically displays the received message in the explorer
  * @param message MQTT message
  */
-void Explorer::receiveMessage(mqtt::message &message) {
-	QString topic = QString::fromStdString(message.get_topic());
+void Explorer::receiveMessage(mqtt::const_message_ptr message) {
+	QString topic = QString::fromStdString(message->get_topic());
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
-	QString payload = QString::fromStdString(message.get_payload_str());
+	QString payload = QString::fromStdString(message->get_payload());
 	item->getTopic()->addPayload(payload);
 	updateContentBlock();
 }
@@ -144,11 +135,38 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 	return root;
 }
 
-void Explorer::dummyCallback() {
-	mqtt::message message;
+void Explorer::saveStructure() {
+	if (lastSaveDir == "") {
+		saveStructureAs();
+	} else {
+		saveState(lastSaveDir);
+	}
+}
 
-	message.set_topic(ui.dummyEdit->text().toUtf8().data());
-	message.set_payload(std::to_string(dummyCount++).c_str());
+void Explorer::saveStructureAs() {
+	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+														"/home",
+														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-	receiveMessage(message);
+	if (userDir == "") {
+		return;
+	}
+
+	QDir dir(userDir);
+	if (!dir.exists()) {
+		return;
+	}
+
+	saveState(userDir);
+
+	lastSaveDir = userDir;
+}
+
+void Explorer::saveState(const QString &directory) {
+	qInfo() << "Saving structure to" << directory;
+
+	for (int i = 0; i < ui.treeWidget->topLevelItemCount(); ++i) {
+		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
+		explorerItem->saveSubtree(directory);
+	}
 }

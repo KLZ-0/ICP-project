@@ -24,24 +24,24 @@ public:
 
 private:
 	Ui::Explorer ui;
-	int dummyCount = 0;
 	DataModel *dataModel;
+	QString lastSaveDir = "";
 
 	int messageLimit = 3;
 	QVector<QPlainTextEdit *> contentEdits;
-	ExplorerItem *currentItem = nullptr;
 
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
+	const int MAX_MESSAGE_RENDER_LENGTH = 300;
+
 public slots:
 	void setMessageLimit();
 	void updateContentBlock();
-
-private slots:
-	void updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column);
-	void receiveMessage(mqtt::message &message);
-	void dummyCallback();
+	void receiveMessage(mqtt::const_message_ptr message);
+	void saveState(const QString &directory);
+	void saveStructure();
+	void saveStructureAs();
 };
 
 

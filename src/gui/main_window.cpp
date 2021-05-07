@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QPushButton>
+#include <QUuid>
 
 #include "topic_selection_window.hpp"
 
@@ -16,6 +17,17 @@ MainWindow::MainWindow() {
 	ui.explorer_tab->setDataModel(dataModel);
 
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
+	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructure);
+	connect(ui.actionSave_As, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructureAs);
+
+	client = new Core::Client(QUuid::createUuid().toString().toStdString());
+
+	qRegisterMetaType<mqtt::const_message_ptr>("mqtt::const_message_ptr");
+	connect(client, &Core::Client::Connected, this, &MainWindow::statusConnected);
+	connect(client, &Core::Client::ConnectionLost, this, &MainWindow::statusDisconnected);
+	connect(client, &Core::Client::MessageArrived, ui.explorer_tab, &Explorer::receiveMessage);
+
+	client->Connect();
 }
 
 void MainWindow::openTopicsWindow() {
@@ -36,13 +48,15 @@ void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 	QSet<QString> subscribe = new_topics - topics;
 	QSet<QString> unsubscribe = topics - new_topics;
 
-	qDebug() << "--- subscribe ---";
-	for (const QString &topic : subscribe) {
+	client->Unsubscribe(unsubscribe);
+	qDebug() << "--- unsubscribe ---";
+	for (const QString &topic : unsubscribe) {
 		qDebug() << topic;
 	}
 
-	qDebug() << "--- unsubscribe ---";
-	for (const QString &topic : unsubscribe) {
+	client->Subscribe(subscribe);
+	qDebug() << "--- subscribe ---";
+	for (const QString &topic : subscribe) {
 		qDebug() << topic;
 	}
 
@@ -55,5 +69,15 @@ void MainWindow::cancelTopicChange() {
 }
 
 MainWindow::~MainWindow() {
+	client->Disconnect();
+	delete client;
 	delete dataModel;
+}
+
+void MainWindow::statusConnected() {
+	ui.statusbar->showMessage("Connected", 0);
+}
+
+void MainWindow::statusDisconnected(const QString &reason) {
+	ui.statusbar->showMessage("Disconnected, reason: " + reason, 0);
 }

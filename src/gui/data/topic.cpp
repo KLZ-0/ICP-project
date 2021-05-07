@@ -15,7 +15,7 @@ void Topic::addPayload(const QString &new_payload) {
 	if (count >= limit) {
 		payloads.resize(limit - 1);
 	}
-	payloads.push_front(new_payload);
+	payloads.insert(0, new_payload);
 	count++;
 
 	emit changed(this);

@@ -13,8 +13,10 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets paho-mqtt3c paho-mqtt3a paho-mqttpp3 Threads::Threads)
 
+set(CMAKE_CXX_FLAGS_RELEASE -DQT_NO_DEBUG_OUTPUT)
+
 # Threads required by PAHO
-set (THREADS_PREFER_PTHREAD_FLAG ON)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 find_package(PahoMqttCpp)
