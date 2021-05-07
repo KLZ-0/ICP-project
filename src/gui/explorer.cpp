@@ -73,6 +73,7 @@ void Explorer::updateContentBlock() {
 	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
 	for (int i = 0; i < messageLimit; i++) {
 		QString payload = currentItem->getTopic()->getPayload(i);
+		payload.truncate(MAX_MESSAGE_RENDER_LENGTH);
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}

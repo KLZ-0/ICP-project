@@ -32,6 +32,8 @@ private:
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
+	const int MAX_MESSAGE_RENDER_LENGTH = 300;
+
 public slots:
 	void setMessageLimit();
 	void updateContentBlock();
