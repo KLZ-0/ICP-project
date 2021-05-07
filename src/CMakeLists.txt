@@ -1,3 +1,5 @@
+# folder: icp-project/src
+# author: Kevin Lackó (xlacko08)
 # author: Adrián Kálazi (xkalaz00)
 
 set(SOURCES
@@ -24,6 +26,10 @@ set(SOURCES
 
 include_directories(gui)
 include_directories(data)
+
+add_subdirectory(core)
+add_subdirectory(explorer)
+add_subdirectory(simulator)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_executable(publish publish.cpp)
