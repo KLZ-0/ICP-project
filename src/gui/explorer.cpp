@@ -58,6 +58,8 @@ void Explorer::setMessageLimit() {
 		contentEdits.resize(limit);
 	}
 
+	dataModel->setTopicMessageLimit(limit);
+
 	messageLimit = limit;
 }
 

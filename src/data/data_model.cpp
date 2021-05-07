@@ -18,7 +18,7 @@ Topic *DataModel::addTopic(QString &name) {
 
 void DataModel::setTopicMessageLimit(int newLimit) {
 	for (Topic *topic : topics) {
-		topic->setMessageLimit(limit);
+		topic->setMessageLimit(newLimit);
 	}
 	limit = newLimit;
 }

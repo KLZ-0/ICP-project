@@ -9,11 +9,10 @@
 Topic::Topic(QString &name, int messageLimit) {
 	this->name = name;
 	limit = messageLimit;
-	payloads.resize(messageLimit);
 }
 
 void Topic::addPayload(const QString &new_payload) {
-	if (count > limit) {
+	if (count >= limit) {
 		payloads.resize(limit - 1);
 	}
 	payloads.push_front(new_payload);
@@ -36,7 +35,6 @@ int Topic::messageCount() const {
 
 void Topic::setMessageLimit(int messageLimit) {
 	limit = messageLimit;
-	payloads.resize(limit);
 }
 
 QString Topic::getName() {
