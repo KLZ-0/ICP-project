@@ -16,6 +16,13 @@ MainWindow::MainWindow() {
 	ui.explorer_tab->setDataModel(dataModel);
 
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
+
+	client = new Core::Client("thisclient");
+
+	connect(client, SIGNAL(Connected()), this, SLOT(statusConnected()));
+	connect(client, SIGNAL(ConnectionLost(const QString &)), this, SLOT(statusDisconnected(const QString &)));
+
+	client->Connect();
 }
 
 void MainWindow::openTopicsWindow() {
@@ -55,5 +62,15 @@ void MainWindow::cancelTopicChange() {
 }
 
 MainWindow::~MainWindow() {
+	client->Disconnect();
+	delete client;
 	delete dataModel;
+}
+
+void MainWindow::statusConnected() {
+	qDebug() << "connected";
+}
+
+void MainWindow::statusDisconnected(const QString &reason) {
+	qDebug() << "disconnected" << reason;
 }

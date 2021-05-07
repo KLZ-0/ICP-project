@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 
+#include "client.hpp"
 #include "data_model.hpp"
 #include "ui_main_window.h"
 
@@ -24,11 +25,14 @@ private:
 	QSet<QString> topics;
 	bool topics_window_open = false;
 	DataModel *dataModel;
+	Core::Client *client;
 
 private slots:
 	void openTopicsWindow();
 	void handleTopicChange(const QSet<QString> &new_topics);
 	void cancelTopicChange();
+	void statusConnected();
+	void statusDisconnected(const QString &reason);
 };
 
 
