@@ -20,6 +20,9 @@ public:
 private:
 	Ui::PublishWindow ui;
 	Topic *topic;
+
+private slots:
+	void sendMessage();
 };
 
 
