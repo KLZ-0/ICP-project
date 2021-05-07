@@ -19,12 +19,11 @@ namespace Core
 	}
 	void Client::Connect() {
 		try {
-			std::cout << "Connecting to the MQTT server...\n"
-					  << std::flush;
+			qDebug() << "Connecting to the MQTT server...\n";
 			client_.connect(connOpts_, nullptr, callback_);
 		} catch (const mqtt::exception &exc) {
-			std::cerr << "ERROR: Unable to connect to MQTT server: '"
-					  << kServerUri.data() << "'" << exc << std::endl;
+			qDebug() << "ERROR: Unable to connect to MQTT server: '"
+					 << kServerUri.data() << "'" << exc;
 			emit ServerUnreachable();
 		}
 	}
