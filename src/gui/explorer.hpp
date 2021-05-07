@@ -29,7 +29,6 @@ private:
 
 	int messageLimit = 3;
 	QVector<QPlainTextEdit *> contentEdits;
-	ExplorerItem *currentItem = nullptr;
 
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);
@@ -40,7 +39,6 @@ public slots:
 	void receiveMessage(mqtt::const_message_ptr message);
 
 private slots:
-	void updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column);
 	void dummyCallback();
 };
 

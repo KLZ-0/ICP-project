@@ -23,7 +23,7 @@ Explorer::Explorer() {
 		contentEdits.append(content_ui.plainTextEdit);
 	}
 
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &Explorer::updateContentBlockFromItem);
+	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
 
 	// TODO: dummy
 	connect(ui.dummyButton, SIGNAL(clicked(bool)), this, SLOT(dummyCallback()));
@@ -64,29 +64,22 @@ void Explorer::setMessageLimit() {
 }
 
 /**
- * Updates the last message content view with the last message payload
+ * Updates the last message content view with the selected message payload
  * Could be used after content change to update the content view
  */
 void Explorer::updateContentBlock() {
-	if (currentItem == nullptr) {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
 		return;
 	}
 
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
 	for (int i = 0; i < messageLimit; i++) {
 		QString payload = currentItem->getTopic()->getPayload(i);
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}
-}
-
-/**
- * Updates the last message content view with the message payload
- * @param tree_item tree item from which the payload should be loaded
- * @param column always 0
- */
-void Explorer::updateContentBlockFromItem(QTreeWidgetItem *tree_item, int column) {
-	currentItem = dynamic_cast<ExplorerItem *>(tree_item);
-	updateContentBlock();
 }
 
 /**
