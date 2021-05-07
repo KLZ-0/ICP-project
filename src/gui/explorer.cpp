@@ -4,6 +4,7 @@
 
 #include "explorer.hpp"
 
+#include <QFileDialog>
 #include <iostream>
 #include <qdebug.h>
 
@@ -135,7 +136,21 @@ ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
 }
 
 void Explorer::dummyCallback() {
-	saveState("/tmp/directory");
+	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+														"/home",
+														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+	if (userDir == "") {
+		return;
+	}
+
+	QDir dir(userDir);
+	if (!dir.exists()) {
+		return;
+	}
+
+	saveState(userDir);
+	qInfo() << "Saving structure to" << userDir;
 }
 
 void Explorer::saveState(const QString &directory) {
