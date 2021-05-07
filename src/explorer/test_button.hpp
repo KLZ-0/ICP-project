@@ -8,14 +8,19 @@
 
 #include <QPushButton>
 
+#include "core/client.hpp"
+
 class TestButton : public QPushButton
 {
 	Q_OBJECT
 public:
-	TestButton(const QString &text, QWidget *parent);
+	TestButton(const QString &text, QWidget *parent, Core::Client *client);
 
 public slots:
 	void pahotest();
+
+private:
+	Core::Client *client_;
 };
 
 
