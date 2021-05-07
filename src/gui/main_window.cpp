@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QPushButton>
+#include <QUuid>
 
 #include "topic_selection_window.hpp"
 
@@ -17,11 +18,12 @@ MainWindow::MainWindow() {
 
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
 
-	client = new Core::Client("thisclient");
+	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 
-	connect(client, SIGNAL(Connected()), this, SLOT(statusConnected()));
-	connect(client, SIGNAL(ConnectionLost(const QString &)), this, SLOT(statusDisconnected(const QString &)));
-	connect(client, SIGNAL(MessageArrived(mqtt::const_message_ptr)), ui.explorer_tab, SLOT(receiveMessage(mqtt::const_message_ptr)));
+	qRegisterMetaType<mqtt::const_message_ptr>("mqtt::const_message_ptr");
+	connect(client, &Core::Client::Connected, this, &MainWindow::statusConnected);
+	connect(client, &Core::Client::ConnectionLost, this, &MainWindow::statusDisconnected);
+	connect(client, &Core::Client::MessageArrived, ui.explorer_tab, &Explorer::receiveMessage);
 
 	client->Connect();
 }
