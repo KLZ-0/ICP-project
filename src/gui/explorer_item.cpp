@@ -5,6 +5,8 @@
 #include "explorer_item.hpp"
 
 #include <QDebug>
+#include <QDir>
+#include <fstream>
 
 ExplorerItem::ExplorerItem(QTreeWidget *treeview, Topic *topic)
 	: QTreeWidgetItem(treeview) {
@@ -43,11 +45,21 @@ Topic *ExplorerItem::getTopic() {
 
 void ExplorerItem::saveSubtree(const QString &parents) {
 	QString newParent = parents + "/" + topic->getName();
+
+	QDir dir(newParent);
+	dir.mkpath(newParent);
 	qDebug() << "mkdir" << newParent;
 
 	if (topic->getPayload(0) != "") {
-		// save payload
-		qDebug() << "save" << newParent + "/payload.txt";
+		qDebug() << "Saving to" << newParent + "/payload.txt";
+		std::ofstream payloadFile;
+		payloadFile.open((newParent + "/payload.txt").toStdString(), std::ios_base::out | std::ios_base::binary);
+		if (payloadFile.is_open()) {
+			payloadFile << getTopic()->getPayload(0).toStdString();
+			payloadFile.close();
+		} else {
+			qDebug() << "Failed to open file";
+		}
 	}
 
 	for (int i = 0; i < childCount(); ++i) {

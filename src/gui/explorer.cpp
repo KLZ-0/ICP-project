@@ -88,7 +88,7 @@ void Explorer::receiveMessage(mqtt::const_message_ptr message) {
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
 	// TODO: probably use message.get_payload()
-	QString payload = QString::fromStdString(message->get_payload_str());
+	QString payload = QString::fromStdString(message->get_payload());
 	item->getTopic()->addPayload(payload);
 	updateContentBlock();
 }
