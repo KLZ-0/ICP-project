@@ -7,14 +7,15 @@
 #include <QDebug>
 
 PublishWindow::PublishWindow(Topic *initialTopic, Core::Client *mqttClient) {
-	topic = initialTopic;
 	client = mqttClient;
 
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	ui.lineEdit->setText(topic->findFullyQualifiedTopic());
-	ui.plainTextEdit->setPlainText(topic->getPayload(0));
+	if (initialTopic != nullptr) {
+		ui.lineEdit->setText(initialTopic->findFullyQualifiedTopic());
+		ui.plainTextEdit->setPlainText(initialTopic->getPayload(0));
+	}
 
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &PublishWindow::close);
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &PublishWindow::sendMessage);

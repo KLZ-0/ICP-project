@@ -20,7 +20,6 @@ public:
 
 private:
 	Ui::PublishWindow ui;
-	Topic *topic;
 	Core::Client *client;
 
 private slots:
