@@ -26,7 +26,7 @@ public slots:
 	void addTopic(Topic *topic);
 	void save();
 	void saveAs();
-	void saveState(const QString &directory);
+	void saveState(const QString &filePath);
 };
 
 

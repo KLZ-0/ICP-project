@@ -41,6 +41,12 @@ void Dashboard::saveAs() {
 	lastSaveFile = userFile;
 }
 
-void Dashboard::saveState(const QString &directory) {
-	qInfo() << "Saving dashboard to" << directory;
+void Dashboard::saveState(const QString &filePath) {
+	qInfo() << "Saving dashboard to" << filePath;
+	QFile file = QFile(filePath);
+	file.open(QIODevice::WriteOnly);
+
+	file.write("test\n");
+
+	file.close();
 }
