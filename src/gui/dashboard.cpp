@@ -22,6 +22,7 @@ void Dashboard::addTopic(Topic *topic, QJsonObject *object) {
 
 	auto item = new DashboardItem(this, topic, client);
 	ui.mdiArea->addSubWindow(item);
+	item->show();
 
 	if (object != nullptr) {
 		item->setupFromJSON(object);
