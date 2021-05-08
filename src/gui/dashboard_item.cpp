@@ -11,6 +11,12 @@
 #include "dashboard_customize_window.hpp"
 #include "publish_window.hpp"
 
+/**
+ * @brief Creates a new subwindow
+ * @param parent parent widget (though this will be overridden once added to the MDI area)
+ * @param widgetTopic topic of this subwindow
+ * @param mqttClient connected mqtt client
+ */
 DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic, Core::Client *mqttClient)
 	: QMdiSubWindow(parent) {
 	topic = widgetTopic;
@@ -26,7 +32,7 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic, Core::Client *
 	changeDeviceType("");
 	updateContent();
 
-	connect(topic, &Topic::changed, this, &DashboardItem::processTopicChange);
+	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
 
 	auto changeTitleAction = new QAction("Customize");
 	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openDashboardCustomizeWindow()));
@@ -37,6 +43,9 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic, Core::Client *
 	menu->addAction(changeTitleAction);
 }
 
+/**
+ * @brief Opens the customizing window
+ */
 void DashboardItem::openDashboardCustomizeWindow() {
 	auto titleWindow = new DashboardCustomizeWindow(this);
 	titleWindow->setDeviceType(ui.devicetype->text());
@@ -48,12 +57,8 @@ void DashboardItem::openDashboardCustomizeWindow() {
 }
 
 /**
- * Saves the current timestamp and updates the dashboard item content
+ * @brief Updates the dashboard item contents after customization and on newly arrived messages
  */
-void DashboardItem::processTopicChange() {
-	updateContent();
-}
-
 void DashboardItem::updateContent() {
 	qDebug() << "Update dashboard item";
 
@@ -64,17 +69,29 @@ void DashboardItem::updateContent() {
 	ui.lastseen->setText(topic->getTimestampString());
 }
 
+/**
+ * @brief Changes device type and shows/hides their block
+ * @param newDeviceType string with new device type
+ */
 void DashboardItem::changeDeviceType(const QString &newDeviceType) {
 	ui.devicetype->setText(newDeviceType);
 	ui.devicetype->setVisible(newDeviceType != "");
 	ui.devicetypeLabel->setVisible(newDeviceType != "");
 }
 
+/**
+ * @brief Changes status display length and updates the content accordingly
+ * @param newLength int with the new length
+ */
 void DashboardItem::changeStatusDisplayLength(int newLength) {
 	statusDisplayLenght = newLength;
 	updateContent();
 }
 
+/**
+ * @brief Adds the properties of this subwindow to the specified JSON array
+ * @param jsonArray JSON array
+ */
 void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	QJsonObject object;
 	object["title"] = windowTitle();
@@ -86,6 +103,10 @@ void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	jsonArray.append(object);
 }
 
+/**
+ * @brief Initalizes values from the given JSON object
+ * @param object JSON object
+ */
 void DashboardItem::setupFromJSON(QJsonObject *object) {
 	QJsonObject obj = *object;
 	QString title = obj["title"].toString();
@@ -111,6 +132,9 @@ void DashboardItem::setupFromJSON(QJsonObject *object) {
 	updateContent();
 }
 
+/**
+ * @brief Publishes the message with the payload from the plain text edit
+ */
 void DashboardItem::publishMessage() {
 	QString send_topic = topic->findFullyQualifiedTopic();
 	QString send_payload = ui.plainTextEdit->toPlainText();

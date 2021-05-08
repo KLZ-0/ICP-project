@@ -4,6 +4,10 @@
 
 #include "topic_selection_window.hpp"
 
+/**
+ * Initializes a new topic selection window
+ * @param topics initial topics
+ */
 TopicSelectionWindow::TopicSelectionWindow(const QSet<QString> &topics) {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -21,6 +25,10 @@ TopicSelectionWindow::TopicSelectionWindow(const QSet<QString> &topics) {
 	connect(ui.treeWidget, &QTreeWidget::itemChanged, this, &TopicSelectionWindow::checkForDuplicates);
 }
 
+/**
+ * Adds new topics to the treewidget
+ * @param topic
+ */
 void TopicSelectionWindow::addNewTopic(QString topic) {
 	if (topic == nullptr) {
 		topic = ui.lineEdit->text();
@@ -40,6 +48,9 @@ void TopicSelectionWindow::addNewTopic(QString topic) {
 	ui.lineEdit->selectAll();
 }
 
+/**
+ * Removes the selected topic from the treewidget
+ */
 void TopicSelectionWindow::removeSelectedTopic() {
 	if (ui.treeWidget->selectedItems().empty()) {
 		return;
@@ -49,6 +60,11 @@ void TopicSelectionWindow::removeSelectedTopic() {
 	delete selectedItem;
 }
 
+/**
+ * Performs a duplicate check which ensures that only one of each topic will be in the list
+ * @param item item which changed
+ * @param column should always be 0
+ */
 void TopicSelectionWindow::checkForDuplicates(QTreeWidgetItem *item, int column) {
 	// skip duplicates in other oclumns
 	if (column != 0) {
@@ -66,6 +82,9 @@ void TopicSelectionWindow::checkForDuplicates(QTreeWidgetItem *item, int column)
 	}
 }
 
+/**
+ * Confirms the changes and emits the topicsSelected signal before closing
+ */
 void TopicSelectionWindow::confirmChanges() {
 	QSet<QString> topics;
 

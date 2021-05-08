@@ -11,6 +11,7 @@
  * @class Topic
  * @brief Represents a message topic
  * Holds a specified number of payloads as topic history
+ * Shared by explorer items and dashboard items
  */
 class Topic : public QObject
 {

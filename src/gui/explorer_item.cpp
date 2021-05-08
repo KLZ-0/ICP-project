@@ -8,12 +8,22 @@
 #include <QDir>
 #include <fstream>
 
+/**
+ * @brief Initializes a new root item
+ * @param treeview parent tree widget
+ * @param topic item topic
+ */
 ExplorerItem::ExplorerItem(QTreeWidget *treeview, Topic *topic)
 	: QTreeWidgetItem(treeview) {
 	this->topic = topic;
 	setText(0, topic->getName());
 }
 
+/**
+ * @brief Initializes a new non-root item
+ * @param parent parent tree item
+ * @param topic item topic
+ */
 ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, Topic *topic)
 	: QTreeWidgetItem(parent) {
 	this->topic = topic;
@@ -21,9 +31,10 @@ ExplorerItem::ExplorerItem(QTreeWidgetItem *parent, Topic *topic)
 }
 
 /**
- * Finds or creates an immediate child item
+ * @brief Finds or creates an immediate child item
  * @note should be analogous to Explorer::findOrCreateRootChild
  * @param name name of the item
+ * @param model datamodel from which to query a new topic
  * @return pointer to a new or existing item
  */
 ExplorerItem *ExplorerItem::findOrCreateChild(QString &name, DataModel *model) {
@@ -39,10 +50,19 @@ ExplorerItem *ExplorerItem::findOrCreateChild(QString &name, DataModel *model) {
 	return item;
 }
 
+/**
+ * @brief Getter for topic
+ * @return item topic
+ */
 Topic *ExplorerItem::getTopic() {
 	return topic;
 }
 
+/**
+ * @brief Saves the subtree of this topic
+ * Creates a directory for this topic, stores the payload and for every children calls the same method
+ * @param parents parent path (absolute path) to the parent directory of this topic
+ */
 void ExplorerItem::saveSubtree(const QString &parents) {
 	QString newParent = parents + "/" + topic->getName();
 

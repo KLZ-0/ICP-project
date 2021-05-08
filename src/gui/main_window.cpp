@@ -11,6 +11,9 @@
 #include "publish_window.hpp"
 #include "topic_selection_window.hpp"
 
+/**
+ * @brief Initializes the main window
+ */
 MainWindow::MainWindow() {
 	ui.setupUi(this);
 
@@ -40,6 +43,11 @@ MainWindow::MainWindow() {
 	ui.dahboard_tab->setClient(client);
 }
 
+/**
+ * @brief Opens the topic selection window
+ * Only one of these windows should be open at any given time
+ * The window will delete itself on close
+ */
 void MainWindow::openTopicsWindow() {
 	if (topics_window_open) {
 		return;
@@ -53,6 +61,11 @@ void MainWindow::openTopicsWindow() {
 	topics_window_open = true;
 }
 
+/**
+ * @brief Processes topic changes
+ * Performs a topic difference and subscribes/unsubscribes to/from the calculated topics
+ * @param new_topics new topic list to which we should be subscribed after this method call
+ */
 void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 
 	QSet<QString> subscribe = new_topics - topics;
@@ -74,24 +87,40 @@ void MainWindow::handleTopicChange(const QSet<QString> &new_topics) {
 	topics_window_open = false;
 }
 
+/**
+ * @brief Cancels the topic change and marks the topic window as closed
+ */
 void MainWindow::cancelTopicChange() {
 	topics_window_open = false;
 }
 
+/**
+ * @brief Destructs the main window and deletes the data model
+ */
 MainWindow::~MainWindow() {
 	client->Disconnect();
 	delete client;
 	delete dataModel;
 }
 
+/**
+ * @brief Show connected status in statusbar
+ */
 void MainWindow::statusConnected() {
 	ui.statusbar->showMessage("Connected", 0);
 }
 
+/**
+ * @brief Show disconnected status in statusbar
+ */
 void MainWindow::statusDisconnected(const QString &reason) {
 	ui.statusbar->showMessage("Disconnected, reason: " + reason, 0);
 }
 
+/**
+ * @brief Open the publish window
+ * Multiple of these windows can be open at the same time
+ */
 void MainWindow::openPublishWindow() {
 	auto publishWindow = new PublishWindow(nullptr, client);
 	publishWindow->show();

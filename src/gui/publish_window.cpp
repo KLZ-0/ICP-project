@@ -6,6 +6,11 @@
 
 #include <QDebug>
 
+/**
+ * @brief Initializes a new publish window
+ * @param initialTopic initial topic to use in this window
+ * @param mqttClient connected mqtt client
+ */
 PublishWindow::PublishWindow(Topic *initialTopic, Core::Client *mqttClient) {
 	client = mqttClient;
 
@@ -21,6 +26,10 @@ PublishWindow::PublishWindow(Topic *initialTopic, Core::Client *mqttClient) {
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &PublishWindow::sendMessage);
 }
 
+/**
+ * @brief Send a new message
+ * The topic can differ from the initial topic
+ */
 void PublishWindow::sendMessage() {
 	QString send_topic = ui.lineEdit->text();
 	QString send_payload = ui.plainTextEdit->toPlainText();
