@@ -45,3 +45,15 @@ QString Topic::getName() {
 Topic *Topic::getParent() {
 	return parent;
 }
+
+QString Topic::getFullyQualifiedTopic() {
+	QString topicString = this->getName();
+
+	Topic *tmp_parent = this->getParent();
+	while (tmp_parent != nullptr) {
+		topicString = tmp_parent->getName() + "/" + topicString;
+		tmp_parent = tmp_parent->getParent();
+	}
+
+	return topicString;
+}

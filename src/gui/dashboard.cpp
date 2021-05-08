@@ -17,5 +17,5 @@ Dashboard::Dashboard() {
 }
 
 void Dashboard::addTopic(Topic *topic) {
-	qDebug() << "Adding topic" << topic->getName() << "to dashboard";
+	qDebug() << "Adding topic" << topic->getFullyQualifiedTopic() << "to dashboard";
 }
