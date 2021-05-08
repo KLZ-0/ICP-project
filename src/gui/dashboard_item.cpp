@@ -57,15 +57,7 @@ void DashboardItem::updateContent() {
 	status.truncate(statusDisplayLenght);
 	ui.status->setText(status);
 
-	std::time_t timestamp = topic->getLastTimestamp();
-	if (timestamp != 0) {
-		char mbstr[100];
-		if (std::strftime(mbstr, sizeof(mbstr), "%F %T", std::localtime(&timestamp))) {
-			ui.lastseen->setText(mbstr);
-		}
-	} else {
-		ui.lastseen->setText("");
-	}
+	ui.lastseen->setText(topic->getTimestampString());
 }
 
 void DashboardItem::changeDeviceType(const QString &newDeviceType) {

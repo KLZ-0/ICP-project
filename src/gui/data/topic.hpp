@@ -16,7 +16,8 @@ public:
 
 	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
-	std::time_t getLastTimestamp();
+	std::time_t getTimestamp();
+	QString getTimestampString();
 
 	// TODO: display this in the explorer
 	int messageCount() const;

@@ -14,6 +14,8 @@
 Explorer::Explorer() {
 	ui.setupUi(this);
 
+	ui.timestampWidget->hide();
+
 	for (int i = 0; i < messageLimit; ++i) {
 		auto widget = new QWidget;
 		Ui::ContentWidget content_ui;
@@ -90,6 +92,9 @@ void Explorer::updateContentBlock() {
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}
+
+	ui.timestampLabel->setText(currentItem->getTopic()->getTimestampString());
+	ui.timestampWidget->setVisible(ui.timestampLabel->text() != "");
 }
 
 /**

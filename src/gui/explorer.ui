@@ -14,37 +14,72 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="2">
-          <widget class="QTabWidget" name="tabWidget">
-              <property name="tabPosition">
-                  <enum>QTabWidget::South</enum>
-              </property>
-              <property name="currentIndex">
-                  <number>-1</number>
-              </property>
-          </widget>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="dashboardButton">
+     <property name="text">
+      <string>Add to dashboard</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="4">
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QWidget" name="timestampWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Last message received:</string>
+        </property>
+       </widget>
       </item>
-      <item row="1" column="2">
-          <widget class="QPushButton" name="dashboardButton">
-              <property name="text">
-                  <string>Add to dashboard</string>
-              </property>
-          </widget>
+      <item row="0" column="1">
+       <widget class="QLabel" name="timestampLabel">
+        <property name="text">
+         <string>value</string>
+        </property>
+       </widget>
       </item>
-      <item row="0" column="1" rowspan="2">
-          <widget class="QTreeWidget" name="treeWidget">
-              <property name="expandsOnDoubleClick">
-                  <bool>false</bool>
-              </property>
-              <attribute name="headerVisible">
-                  <bool>false</bool>
-              </attribute>
-              <column>
-                  <property name="text">
-                      <string notr="true">1</string>
-                  </property>
-              </column>
-          </widget>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -32,8 +32,21 @@ QString Topic::getPayload(int index) {
 	}
 }
 
-std::time_t Topic::getLastTimestamp() {
+std::time_t Topic::getTimestamp() {
 	return lastTimestamp;
+}
+
+QString Topic::getTimestampString() {
+	if (lastTimestamp == 0) {
+		return "";
+	}
+
+	char mbstr[100];
+	if (!std::strftime(mbstr, sizeof(mbstr), "%F %T", std::localtime(&lastTimestamp))) {
+		return "";
+	}
+
+	return QString(mbstr);
 }
 
 int Topic::messageCount() const {
