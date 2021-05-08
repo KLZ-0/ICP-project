@@ -56,8 +56,12 @@ void Dashboard::saveState(const QString &filePath) {
 }
 
 void Dashboard::createStateJSON(QJsonObject &rootObject) {
+	QJsonArray array;
+
 	for (QMdiSubWindow *subWindow : ui.mdiArea->subWindowList()) {
 		auto item = dynamic_cast<DashboardItem *>(subWindow);
-		item->addToJSONRoot(rootObject);
+		item->addToJSONArray(array);
 	}
+
+	rootObject["data"] = array;
 }

@@ -76,6 +76,8 @@ void DashboardItem::changeStatusDisplayLength(int newLength) {
 	updateContent();
 }
 
-void DashboardItem::addToJSONRoot(QJsonObject &rootObject) {
-	rootObject[topic->findFullyQualifiedTopic()] = topic->getPayload(0);
+void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
+	QJsonObject object;
+	object[topic->findFullyQualifiedTopic()] = topic->getPayload(0);
+	jsonArray.append(object);
 }
