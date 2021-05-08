@@ -42,7 +42,10 @@ void DashboardItem::openDashboardCustomizeWindow() {
 
 void DashboardItem::updateContent() {
 	qDebug() << "Update dashboard item";
-	ui.status->setText(topic->getPayload(0));
+
+	QString status = topic->getPayload(0);
+	status.truncate(statusDisplayLenght);
+	ui.status->setText(status);
 
 	if (lastTimestamp != 0) {
 		ui.lastseen->setText("time");

@@ -23,6 +23,7 @@ private:
 	Ui::DashboardItem ui;
 	Topic *topic;
 	int lastTimestamp = 0;
+	int statusDisplayLenght = 18;
 
 private slots:
 	void openDashboardCustomizeWindow();
