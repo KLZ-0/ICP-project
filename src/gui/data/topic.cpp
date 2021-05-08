@@ -13,13 +13,15 @@ Topic::Topic(QString &name, int messageLimit, Topic *parentTopic) {
 }
 
 void Topic::addPayload(const QString &new_payload) {
+	lastTimestamp = std::time(nullptr);
+
 	if (count >= limit) {
 		payloads.resize(limit - 1);
 	}
 	payloads.insert(0, new_payload);
 	count++;
 
-	emit changed(this);
+	emit changed();
 }
 
 QString Topic::getPayload(int index) {
@@ -28,6 +30,23 @@ QString Topic::getPayload(int index) {
 	} else {
 		return "";
 	}
+}
+
+std::time_t Topic::getTimestamp() {
+	return lastTimestamp;
+}
+
+QString Topic::getTimestampString() {
+	if (lastTimestamp == 0) {
+		return "";
+	}
+
+	char mbstr[100];
+	if (!std::strftime(mbstr, sizeof(mbstr), "%F %T", std::localtime(&lastTimestamp))) {
+		return "";
+	}
+
+	return QString(mbstr);
 }
 
 int Topic::messageCount() const {
@@ -44,4 +63,20 @@ QString Topic::getName() {
 
 Topic *Topic::getParent() {
 	return parent;
+}
+
+QString Topic::findFullyQualifiedTopic() {
+	QString topicString = this->getName();
+
+	Topic *tmp_parent = this->getParent();
+	while (tmp_parent != nullptr) {
+		topicString = tmp_parent->getName() + "/" + topicString;
+		tmp_parent = tmp_parent->getParent();
+	}
+
+	return topicString;
+}
+
+void Topic::setTimestamp(std::time_t newTimeStamp) {
+	lastTimestamp = newTimeStamp;
 }

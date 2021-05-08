@@ -16,12 +16,18 @@ public:
 
 	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
+	std::time_t getTimestamp();
+	QString getTimestampString();
 
+
+	// TODO: display this in the explorer
 	int messageCount() const;
 	void setMessageLimit(int messageLimit);
+	void setTimestamp(std::time_t newTimeStamp);
 
 	QString getName();
 	Topic *getParent();
+	QString findFullyQualifiedTopic();
 
 private:
 	Topic *parent;
@@ -29,9 +35,10 @@ private:
 	int limit;                         ///< message limit
 	int count = 0;                     ///< message count for this topic
 	QVarLengthArray<QString> payloads; ///< last message payload for this topic
+	std::time_t lastTimestamp = 0;
 
 signals:
-	void changed(Topic *topic);
+	void changed();
 };
 
 

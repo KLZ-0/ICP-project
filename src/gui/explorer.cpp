@@ -5,6 +5,8 @@
 #include "explorer.hpp"
 
 #include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <iostream>
 #include <qdebug.h>
 
@@ -13,6 +15,8 @@
 
 Explorer::Explorer() {
 	ui.setupUi(this);
+
+	ui.timestampWidget->hide();
 
 	for (int i = 0; i < messageLimit; ++i) {
 		auto widget = new QWidget;
@@ -27,6 +31,8 @@ Explorer::Explorer() {
 
 	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
 	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &Explorer::openPublishWindow);
+
+	connect(ui.dashboardButton, SIGNAL(clicked(bool)), this, SLOT(sendDashboardRequest()));
 }
 
 void Explorer::setDataModel(DataModel *model) {
@@ -35,6 +41,10 @@ void Explorer::setDataModel(DataModel *model) {
 
 void Explorer::setClient(Core::Client *mqttClient) {
 	client = mqttClient;
+}
+
+void Explorer::connectToDashboard(Dashboard *dashboard) {
+	connect(this, &Explorer::dashboardRequest, dashboard, &Dashboard::addTopic);
 }
 
 void Explorer::setMessageLimit() {
@@ -84,6 +94,9 @@ void Explorer::updateContentBlock() {
 		ui.tabWidget->setTabVisible(i, payload != "");
 		contentEdits.at(i)->setPlainText(payload);
 	}
+
+	ui.timestampLabel->setText(currentItem->getTopic()->getTimestampString());
+	ui.timestampWidget->setVisible(ui.timestampLabel->text() != "");
 }
 
 /**
@@ -94,7 +107,6 @@ void Explorer::receiveMessage(mqtt::const_message_ptr message) {
 	QString topic = QString::fromStdString(message->get_topic());
 	ExplorerItem *item = findOrCreateItemFromTopic(topic);
 
-	// TODO: probably use message.get_payload()
 	QString payload = QString::fromStdString(message->get_payload());
 	item->getTopic()->addPayload(payload);
 	updateContentBlock();
@@ -151,7 +163,7 @@ void Explorer::saveStructure() {
 
 void Explorer::saveStructureAs() {
 	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-														"/home",
+														"",
 														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
 	if (userDir == "") {
@@ -183,4 +195,48 @@ void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
 	auto publishWindow = new PublishWindow(explorerItem->getTopic(), client);
 	publishWindow->show();
 	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
+}
+
+void Explorer::sendDashboardRequest() {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
+		return;
+	}
+
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
+	emit dashboardRequest(currentItem->getTopic());
+}
+
+void Explorer::loadDashboard() {
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
+													"",
+													tr("Dashboard configuration files (*.json)"));
+
+	qInfo() << "Loading dashboard from" << filePath;
+	QFile file = QFile(filePath);
+	file.open(QIODevice::ReadOnly);
+
+	if (!file.isOpen()) {
+		qWarning() << "Can't open dashboard file for reading";
+		return;
+	}
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	QJsonArray dataArray = doc["data"].toArray();
+
+	for (auto item : dataArray) {
+		QJsonObject itemObject = item.toObject();
+
+		QString topic = itemObject["topic"].toString();
+		ExplorerItem *explorerItem = findOrCreateItemFromTopic(topic);
+
+		QString payload = itemObject["last_payload"].toString();
+		explorerItem->getTopic()->addPayload(payload);
+		updateContentBlock();
+
+		emit dashboardRequest(explorerItem->getTopic(), new QJsonObject(itemObject));
+	}
+
+	file.close();
 }

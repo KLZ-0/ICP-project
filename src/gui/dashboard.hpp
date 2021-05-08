@@ -6,8 +6,12 @@
 #define MQTT_EXPLORER_DASHBOARD_HPP
 
 
+#include <QJsonDocument>
 #include <QWidget>
+#include <client.hpp>
+#include <topic.hpp>
 
+#include "dashboard_item.hpp"
 #include "ui_dashboard.h"
 
 class Dashboard : public QWidget
@@ -16,9 +20,19 @@ class Dashboard : public QWidget
 
 public:
 	Dashboard();
+	void setClient(Core::Client *mqttClient);
 
 private:
 	Ui::Dashboard ui;
+	Core::Client *client;
+	QString lastSaveFile = "";
+	void createStateJSON(QJsonObject &rootObject);
+
+public slots:
+	void addTopic(Topic *topic, QJsonObject *object = nullptr);
+	void save();
+	void saveAs();
+	void saveState(const QString &filePath);
 };
 
 
