@@ -13,6 +13,8 @@ Topic::Topic(QString &name, int messageLimit, Topic *parentTopic) {
 }
 
 void Topic::addPayload(const QString &new_payload) {
+	lastTimestamp = std::time(nullptr);
+
 	if (count >= limit) {
 		payloads.resize(limit - 1);
 	}
@@ -28,6 +30,10 @@ QString Topic::getPayload(int index) {
 	} else {
 		return "";
 	}
+}
+
+std::time_t Topic::getLastTimestamp() {
+	return lastTimestamp;
 }
 
 int Topic::messageCount() const {

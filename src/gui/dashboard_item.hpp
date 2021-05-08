@@ -25,7 +25,6 @@ public:
 private:
 	Ui::DashboardItem ui;
 	Topic *topic;
-	std::time_t lastTimestamp = 0;
 	int statusDisplayLenght = 18;
 
 private slots:

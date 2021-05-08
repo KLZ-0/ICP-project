@@ -13,7 +13,6 @@
 DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 	: QMdiSubWindow(parent) {
 	topic = widgetTopic;
-	lastTimestamp = std::time(nullptr);
 
 	auto contentWidget = new QWidget(this);
 	ui.setupUi(contentWidget);
@@ -48,7 +47,6 @@ void DashboardItem::openDashboardCustomizeWindow() {
  * Saves the current timestamp and updates the dashboard item content
  */
 void DashboardItem::processTopicChange() {
-	lastTimestamp = std::time(nullptr);
 	updateContent();
 }
 
@@ -59,9 +57,10 @@ void DashboardItem::updateContent() {
 	status.truncate(statusDisplayLenght);
 	ui.status->setText(status);
 
-	if (lastTimestamp != 0) {
+	std::time_t timestamp = topic->getLastTimestamp();
+	if (timestamp != 0) {
 		char mbstr[100];
-		if (std::strftime(mbstr, sizeof(mbstr), "%F %T", std::localtime(&lastTimestamp))) {
+		if (std::strftime(mbstr, sizeof(mbstr), "%F %T", std::localtime(&timestamp))) {
 			ui.lastseen->setText(mbstr);
 		}
 	} else {

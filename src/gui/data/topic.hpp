@@ -16,6 +16,7 @@ public:
 
 	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
+	std::time_t getLastTimestamp();
 
 	// TODO: display this in the explorer
 	int messageCount() const;
@@ -31,6 +32,7 @@ private:
 	int limit;                         ///< message limit
 	int count = 0;                     ///< message count for this topic
 	QVarLengthArray<QString> payloads; ///< last message payload for this topic
+	std::time_t lastTimestamp = 0;
 
 signals:
 	void changed();
