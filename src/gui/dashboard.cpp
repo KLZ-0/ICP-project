@@ -10,14 +10,10 @@
 
 Dashboard::Dashboard() {
 	ui.setupUi(this);
-
-	ui.mdiArea->addSubWindow(new DashboardItem(this));
-	ui.mdiArea->addSubWindow(new DashboardItem(this, "very nice!!!"));
-	ui.mdiArea->addSubWindow(new DashboardItem(this, "another subwindow"));
 }
 
 void Dashboard::addTopic(Topic *topic) {
 	qDebug() << "Adding topic" << topic->findFullyQualifiedTopic() << "to dashboard";
 
-	//	ui.mdiArea->addSubWindow(new DashboardItem(this, "another subwindow"));
+	ui.mdiArea->addSubWindow(new DashboardItem(this, topic));
 }

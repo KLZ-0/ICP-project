@@ -4,10 +4,14 @@
 
 #include "dashboard_item.hpp"
 
-DashboardItem::DashboardItem(QWidget *parent, QString content)
-	: QWidget(parent) {
-	ui.setupUi(this);
+DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
+	: QMdiSubWindow(parent) {
+	auto contentWidget = new QWidget(this);
+	ui.setupUi(contentWidget);
+	setWidget(contentWidget);
+
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	ui.label->setText(content);
+	setWindowTitle(widgetTopic->getName());
+	ui.label->setText(widgetTopic->findFullyQualifiedTopic());
 }
