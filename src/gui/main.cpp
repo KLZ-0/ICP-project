@@ -2,8 +2,6 @@
  * @author Adrián Kálazi (xkalaz00)
  */
 
-// TODO: add .clang-format
-
 #include <QApplication>
 
 #include "main_window.hpp"

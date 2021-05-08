@@ -48,7 +48,7 @@ void Explorer::connectToDashboard(Dashboard *dashboard) {
 }
 
 void Explorer::setMessageLimit() {
-	// TODO: fix this shit
+	// NOTE: this is buggy and is not used anywhere but may? be part of the specification
 	int limit = 4;
 
 	if (limit == messageLimit) {

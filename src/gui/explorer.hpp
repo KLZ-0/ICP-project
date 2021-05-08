@@ -45,7 +45,7 @@ private:
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
 	// TODO: move this to settings
-	const int MAX_MESSAGE_RENDER_LENGTH = 300;
+	const int MAX_MESSAGE_RENDER_LENGTH = 500;
 
 signals:
 	void dashboardRequest(Topic *topic, QJsonObject *object = nullptr);

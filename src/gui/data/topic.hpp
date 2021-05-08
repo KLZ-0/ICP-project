@@ -25,7 +25,6 @@ public:
 	QString getTimestampString();
 
 
-	// TODO: display this in the explorer
 	int messageCount() const;
 	void setMessageLimit(int messageLimit);
 	void setTimestamp(std::time_t newTimeStamp);
