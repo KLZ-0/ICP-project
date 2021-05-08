@@ -15,6 +15,7 @@ class DashboardCustomizeWindow : public QWidget
 public:
 	explicit DashboardCustomizeWindow(QWidget *callerWidget);
 	void setDeviceType(QString initalDeviceType);
+	void setStatusDisplayLength(int initialLength);
 
 private:
 	Ui::DashboardCustomizeWindow ui;
@@ -24,6 +25,7 @@ private:
 signals:
 	void titleChanged(QString newTitle);
 	void deviceTypeChanged(QString newTitle);
+	void statusDisplayLengthChanged(int newLength);
 
 private slots:
 	void confirmChanges();

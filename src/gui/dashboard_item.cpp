@@ -35,8 +35,10 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 void DashboardItem::openDashboardCustomizeWindow() {
 	auto titleWindow = new DashboardCustomizeWindow(this);
 	titleWindow->setDeviceType(ui.devicetype->text());
+	titleWindow->setStatusDisplayLength(statusDisplayLenght);
 	connect(titleWindow, &DashboardCustomizeWindow::titleChanged, this, &DashboardItem::setWindowTitle);
 	connect(titleWindow, &DashboardCustomizeWindow::deviceTypeChanged, this, &DashboardItem::changeDeviceType);
+	connect(titleWindow, &DashboardCustomizeWindow::statusDisplayLengthChanged, this, &DashboardItem::changeStatusDisplayLength);
 	titleWindow->show();
 }
 
