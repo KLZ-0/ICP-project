@@ -37,6 +37,7 @@ MainWindow::MainWindow() {
 
 	client->Connect();
 	ui.explorer_tab->setClient(client);
+	ui.dahboard_tab->setClient(client);
 }
 
 void MainWindow::openTopicsWindow() {

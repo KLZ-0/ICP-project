@@ -9,10 +9,12 @@
 #include <QMenu>
 
 #include "dashboard_customize_window.hpp"
+#include "publish_window.hpp"
 
-DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
+DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic, Core::Client *mqttClient)
 	: QMdiSubWindow(parent) {
 	topic = widgetTopic;
+	client = mqttClient;
 
 	auto contentWidget = new QWidget(this);
 	ui.setupUi(contentWidget);
@@ -28,6 +30,8 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 
 	auto changeTitleAction = new QAction("Customize");
 	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openDashboardCustomizeWindow()));
+
+	connect(ui.sendButton, &QPushButton::clicked, this, &DashboardItem::publishMessage);
 
 	QMenu *menu = systemMenu();
 	menu->addAction(changeTitleAction);
@@ -105,4 +109,18 @@ void DashboardItem::setupFromJSON(QJsonObject *object) {
 	changeDeviceType(device_type);
 
 	updateContent();
+}
+
+void DashboardItem::publishMessage() {
+	QString send_topic = topic->findFullyQualifiedTopic();
+	QString send_payload = ui.plainTextEdit->toPlainText();
+
+	mqtt::message_ptr_builder builder;
+
+	builder.topic(send_topic.toStdString());
+	builder.payload(send_payload.toStdString());
+
+	client->Publish(builder.finalize());
+
+	qDebug() << "sent" << send_topic << send_payload;
 }

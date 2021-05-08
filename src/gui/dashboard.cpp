@@ -13,10 +13,14 @@ Dashboard::Dashboard() {
 	ui.setupUi(this);
 }
 
+void Dashboard::setClient(Core::Client *mqttClient) {
+	client = mqttClient;
+}
+
 void Dashboard::addTopic(Topic *topic, QJsonObject *object) {
 	qDebug() << "Adding topic" << topic->findFullyQualifiedTopic() << "to dashboard";
 
-	auto item = new DashboardItem(this, topic);
+	auto item = new DashboardItem(this, topic, client);
 	ui.mdiArea->addSubWindow(item);
 
 	if (object != nullptr) {

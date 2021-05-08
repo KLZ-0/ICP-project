@@ -8,6 +8,7 @@
 
 #include <QJsonDocument>
 #include <QWidget>
+#include <client.hpp>
 #include <topic.hpp>
 
 #include "dashboard_item.hpp"
@@ -19,9 +20,11 @@ class Dashboard : public QWidget
 
 public:
 	Dashboard();
+	void setClient(Core::Client *mqttClient);
 
 private:
 	Ui::Dashboard ui;
+	Core::Client *client;
 	QString lastSaveFile = "";
 	void createStateJSON(QJsonObject &rootObject);
 
