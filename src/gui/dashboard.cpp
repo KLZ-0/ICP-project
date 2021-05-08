@@ -48,11 +48,13 @@ void Dashboard::saveState(const QString &filePath) {
 	QFile file = QFile(filePath);
 	file.open(QIODevice::WriteOnly);
 
-	QJsonObject object;
-	createStateJSON(object);
-	file.write(QJsonDocument(object).toJson());
+	if (file.isOpen()) {
+		QJsonObject object;
+		createStateJSON(object);
+		file.write(QJsonDocument(object).toJson());
 
-	file.close();
+		file.close();
+	}
 }
 
 void Dashboard::createStateJSON(QJsonObject &rootObject) {
