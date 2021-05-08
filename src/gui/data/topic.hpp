@@ -17,6 +17,7 @@ public:
 	void addPayload(const QString &new_payload);
 	QString getPayload(int index);
 
+	// TODO: display this in the explorer
 	int messageCount() const;
 	void setMessageLimit(int messageLimit);
 

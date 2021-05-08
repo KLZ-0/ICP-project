@@ -78,6 +78,8 @@ void DashboardItem::changeStatusDisplayLength(int newLength) {
 
 void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	QJsonObject object;
-	object[topic->findFullyQualifiedTopic()] = topic->getPayload(0);
+	object["title"] = windowTitle();
+	object["topic"] = topic->findFullyQualifiedTopic();
+	object["status_length"] = statusDisplayLenght;
 	jsonArray.append(object);
 }
