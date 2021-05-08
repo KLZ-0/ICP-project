@@ -23,7 +23,7 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 	changeDeviceType("");
 	updateContent();
 
-	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
+	connect(topic, &Topic::changed, this, &DashboardItem::processTopicChange);
 
 	auto changeTitleAction = new QAction("Customize");
 	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openDashboardCustomizeWindow()));
@@ -38,6 +38,14 @@ void DashboardItem::openDashboardCustomizeWindow() {
 	connect(titleWindow, &DashboardCustomizeWindow::titleChanged, this, &DashboardItem::setWindowTitle);
 	connect(titleWindow, &DashboardCustomizeWindow::deviceTypeChanged, this, &DashboardItem::changeDeviceType);
 	titleWindow->show();
+}
+
+/**
+ * Saves the current timestamp and updates the dashboard item content
+ */
+void DashboardItem::processTopicChange() {
+	lastTimestamp = 1;
+	updateContent();
 }
 
 void DashboardItem::updateContent() {
@@ -58,4 +66,9 @@ void DashboardItem::changeDeviceType(const QString &newDeviceType) {
 	ui.devicetype->setText(newDeviceType);
 	ui.devicetype->setVisible(newDeviceType != "");
 	ui.devicetypeLabel->setVisible(newDeviceType != "");
+}
+
+void DashboardItem::changeStatusDisplayLength(int newLength) {
+	statusDisplayLenght = newLength;
+	updateContent();
 }

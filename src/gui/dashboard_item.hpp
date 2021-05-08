@@ -27,8 +27,10 @@ private:
 
 private slots:
 	void openDashboardCustomizeWindow();
+	void processTopicChange();
 	void updateContent();
 	void changeDeviceType(const QString &newDeviceType);
+	void changeStatusDisplayLength(int newLength);
 };
 
 
