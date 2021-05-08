@@ -76,5 +76,7 @@ void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	object["title"] = windowTitle();
 	object["topic"] = topic->findFullyQualifiedTopic();
 	object["status_length"] = statusDisplayLenght;
+	object["last_payload"] = topic->getPayload(0);
+	object["last_timestamp"] = QString::number(topic->getTimestamp());
 	jsonArray.append(object);
 }
