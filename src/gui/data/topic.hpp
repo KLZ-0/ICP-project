@@ -22,7 +22,7 @@ public:
 
 	QString getName();
 	Topic *getParent();
-	QString getFullyQualifiedTopic();
+	QString findFullyQualifiedTopic();
 
 private:
 	Topic *parent;

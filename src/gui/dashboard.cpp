@@ -17,5 +17,7 @@ Dashboard::Dashboard() {
 }
 
 void Dashboard::addTopic(Topic *topic) {
-	qDebug() << "Adding topic" << topic->getFullyQualifiedTopic() << "to dashboard";
+	qDebug() << "Adding topic" << topic->findFullyQualifiedTopic() << "to dashboard";
+
+	//	ui.mdiArea->addSubWindow(new DashboardItem(this, "another subwindow"));
 }

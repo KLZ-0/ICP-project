@@ -46,7 +46,7 @@ Topic *Topic::getParent() {
 	return parent;
 }
 
-QString Topic::getFullyQualifiedTopic() {
+QString Topic::findFullyQualifiedTopic() {
 	QString topicString = this->getName();
 
 	Topic *tmp_parent = this->getParent();

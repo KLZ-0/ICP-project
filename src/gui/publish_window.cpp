@@ -13,7 +13,7 @@ PublishWindow::PublishWindow(Topic *initialTopic, Core::Client *mqttClient) {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	ui.lineEdit->setText(topic->getFullyQualifiedTopic());
+	ui.lineEdit->setText(topic->findFullyQualifiedTopic());
 	ui.plainTextEdit->setPlainText(topic->getPayload(0));
 
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &PublishWindow::close);
