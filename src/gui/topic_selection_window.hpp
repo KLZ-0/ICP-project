@@ -9,6 +9,14 @@
 
 #include "ui_topic_selection_window.h"
 
+/**
+ * @class TopicSelectionWindow
+ * @brief Represents a window for topic selection
+ * Creates a window for managing topics
+ * From the user perspective the window requires a list of initial topics and returns a list of selected topics
+ * @note Differentiation of subscribe/unsubscribe topics should be handled separately
+ * This window has it's own lifecycle
+ */
 class TopicSelectionWindow : public QWidget
 {
 	Q_OBJECT

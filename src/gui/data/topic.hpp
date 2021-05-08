@@ -7,6 +7,11 @@
 
 #include <QObject>
 
+/**
+ * @class Topic
+ * @brief Represents a message topic
+ * Holds a specified number of payloads as topic history
+ */
 class Topic : public QObject
 {
 	Q_OBJECT

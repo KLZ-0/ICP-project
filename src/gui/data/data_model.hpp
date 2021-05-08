@@ -10,6 +10,8 @@
 #include "topic.hpp"
 
 /**
+ * @class DataModel
+ * @brief Represents the data model of the application
  * Holds the hierarchical structure of messages
  * Manages the lifecycle of topics
  */

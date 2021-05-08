@@ -12,6 +12,11 @@
 #include "data_model.hpp"
 #include "ui_main_window.h"
 
+/**
+ * @class MainWindow
+ * @brief The main window of the application
+ * Contains the explorer and dashboard tabs
+ */
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT

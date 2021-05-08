@@ -15,6 +15,11 @@
 
 #include "ui_dashboard_item.h"
 
+/**
+ * @class DashboardItem
+ * @brief Represents a dashboard subwindow
+ * This window has it's own lifecycle
+ */
 class DashboardItem : public QMdiSubWindow
 {
 	Q_OBJECT

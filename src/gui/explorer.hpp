@@ -17,6 +17,11 @@
 #include "explorer_item.hpp"
 #include "ui_explorer.h"
 
+/**
+ * @class Explorer
+ * @brief Represents the explorer tab
+ * The UI contains a treeview for topics and a content QTabWidget for displaying the topic history
+ */
 class Explorer : public QWidget
 {
 	Q_OBJECT
