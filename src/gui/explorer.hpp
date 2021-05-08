@@ -17,6 +17,11 @@
 #include "explorer_item.hpp"
 #include "ui_explorer.h"
 
+/**
+ * @class Explorer
+ * @brief Represents the explorer tab
+ * The UI contains a treeview for topics and a content QTabWidget for displaying the topic history
+ */
 class Explorer : public QWidget
 {
 	Q_OBJECT
@@ -40,7 +45,7 @@ private:
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
 	// TODO: move this to settings
-	const int MAX_MESSAGE_RENDER_LENGTH = 300;
+	const int MAX_MESSAGE_RENDER_LENGTH = 500;
 
 signals:
 	void dashboardRequest(Topic *topic, QJsonObject *object = nullptr);

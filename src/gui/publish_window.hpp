@@ -11,6 +11,13 @@
 #include "client.hpp"
 #include "ui_publish_window.h"
 
+/**
+ * @class PublishWindow
+ * @brief Represents a window for publishing a message
+ * Used in places where a separate window is needed
+ * This window has it's own lifecycle
+ * @note publishing a message from the dashboard works independently of this window
+ */
 class PublishWindow : public QWidget
 {
 	Q_OBJECT

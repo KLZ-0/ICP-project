@@ -11,7 +11,10 @@
 #include "topic.hpp"
 
 /**
- * Represents one topic as an item in the explorer QTreeWidget
+ * @class ExplorerItem
+ * @brief Represents one topic as an item in the explorer hierarchy
+ * Not to be confused with Topic, which holds the payload and topic name, this class is only for the UI representation of topics
+ * On save, the UI structure is saved and only the name and payload of the Topic is used
  */
 class ExplorerItem : public QTreeWidgetItem
 {

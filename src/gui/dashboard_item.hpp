@@ -15,6 +15,11 @@
 
 #include "ui_dashboard_item.h"
 
+/**
+ * @class DashboardItem
+ * @brief Represents a dashboard subwindow
+ * This window has it's own lifecycle
+ */
 class DashboardItem : public QMdiSubWindow
 {
 	Q_OBJECT
@@ -32,7 +37,6 @@ private:
 
 private slots:
 	void openDashboardCustomizeWindow();
-	void processTopicChange();
 	void updateContent();
 	void changeDeviceType(const QString &newDeviceType);
 	void changeStatusDisplayLength(int newLength);

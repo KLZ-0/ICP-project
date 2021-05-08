@@ -9,6 +9,11 @@
 
 #include "ui_dashboard_customize_window.h"
 
+/**
+ * @class DashboardCustomizeWindow
+ * @brief Represents the customization dialog for dashboard subwindows
+ * This window has it's own lifecycle
+ */
 class DashboardCustomizeWindow : public QWidget
 {
 	Q_OBJECT

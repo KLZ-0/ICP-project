@@ -14,6 +14,11 @@
 #include "dashboard_item.hpp"
 #include "ui_dashboard.h"
 
+/**
+ * @class Dashboard
+ * @brief Represents the dashboard tab
+ * The UI contains an MDI area for subwindows
+ */
 class Dashboard : public QWidget
 {
 	Q_OBJECT

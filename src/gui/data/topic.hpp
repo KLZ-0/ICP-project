@@ -7,6 +7,12 @@
 
 #include <QObject>
 
+/**
+ * @class Topic
+ * @brief Represents a message topic
+ * Holds a specified number of payloads as topic history
+ * Shared by explorer items and dashboard items
+ */
 class Topic : public QObject
 {
 	Q_OBJECT
@@ -20,7 +26,6 @@ public:
 	QString getTimestampString();
 
 
-	// TODO: display this in the explorer
 	int messageCount() const;
 	void setMessageLimit(int messageLimit);
 	void setTimestamp(std::time_t newTimeStamp);
