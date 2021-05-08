@@ -22,6 +22,7 @@ MainWindow::MainWindow() {
 	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructure);
 	connect(ui.actionSave_As, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructureAs);
 	connect(ui.actionPublish, &QAction::triggered, this, &MainWindow::openPublishWindow);
+	connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::close);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 

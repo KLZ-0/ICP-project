@@ -21,8 +21,6 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 
 	setWindowTitle(widgetTopic->getName());
 	changeDeviceType("");
-	ui.topic->hide();
-	ui.topicLabel->hide();
 	updateContent();
 
 	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
@@ -44,7 +42,6 @@ void DashboardItem::openDashboardCustomizeWindow() {
 
 void DashboardItem::updateContent() {
 	qDebug() << "Update dashboard item";
-	ui.topic->setText(topic->findFullyQualifiedTopic());
 	ui.status->setText(topic->getPayload(0));
 
 	if (lastTimestamp != 0) {
