@@ -22,6 +22,9 @@ public:
 private:
 	Ui::DashboardItem ui;
 	Topic *topic;
+
+private slots:
+	void openTitleSelectionWindow();
 };
 
 

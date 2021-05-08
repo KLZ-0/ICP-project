@@ -21,6 +21,8 @@ set(SOURCES
     data/topic.hpp
     publish_window.cpp
     publish_window.hpp
+    title_selection_window.cpp
+    title_selection_window.hpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
