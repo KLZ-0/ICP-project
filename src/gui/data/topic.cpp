@@ -19,7 +19,7 @@ void Topic::addPayload(const QString &new_payload) {
 	payloads.insert(0, new_payload);
 	count++;
 
-	emit changed(this);
+	emit changed();
 }
 
 QString Topic::getPayload(int index) {

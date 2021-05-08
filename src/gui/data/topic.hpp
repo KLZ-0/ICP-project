@@ -32,7 +32,7 @@ private:
 	QVarLengthArray<QString> payloads; ///< last message payload for this topic
 
 signals:
-	void changed(Topic *topic);
+	void changed();
 };
 
 

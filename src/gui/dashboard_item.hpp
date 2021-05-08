@@ -25,6 +25,7 @@ private:
 
 private slots:
 	void openTitleSelectionWindow();
+	void updateContent();
 };
 
 
