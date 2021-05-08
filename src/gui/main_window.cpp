@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QUuid>
 
+#include "publish_window.hpp"
 #include "topic_selection_window.hpp"
 
 MainWindow::MainWindow() {
@@ -20,6 +21,7 @@ MainWindow::MainWindow() {
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
 	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructure);
 	connect(ui.actionSave_As, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructureAs);
+	connect(ui.actionPublish, &QAction::triggered, this, &MainWindow::openPublishWindow);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 
@@ -82,4 +84,9 @@ void MainWindow::statusConnected() {
 
 void MainWindow::statusDisconnected(const QString &reason) {
 	ui.statusbar->showMessage("Disconnected, reason: " + reason, 0);
+}
+
+void MainWindow::openPublishWindow() {
+	auto publishWindow = new PublishWindow(nullptr, client);
+	publishWindow->show();
 }

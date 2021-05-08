@@ -33,6 +33,7 @@ private slots:
 	void cancelTopicChange();
 	void statusConnected();
 	void statusDisconnected(const QString &reason);
+	void openPublishWindow();
 };
 
 
