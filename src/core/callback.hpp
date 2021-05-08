@@ -3,7 +3,7 @@
  */
 #pragma once
 
-#include <mqtt/callback.h>
+#include <mqtt/async_client.h>
 #include <string>
 
 namespace Core

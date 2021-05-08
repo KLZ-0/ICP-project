@@ -1,5 +1,5 @@
 /**
- * @author Kevin Lackó (xlacko08)
+ * @author Kevin LackÃ³ (xlacko08)
  */
 #include "client.hpp"
 
@@ -19,12 +19,11 @@ namespace Core
 	}
 	void Client::Connect() {
 		try {
-			std::cout << "Connecting to the MQTT server...\n"
-					  << std::flush;
+			qDebug() << "Connecting to the MQTT server...\n";
 			client_.connect(connOpts_, nullptr, callback_);
 		} catch (const mqtt::exception &exc) {
-			std::cerr << "ERROR: Unable to connect to MQTT server: '"
-					  << kServerUri.data() << "'" << exc << std::endl;
+			qDebug() << "ERROR: Unable to connect to MQTT server: '"
+					 << kServerUri.data() << "'" << exc.what();
 			emit ServerUnreachable();
 		}
 	}
@@ -38,6 +37,9 @@ namespace Core
 		}
 	}
 	void Client::Subscribe(const QSet<QString> &topics) {
+		if (topics.isEmpty()) {
+			return;
+		}
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
 		mqtt::iasync_client::qos_collection qos;
 		std::for_each(topics.begin(), topics.end(), [&topicFilters, &qos](const QString &tf) {
@@ -51,6 +53,9 @@ namespace Core
 		}
 	}
 	void Client::Unsubscribe(const QSet<QString> &topics) {
+		if (topics.isEmpty()) {
+			return;
+		}
 		mqtt::string_collection_ptr topicFilters = std::make_shared<mqtt::string_collection>();
 		mqtt::iasync_client::qos_collection qos;
 		std::for_each(topics.begin(), topics.end(), [&topicFilters, &qos](const QString &tf) {

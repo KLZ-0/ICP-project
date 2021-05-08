@@ -33,7 +33,7 @@ namespace Core
 	signals:
 		void Connected();
 
-		void ConnectionLost(const QString cause);
+		void ConnectionLost(const QString &cause);
 
 		void MessageArrived(mqtt::const_message_ptr msg);
 

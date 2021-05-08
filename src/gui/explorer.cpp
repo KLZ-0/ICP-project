@@ -1,0 +1,242 @@
+/**
+ * @author Adrián Kálazi (xkalaz00)
+ */
+
+#include "explorer.hpp"
+
+#include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <iostream>
+#include <qdebug.h>
+
+#include "publish_window.hpp"
+#include "ui_content_widget.h"
+
+Explorer::Explorer() {
+	ui.setupUi(this);
+
+	ui.timestampWidget->hide();
+
+	for (int i = 0; i < messageLimit; ++i) {
+		auto widget = new QWidget;
+		Ui::ContentWidget content_ui;
+		content_ui.setupUi(widget);
+
+		ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+		ui.tabWidget->setTabVisible(ui.tabWidget->indexOf(widget), false);
+
+		contentEdits.append(content_ui.plainTextEdit);
+	}
+
+	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
+	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &Explorer::openPublishWindow);
+
+	connect(ui.dashboardButton, SIGNAL(clicked(bool)), this, SLOT(sendDashboardRequest()));
+}
+
+void Explorer::setDataModel(DataModel *model) {
+	dataModel = model;
+}
+
+void Explorer::setClient(Core::Client *mqttClient) {
+	client = mqttClient;
+}
+
+void Explorer::connectToDashboard(Dashboard *dashboard) {
+	connect(this, &Explorer::dashboardRequest, dashboard, &Dashboard::addTopic);
+}
+
+void Explorer::setMessageLimit() {
+	// TODO: fix this shit
+	int limit = 4;
+
+	if (limit == messageLimit) {
+		return;
+	} else if (limit > messageLimit) {
+		for (int i = messageLimit; i < limit; ++i) {
+			auto widget = new QWidget;
+			Ui::ContentWidget content_ui;
+			content_ui.setupUi(widget);
+
+			ui.tabWidget->addTab(widget, QString::fromStdString(std::to_string(i + 1)));
+			ui.tabWidget->setTabVisible(ui.tabWidget->indexOf(widget), false);
+
+			contentEdits.insert(i, content_ui.plainTextEdit);
+		}
+	} else {
+		for (int i = messageLimit - 1; i >= limit; --i) {
+			ui.tabWidget->removeTab(i);
+		}
+		contentEdits.resize(limit);
+	}
+
+	dataModel->setTopicMessageLimit(limit);
+
+	messageLimit = limit;
+}
+
+/**
+ * Updates the last message content view with the selected message payload
+ * Could be used after content change to update the content view
+ */
+void Explorer::updateContentBlock() {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
+		return;
+	}
+
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
+	for (int i = 0; i < messageLimit; i++) {
+		QString payload = currentItem->getTopic()->getPayload(i);
+		payload.truncate(MAX_MESSAGE_RENDER_LENGTH);
+		ui.tabWidget->setTabVisible(i, payload != "");
+		contentEdits.at(i)->setPlainText(payload);
+	}
+
+	ui.timestampLabel->setText(currentItem->getTopic()->getTimestampString());
+	ui.timestampWidget->setVisible(ui.timestampLabel->text() != "");
+}
+
+/**
+ * Hierarchically displays the received message in the explorer
+ * @param message MQTT message
+ */
+void Explorer::receiveMessage(mqtt::const_message_ptr message) {
+	QString topic = QString::fromStdString(message->get_topic());
+	ExplorerItem *item = findOrCreateItemFromTopic(topic);
+
+	QString payload = QString::fromStdString(message->get_payload());
+	item->getTopic()->addPayload(payload);
+	updateContentBlock();
+}
+
+/**
+ * Finds or creates an item with path topic
+ * Also creates sub-level items if they don't exist
+ * @param topic topic path string (e.g. "/topic/subtopic/subsubtopic")
+ * @return item to which a payload can be attached
+ */
+ExplorerItem *Explorer::findOrCreateItemFromTopic(QString &topic) {
+	ExplorerItem *root = nullptr;
+	for (QString &subtopic : topic.split("/")) {
+		if (root == nullptr) {
+			root = findOrCreateRootChild(subtopic);
+		} else {
+			root = root->findOrCreateChild(subtopic, dataModel);
+		}
+	}
+
+	return root;
+}
+
+/**
+ * Finds or creates an immediate child item
+ * @note should be analogous to ExplorerItem::findOrCreateChild
+ * @param name name of the item
+ * @return pointer to a new or existing item
+ */
+ExplorerItem *Explorer::findOrCreateRootChild(QString &name) {
+	auto rootItems = ui.treeWidget->findItems(name, Qt::MatchExactly, 0);
+
+	ExplorerItem *root;
+	if (rootItems.empty()) {
+		// adding a new root topic
+		root = new ExplorerItem(ui.treeWidget, dataModel->addTopic(name, nullptr));
+
+	} else {
+		// root topic found
+		root = dynamic_cast<ExplorerItem *>(rootItems.at(0));
+	}
+
+	return root;
+}
+
+void Explorer::saveStructure() {
+	if (lastSaveDir == "") {
+		saveStructureAs();
+	} else {
+		saveState(lastSaveDir);
+	}
+}
+
+void Explorer::saveStructureAs() {
+	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+														"",
+														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+	if (userDir == "") {
+		return;
+	}
+
+	QDir dir(userDir);
+	if (!dir.exists()) {
+		return;
+	}
+
+	saveState(userDir);
+
+	lastSaveDir = userDir;
+}
+
+void Explorer::saveState(const QString &directory) {
+	qInfo() << "Saving structure to" << directory;
+
+	for (int i = 0; i < ui.treeWidget->topLevelItemCount(); ++i) {
+		auto explorerItem = dynamic_cast<ExplorerItem *>(ui.treeWidget->topLevelItem(i));
+		explorerItem->saveSubtree(directory);
+	}
+}
+
+void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
+	auto explorerItem = dynamic_cast<ExplorerItem *>(item);
+
+	auto publishWindow = new PublishWindow(explorerItem->getTopic(), client);
+	publishWindow->show();
+	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
+}
+
+void Explorer::sendDashboardRequest() {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
+		return;
+	}
+
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
+	emit dashboardRequest(currentItem->getTopic());
+}
+
+void Explorer::loadDashboard() {
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"),
+													"",
+													tr("Dashboard configuration files (*.json)"));
+
+	qInfo() << "Loading dashboard from" << filePath;
+	QFile file = QFile(filePath);
+	file.open(QIODevice::ReadOnly);
+
+	if (!file.isOpen()) {
+		qWarning() << "Can't open dashboard file for reading";
+		return;
+	}
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	QJsonArray dataArray = doc["data"].toArray();
+
+	for (auto item : dataArray) {
+		QJsonObject itemObject = item.toObject();
+
+		QString topic = itemObject["topic"].toString();
+		ExplorerItem *explorerItem = findOrCreateItemFromTopic(topic);
+
+		QString payload = itemObject["last_payload"].toString();
+		explorerItem->getTopic()->addPayload(payload);
+		updateContentBlock();
+
+		emit dashboardRequest(explorerItem->getTopic(), new QJsonObject(itemObject));
+	}
+
+	file.close();
+}
