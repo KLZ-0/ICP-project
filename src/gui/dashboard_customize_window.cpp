@@ -12,22 +12,37 @@ DashboardCustomizeWindow::DashboardCustomizeWindow(QWidget *callerWidget) {
 	setWindowTitle("Change window title");
 
 	ui.titleEdit->setText(callerWidget->windowTitle());
+	oldTitle = callerWidget->windowTitle();
+
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &DashboardCustomizeWindow::close);
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &DashboardCustomizeWindow::confirmChanges);
 }
 
 void DashboardCustomizeWindow::confirmChanges() {
-	emit titleChanged(ui.titleEdit->text());
-	emit deviceTypeChanged(ui.deviceTypeEdit->text());
-	emit statusDisplayLengthChanged(ui.statusLenghtSpinBox->value());
+	const QString &newTitle = ui.titleEdit->text();
+	if (newTitle != oldTitle && newTitle != "") {
+		emit titleChanged(newTitle);
+	}
+
+	const QString &newDeviceType = ui.deviceTypeEdit->text();
+	if (newDeviceType != oldDeviceType) {
+		emit deviceTypeChanged(newDeviceType);
+	}
+
+	int newLength = ui.statusLenghtSpinBox->value();
+	if (newLength != oldLength) {
+		emit statusDisplayLengthChanged(newLength);
+	}
 
 	close();
 }
 
 void DashboardCustomizeWindow::setDeviceType(QString initalDeviceType) {
 	ui.deviceTypeEdit->setText(initalDeviceType);
+	oldDeviceType = initalDeviceType;
 }
 
 void DashboardCustomizeWindow::setStatusDisplayLength(int initialLength) {
 	ui.statusLenghtSpinBox->setValue(initialLength);
+	oldLength = initialLength;
 }

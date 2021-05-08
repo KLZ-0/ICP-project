@@ -21,6 +21,7 @@ private:
 	Ui::DashboardCustomizeWindow ui;
 	QString oldTitle;
 	QString oldDeviceType;
+	int oldLength;
 
 signals:
 	void titleChanged(QString newTitle);
