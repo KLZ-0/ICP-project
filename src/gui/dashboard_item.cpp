@@ -27,7 +27,7 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 
 	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
 
-	auto changeTitleAction = new QAction("Costomize");
+	auto changeTitleAction = new QAction("Customize");
 	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openDashboardCustomizeWindow()));
 
 	QMenu *menu = systemMenu();
