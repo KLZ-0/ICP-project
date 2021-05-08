@@ -19,3 +19,7 @@ void DashboardCustomizeWindow::confirmChanges() {
 	emit deviceTypeChanged(ui.deviceTypeEdit->text());
 	close();
 }
+
+void DashboardCustomizeWindow::setDeviceType(QString initalDeviceType) {
+	ui.deviceTypeEdit->setText(initalDeviceType);
+}

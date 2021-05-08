@@ -14,6 +14,7 @@ class DashboardCustomizeWindow : public QWidget
 	Q_OBJECT
 public:
 	explicit DashboardCustomizeWindow(QWidget *callerWidget);
+	void setDeviceType(QString initalDeviceType);
 
 private:
 	Ui::DashboardCustomizeWindow ui;
