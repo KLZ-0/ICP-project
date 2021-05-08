@@ -11,6 +11,7 @@
 #include <client.hpp>
 #include <mqtt/message.h>
 
+#include "dashboard.hpp"
 #include "data_model.hpp"
 #include "explorer_item.hpp"
 #include "ui_explorer.h"
@@ -23,6 +24,7 @@ public:
 	Explorer();
 	void setDataModel(DataModel *model);
 	void setClient(Core::Client *mqttClient);
+	void connectToDashboard(Dashboard *dashboard);
 
 private:
 	Ui::Explorer ui;
@@ -36,7 +38,11 @@ private:
 	ExplorerItem *findOrCreateItemFromTopic(QString &topic);
 	ExplorerItem *findOrCreateRootChild(QString &name);
 
+	// TODO: move this to settings
 	const int MAX_MESSAGE_RENDER_LENGTH = 300;
+
+signals:
+	void dashboardRequest(Topic *topic);
 
 public slots:
 	void setMessageLimit();
@@ -46,6 +52,9 @@ public slots:
 	void saveStructure();
 	void saveStructureAs();
 	void openPublishWindow(QTreeWidgetItem *item, int column);
+
+private slots:
+	void sendDashboardRequest();
 };
 
 

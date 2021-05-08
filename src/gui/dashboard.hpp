@@ -7,6 +7,7 @@
 
 
 #include <QWidget>
+#include <topic.hpp>
 
 #include "ui_dashboard.h"
 
@@ -19,6 +20,9 @@ public:
 
 private:
 	Ui::Dashboard ui;
+
+public slots:
+	void addTopic(Topic *topic);
 };
 
 

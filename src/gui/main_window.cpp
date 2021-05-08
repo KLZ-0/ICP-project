@@ -15,6 +15,7 @@ MainWindow::MainWindow() {
 
 	dataModel = new DataModel(3);
 	ui.explorer_tab->setDataModel(dataModel);
+	ui.explorer_tab->connectToDashboard(ui.dahboard_tab);
 
 	connect(ui.actionTopics, &QAction::triggered, this, &MainWindow::openTopicsWindow);
 	connect(ui.actionSave, &QAction::triggered, ui.explorer_tab, &Explorer::saveStructure);

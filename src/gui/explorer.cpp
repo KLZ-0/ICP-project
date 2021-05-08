@@ -27,6 +27,8 @@ Explorer::Explorer() {
 
 	connect(ui.treeWidget, &QTreeWidget::itemSelectionChanged, this, &Explorer::updateContentBlock);
 	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &Explorer::openPublishWindow);
+
+	connect(ui.dashboardButton, SIGNAL(clicked(bool)), this, SLOT(sendDashboardRequest()));
 }
 
 void Explorer::setDataModel(DataModel *model) {
@@ -35,6 +37,10 @@ void Explorer::setDataModel(DataModel *model) {
 
 void Explorer::setClient(Core::Client *mqttClient) {
 	client = mqttClient;
+}
+
+void Explorer::connectToDashboard(Dashboard *dashboard) {
+	connect(this, &Explorer::dashboardRequest, dashboard, &Dashboard::addTopic);
 }
 
 void Explorer::setMessageLimit() {
@@ -183,4 +189,15 @@ void Explorer::openPublishWindow(QTreeWidgetItem *item, int column) {
 	auto publishWindow = new PublishWindow(explorerItem->getTopic(), client);
 	publishWindow->show();
 	qDebug() << "Publish window opened for topic" << explorerItem->getTopic()->getName();
+}
+
+void Explorer::sendDashboardRequest() {
+	auto selectedItems = ui.treeWidget->selectedItems();
+
+	if (selectedItems.empty()) {
+		return;
+	}
+
+	auto currentItem = dynamic_cast<ExplorerItem *>(selectedItems.front());
+	emit dashboardRequest(currentItem->getTopic());
 }
