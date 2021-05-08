@@ -9,13 +9,13 @@ DashboardCustomizeWindow::DashboardCustomizeWindow(QWidget *callerWidget) {
 
 	setWindowTitle("Change window title");
 
-	ui.lineEdit->setText(callerWidget->windowTitle());
+	ui.titleEdit->setText(callerWidget->windowTitle());
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &DashboardCustomizeWindow::close);
-	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &DashboardCustomizeWindow::confirmNewTile);
-	connect(ui.lineEdit, &QLineEdit::returnPressed, this, &DashboardCustomizeWindow::confirmNewTile);
+	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &DashboardCustomizeWindow::confirmChanges);
 }
 
-void DashboardCustomizeWindow::confirmNewTile() {
-	emit titleConfirmed(ui.lineEdit->text());
+void DashboardCustomizeWindow::confirmChanges() {
+	emit titleChanged(ui.titleEdit->text());
+	emit deviceTypeChanged(ui.deviceTypeEdit->text());
 	close();
 }

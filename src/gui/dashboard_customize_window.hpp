@@ -17,12 +17,15 @@ public:
 
 private:
 	Ui::DashboardCustomizeWindow ui;
+	QString oldTitle;
+	QString oldDeviceType;
 
 signals:
-	void titleConfirmed(QString newTitle);
+	void titleChanged(QString newTitle);
+	void deviceTypeChanged(QString newTitle);
 
 private slots:
-	void confirmNewTile();
+	void confirmChanges();
 };
 
 

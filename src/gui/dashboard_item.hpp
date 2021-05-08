@@ -22,10 +22,12 @@ public:
 private:
 	Ui::DashboardItem ui;
 	Topic *topic;
+	int lastTimestamp = 0;
 
 private slots:
 	void openDashboardCustomizeWindow();
 	void updateContent();
+	void changeDeviceType(const QString &newDeviceType);
 };
 
 

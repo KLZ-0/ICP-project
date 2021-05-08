@@ -20,7 +20,11 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	setWindowTitle(widgetTopic->getName());
-	ui.label->setText(widgetTopic->findFullyQualifiedTopic());
+	changeDeviceType("");
+	ui.topic->hide();
+	ui.topicLabel->hide();
+	updateContent();
+
 	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
 
 	auto changeTitleAction = new QAction("Costomize");
@@ -32,10 +36,25 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 
 void DashboardItem::openDashboardCustomizeWindow() {
 	auto titleWindow = new DashboardCustomizeWindow(this);
-	connect(titleWindow, &DashboardCustomizeWindow::titleConfirmed, this, &DashboardItem::setWindowTitle);
+	connect(titleWindow, &DashboardCustomizeWindow::titleChanged, this, &DashboardItem::setWindowTitle);
+	connect(titleWindow, &DashboardCustomizeWindow::deviceTypeChanged, this, &DashboardItem::changeDeviceType);
 	titleWindow->show();
 }
 
 void DashboardItem::updateContent() {
 	qDebug() << "Update dashboard item";
+	ui.topic->setText(topic->findFullyQualifiedTopic());
+	ui.status->setText(topic->getPayload(0));
+
+	if (lastTimestamp != 0) {
+		ui.lastseen->setText("time");
+	} else {
+		ui.lastseen->setText("");
+	}
+}
+
+void DashboardItem::changeDeviceType(const QString &newDeviceType) {
+	ui.devicetype->setText(newDeviceType);
+	ui.devicetype->setVisible(newDeviceType != "");
+	ui.devicetypeLabel->setVisible(newDeviceType != "");
 }
