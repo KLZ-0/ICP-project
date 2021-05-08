@@ -12,6 +12,7 @@
 #include <mqtt/message.h>
 
 #include "dashboard.hpp"
+#include "dashboard_item.hpp"
 #include "data_model.hpp"
 #include "explorer_item.hpp"
 #include "ui_explorer.h"
@@ -42,7 +43,7 @@ private:
 	const int MAX_MESSAGE_RENDER_LENGTH = 300;
 
 signals:
-	void dashboardRequest(Topic *topic);
+	void dashboardRequest(Topic *topic, QJsonObject *object = nullptr);
 
 public slots:
 	void setMessageLimit();
@@ -52,6 +53,7 @@ public slots:
 	void saveStructure();
 	void saveStructureAs();
 	void openPublishWindow(QTreeWidgetItem *item, int column);
+	void loadDashboard();
 
 private slots:
 	void sendDashboardRequest();

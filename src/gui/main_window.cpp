@@ -26,6 +26,7 @@ MainWindow::MainWindow() {
 
 	connect(ui.actionSaveDashboard, &QAction::triggered, ui.dahboard_tab, &Dashboard::save);
 	connect(ui.actionSaveDashboard_As, &QAction::triggered, ui.dahboard_tab, &Dashboard::saveAs);
+	connect(ui.actionLoadDashboard, &QAction::triggered, ui.explorer_tab, &Explorer::loadDashboard);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 

@@ -9,16 +9,19 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "dashboard_item.hpp"
-
 Dashboard::Dashboard() {
 	ui.setupUi(this);
 }
 
-void Dashboard::addTopic(Topic *topic) {
+void Dashboard::addTopic(Topic *topic, QJsonObject *object) {
 	qDebug() << "Adding topic" << topic->findFullyQualifiedTopic() << "to dashboard";
 
-	ui.mdiArea->addSubWindow(new DashboardItem(this, topic));
+	auto item = new DashboardItem(this, topic);
+	ui.mdiArea->addSubWindow(item);
+
+	if (object != nullptr) {
+		item->setupFromJSON(object);
+	}
 }
 
 void Dashboard::save() {

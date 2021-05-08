@@ -21,6 +21,7 @@ class DashboardItem : public QMdiSubWindow
 public:
 	explicit DashboardItem(QWidget *parent, Topic *widgetTopic);
 	void addToJSONArray(QJsonArray &jsonArray);
+	void setupFromJSON(QJsonObject *object);
 
 private:
 	Ui::DashboardItem ui;

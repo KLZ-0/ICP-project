@@ -10,6 +10,7 @@
 #include <QWidget>
 #include <topic.hpp>
 
+#include "dashboard_item.hpp"
 #include "ui_dashboard.h"
 
 class Dashboard : public QWidget
@@ -25,7 +26,7 @@ private:
 	void createStateJSON(QJsonObject &rootObject);
 
 public slots:
-	void addTopic(Topic *topic);
+	void addTopic(Topic *topic, QJsonObject *object = nullptr);
 	void save();
 	void saveAs();
 	void saveState(const QString &filePath);

@@ -76,3 +76,7 @@ QString Topic::findFullyQualifiedTopic() {
 
 	return topicString;
 }
+
+void Topic::setTimestamp(std::time_t newTimeStamp) {
+	lastTimestamp = newTimeStamp;
+}

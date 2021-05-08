@@ -80,3 +80,25 @@ void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	object["last_timestamp"] = QString::number(topic->getTimestamp());
 	jsonArray.append(object);
 }
+
+void DashboardItem::setupFromJSON(QJsonObject *object) {
+	QJsonObject obj = *object;
+	QString title = obj["title"].toString();
+	QString status_length = obj["status_length"].toString();
+	QString last_timestamp = obj["last_timestamp"].toString();
+
+	setWindowTitle(title);
+
+	bool ok;
+	int tmp = status_length.toInt(&ok, 10);
+	if (ok) {
+		statusDisplayLenght = tmp;
+	}
+
+	std::time_t tmp_long = last_timestamp.toLong(&ok, 10);
+	if (ok) {
+		topic->setTimestamp(tmp_long);
+	}
+
+	updateContent();
+}

@@ -53,9 +53,9 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
+       <property name="title">
+           <string>File</string>
+       </property>
        <addaction name="actionTopics"/>
        <addaction name="separator"/>
        <addaction name="actionSave"/>
@@ -69,6 +69,8 @@
           <property name="title">
               <string>Dashboard</string>
           </property>
+          <addaction name="actionLoadDashboard"/>
+          <addaction name="separator"/>
           <addaction name="actionSaveDashboard"/>
           <addaction name="actionSaveDashboard_As"/>
       </widget>
@@ -81,16 +83,16 @@
     <string>Topics</string>
    </property>
   </action>
-  <action name="actionSave">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
-  <action name="actionSave_As">
-   <property name="text">
-    <string>Save As...</string>
-   </property>
-  </action>
+     <action name="actionSave">
+         <property name="text">
+             <string>Save</string>
+         </property>
+     </action>
+     <action name="actionSave_As">
+         <property name="text">
+             <string>Save As...</string>
+         </property>
+     </action>
      <action name="actionPublish">
          <property name="text">
              <string>Publish</string>
@@ -109,6 +111,11 @@
      <action name="actionSaveDashboard_As">
          <property name="text">
              <string>Save As...</string>
+         </property>
+     </action>
+     <action name="actionLoadDashboard">
+         <property name="text">
+             <string>Load</string>
          </property>
      </action>
  </widget>
