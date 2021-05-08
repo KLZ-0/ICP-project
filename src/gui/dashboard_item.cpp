@@ -78,6 +78,7 @@ void DashboardItem::addToJSONArray(QJsonArray &jsonArray) {
 	object["status_length"] = statusDisplayLenght;
 	object["last_payload"] = topic->getPayload(0);
 	object["last_timestamp"] = QString::number(topic->getTimestamp());
+	object["device_type"] = ui.devicetype->text();
 	jsonArray.append(object);
 }
 
@@ -86,6 +87,7 @@ void DashboardItem::setupFromJSON(QJsonObject *object) {
 	QString title = obj["title"].toString();
 	QString status_length = obj["status_length"].toString();
 	QString last_timestamp = obj["last_timestamp"].toString();
+	QString device_type = obj["device_type"].toString();
 
 	setWindowTitle(title);
 
@@ -99,6 +101,8 @@ void DashboardItem::setupFromJSON(QJsonObject *object) {
 	if (ok) {
 		topic->setTimestamp(tmp_long);
 	}
+
+	changeDeviceType(device_type);
 
 	updateContent();
 }
