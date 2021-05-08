@@ -6,6 +6,7 @@
 #define MQTT_EXPLORER_DASHBOARD_HPP
 
 
+#include <QJsonDocument>
 #include <QWidget>
 #include <topic.hpp>
 
@@ -21,6 +22,7 @@ public:
 private:
 	Ui::Dashboard ui;
 	QString lastSaveFile = "";
+	void createStateJSON(QJsonObject &rootObject);
 
 public slots:
 	void addTopic(Topic *topic);

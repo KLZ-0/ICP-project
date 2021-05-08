@@ -6,6 +6,7 @@
 #define MQTT_EXPLORER_DASHBOARD_ITEM_HPP
 
 
+#include <QJsonValue>
 #include <QMdiSubWindow>
 #include <QWidget>
 #include <topic.hpp>
@@ -18,6 +19,7 @@ class DashboardItem : public QMdiSubWindow
 
 public:
 	explicit DashboardItem(QWidget *parent, Topic *widgetTopic);
+	void addToJSONRoot(QJsonObject &rootObject);
 
 private:
 	Ui::DashboardItem ui;

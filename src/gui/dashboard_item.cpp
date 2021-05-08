@@ -5,6 +5,7 @@
 #include "dashboard_item.hpp"
 
 #include <QDebug>
+#include <QJsonObject>
 #include <QMenu>
 
 #include "dashboard_customize_window.hpp"
@@ -73,4 +74,8 @@ void DashboardItem::changeDeviceType(const QString &newDeviceType) {
 void DashboardItem::changeStatusDisplayLength(int newLength) {
 	statusDisplayLenght = newLength;
 	updateContent();
+}
+
+void DashboardItem::addToJSONRoot(QJsonObject &rootObject) {
+	rootObject[topic->findFullyQualifiedTopic()] = topic->getPayload(0);
 }

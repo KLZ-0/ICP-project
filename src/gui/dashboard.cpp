@@ -6,6 +6,8 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonObject>
 
 #include "dashboard_item.hpp"
 
@@ -46,7 +48,16 @@ void Dashboard::saveState(const QString &filePath) {
 	QFile file = QFile(filePath);
 	file.open(QIODevice::WriteOnly);
 
-	file.write("test\n");
+	QJsonObject object;
+	createStateJSON(object);
+	file.write(QJsonDocument(object).toJson());
 
 	file.close();
+}
+
+void Dashboard::createStateJSON(QJsonObject &rootObject) {
+	for (QMdiSubWindow *subWindow : ui.mdiArea->subWindowList()) {
+		auto item = dynamic_cast<DashboardItem *>(subWindow);
+		item->addToJSONRoot(rootObject);
+	}
 }
