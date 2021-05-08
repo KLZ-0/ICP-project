@@ -24,7 +24,7 @@ private:
 	Topic *topic;
 
 private slots:
-	void openTitleSelectionWindow();
+	void openDashboardCustomizeWindow();
 	void updateContent();
 };
 

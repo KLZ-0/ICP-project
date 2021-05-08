@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QMenu>
 
-#include "title_selection_window.hpp"
+#include "dashboard_customize_window.hpp"
 
 DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 	: QMdiSubWindow(parent) {
@@ -23,16 +23,16 @@ DashboardItem::DashboardItem(QWidget *parent, Topic *widgetTopic)
 	ui.label->setText(widgetTopic->findFullyQualifiedTopic());
 	connect(topic, &Topic::changed, this, &DashboardItem::updateContent);
 
-	auto changeTitleAction = new QAction("Change title");
-	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openTitleSelectionWindow()));
+	auto changeTitleAction = new QAction("Costomize");
+	connect(changeTitleAction, SIGNAL(triggered(bool)), this, SLOT(openDashboardCustomizeWindow()));
 
 	QMenu *menu = systemMenu();
 	menu->addAction(changeTitleAction);
 }
 
-void DashboardItem::openTitleSelectionWindow() {
-	auto titleWindow = new TitleSelectionWindow(this);
-	connect(titleWindow, &TitleSelectionWindow::titleConfirmed, this, &DashboardItem::setWindowTitle);
+void DashboardItem::openDashboardCustomizeWindow() {
+	auto titleWindow = new DashboardCustomizeWindow(this);
+	connect(titleWindow, &DashboardCustomizeWindow::titleConfirmed, this, &DashboardItem::setWindowTitle);
 	titleWindow->show();
 }
 
