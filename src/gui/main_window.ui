@@ -56,16 +56,24 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionTopics"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_As"/>
-    <addaction name="separator"/>
-    <addaction name="actionPublish"/>
-    <addaction name="separator"/>
-    <addaction name="actionQuit"/>
+       <addaction name="actionTopics"/>
+       <addaction name="separator"/>
+       <addaction name="actionSave"/>
+       <addaction name="actionSave_As"/>
+       <addaction name="separator"/>
+       <addaction name="actionPublish"/>
+       <addaction name="separator"/>
+       <addaction name="actionQuit"/>
    </widget>
-   <addaction name="menuFile"/>
+      <widget class="QMenu" name="menuDashboard">
+          <property name="title">
+              <string>Dashboard</string>
+          </property>
+          <addaction name="actionSaveDashboard"/>
+          <addaction name="actionSaveDashboard_As"/>
+      </widget>
+      <addaction name="menuFile"/>
+      <addaction name="menuDashboard"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTopics">
@@ -83,16 +91,26 @@
     <string>Save As...</string>
    </property>
   </action>
-  <action name="actionPublish">
-   <property name="text">
-    <string>Publish</string>
-   </property>
-  </action>
-  <action name="actionQuit">
-   <property name="text">
-    <string>Quit</string>
-   </property>
-  </action>
+     <action name="actionPublish">
+         <property name="text">
+             <string>Publish</string>
+         </property>
+     </action>
+     <action name="actionQuit">
+         <property name="text">
+             <string>Quit</string>
+         </property>
+     </action>
+     <action name="actionSaveDashboard">
+         <property name="text">
+             <string>Save</string>
+         </property>
+     </action>
+     <action name="actionSaveDashboard_As">
+         <property name="text">
+             <string>Save As...</string>
+         </property>
+     </action>
  </widget>
  <customwidgets>
   <customwidget>

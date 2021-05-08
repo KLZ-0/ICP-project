@@ -157,7 +157,7 @@ void Explorer::saveStructure() {
 
 void Explorer::saveStructureAs() {
 	QString userDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-														"/home",
+														"",
 														QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
 	if (userDir == "") {

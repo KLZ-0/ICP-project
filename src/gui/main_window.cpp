@@ -24,6 +24,9 @@ MainWindow::MainWindow() {
 	connect(ui.actionPublish, &QAction::triggered, this, &MainWindow::openPublishWindow);
 	connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::close);
 
+	connect(ui.actionSaveDashboard, &QAction::triggered, ui.dahboard_tab, &Dashboard::save);
+	connect(ui.actionSaveDashboard_As, &QAction::triggered, ui.dahboard_tab, &Dashboard::saveAs);
+
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 
 	qRegisterMetaType<mqtt::const_message_ptr>("mqtt::const_message_ptr");

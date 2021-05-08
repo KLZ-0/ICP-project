@@ -20,9 +20,13 @@ public:
 
 private:
 	Ui::Dashboard ui;
+	QString lastSaveFile = "";
 
 public slots:
 	void addTopic(Topic *topic);
+	void save();
+	void saveAs();
+	void saveState(const QString &directory);
 };
 
 
