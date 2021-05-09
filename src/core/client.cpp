@@ -13,11 +13,24 @@ namespace Core
 		: client_(kServerUri.data(), clientId),
 		  actionListener_(this),
 		  callback_(this, client_) {
-		connOpts_.set_clean_session(false);
+		connOpts_.set_clean_session(true);
 		connOpts_.set_keep_alive_interval(20);
 		client_.set_callback(callback_);
 	}
 	void Client::Connect() {
+		try {
+			qDebug() << "Connecting to the MQTT server...\n";
+			client_.connect(connOpts_, nullptr, callback_);
+		} catch (const mqtt::exception &exc) {
+			qDebug() << "ERROR: Unable to connect to MQTT server: '"
+					 << kServerUri.data() << "'" << exc.what();
+			emit ServerUnreachable();
+		}
+	}
+	void Client::Connect(const std::string_view &serverUri) {
+		auto serverURIs = std::make_shared <mqtt::string_collection>();
+		serverURIs->push_back(serverUri.data());
+		connOpts_.set_servers(serverURIs);
 		try {
 			qDebug() << "Connecting to the MQTT server...\n";
 			client_.connect(connOpts_, nullptr, callback_);

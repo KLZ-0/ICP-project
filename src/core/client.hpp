@@ -29,9 +29,14 @@ namespace Core
 
 	public slots:
 		/**
-		 * @brief	Connects to the default mqtt server: tcp://test.mosquitto.org:1883
+		 * @brief Connects to the default mqtt server: tcp://test.mosquitto.org:1883
 		*/
 		void Connect();
+		/**
+		 * @brief Connects to a given serverUri
+		 * @param serverUri
+		*/
+		void Connect(const std::string_view& serverUri);
 		/**
 		 * @brief Disconnect from the server
 		*/
