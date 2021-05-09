@@ -3,5 +3,4 @@
 # author: Adrián Kálazi (xkalaz00)
 
 add_subdirectory(core)
-add_subdirectory(simulator)
 add_subdirectory(gui)
