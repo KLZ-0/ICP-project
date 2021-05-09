@@ -6,6 +6,7 @@
 #define MQTT_EXPLORER_TOPIC_HPP
 
 #include <QObject>
+#include <ctime>
 
 /**
  * @class Topic
