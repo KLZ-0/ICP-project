@@ -28,6 +28,8 @@ set(SOURCES
     dashboard_customize_window.hpp
 	simulator.cpp
 	simulator.hpp
+	simulator_device.cpp
+	simulator_device.hpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

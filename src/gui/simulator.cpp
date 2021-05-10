@@ -9,9 +9,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-/**
- * @brief Initialize the simulator tab
- */
 Simulator::Simulator() {
 	ui.setupUi(this);
 
@@ -89,6 +86,19 @@ void Simulator::configureSimulator() {
 }
 
 void Simulator::startSimulator() {
+	SimulatorDevice::DeviceConfig config;
+	config.topic = "sr1";
+	config.deviceType = "publisher";
+	config.devicePublisher.randomData = true;
+	config.devicePublisher.dataType = "string";
+	config.devicePublisher.interval_ms = 500;
+	config.devicePublisher.data = {"abc", "123", "last one"};
+	SimulatorDevice device(config);
+	QJsonObject jsonObject;
+	jsonObject = device.toJson();
+	QJsonArray jsonArray;
+	jsonArray.append(jsonObject);
+	ui.configEdit->setPlainText(QJsonDocument(jsonArray).toJson());
 }
 
 void Simulator::stopSimulator() {

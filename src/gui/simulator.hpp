@@ -6,8 +6,9 @@
 
 #include <QJsonDocument>
 #include <QWidget>
-#include "client.hpp"
 
+#include "client.hpp"
+#include "simulator_device.hpp"
 #include "ui_simulator.h"
 
 /**
@@ -21,6 +22,9 @@ class Simulator : public QWidget
 	Q_OBJECT
 
 public:
+	/**
+	 * @brief Initialize the simulator tab
+	 */
 	Simulator();
 
 private:
