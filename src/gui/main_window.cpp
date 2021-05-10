@@ -7,7 +7,6 @@
 
 #include <QDebug>
 #include <QPushButton>
-#include <QUuid>
 
 #include "publish_window.hpp"
 #include "topic_selection_window.hpp"
@@ -37,7 +36,7 @@ MainWindow::MainWindow() {
 	connect(ui.actionSaveSimulator_As, &QAction::triggered, ui.simulator_tab, &Simulator::saveAs);
 	connect(ui.simulator_tab, &Simulator::statusBarUpdate, this, &MainWindow::statusBarUpdate);
 
-	client = new Core::Client(QUuid::createUuid().toString().toStdString());
+	client = new Core::Client("explorer");
 
 	qRegisterMetaType<mqtt::const_message_ptr>("mqtt::const_message_ptr");
 	connect(client, &Core::Client::Connected, this, &MainWindow::statusConnected);

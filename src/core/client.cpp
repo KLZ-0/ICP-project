@@ -6,11 +6,12 @@
 #include <algorithm>
 #include <qdebug.h>
 #include <qset.h>
+#include <quuid.h>
 
 namespace Core
 {
 	Client::Client(const std::string &clientId)
-		: client_(kServerUri.data(), clientId),
+		: client_(kServerUri.data(), clientId + "_" + QUuid::createUuid().toString().toStdString()),
 		  actionListener_(this),
 		  callback_(this, client_) {
 		connOpts_.set_clean_session(true);
