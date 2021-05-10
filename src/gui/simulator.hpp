@@ -24,8 +24,15 @@ class Simulator : public QWidget
 public:
 	/**
 	 * @brief Initialize the simulator tab
-	 */
+	*/
 	Simulator();
+	~Simulator();
+
+private:
+	/**
+	 * @brief correctly delete all devices
+	*/
+	void clearDevices();
 
 private:
 	Ui::Simulator ui;
@@ -35,6 +42,7 @@ private:
 	bool running = false;
 	bool configured = false;
 	bool justLoaded = false;
+	QVector<SimulatorDevice*> devices;
 
 signals:
 	void statusBarUpdate(const QString &status);
@@ -47,7 +55,7 @@ public slots:
 	/**
 	 * @brief Save action
 	 * Save the simulator config to a previously used savefile or ask the user for a new file
-	 */
+	*/
 	void save();
 	/**
 	 * @brief Save As action
@@ -58,7 +66,7 @@ public slots:
 	 * @brief Does the actual saving
 	 * Saves the dashboard to a JSON file
 	 * @param filePath path to a savefile
-	 */
+	*/
 	void saveState(const QString &filePath);
 	/**
 	 * @brief displays the current config in the config editor
@@ -68,10 +76,17 @@ public slots:
 	 * @brief configure simulator if possible
 	*/
 	void configureSimulator();
-
+	/**
+	 * @brief start the simulater if configured
+	*/
 	void startSimulator();
-
+	/**
+	 * @brief stop the simulator
+	*/
 	void stopSimulator();
 
+	/**
+	 * @brief update file status when the config in the editor is changed
+	*/
 	void configChanged();
 };

@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <memory>
 
 Simulator::Simulator() {
 	ui.setupUi(this);
@@ -39,15 +40,19 @@ void Simulator::load() {
 	lastSaveFile = filePath;
 	ui.configEdit->setPlainText(file.readAll());
 
-	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-	QJsonArray dataArray = doc["data"].toArray();
-
-	for (auto item : dataArray) {
-		QJsonObject itemObject = item.toObject();
-	}
-
 	emit statusBarUpdate("Config file loaded");
 	file.close();
+}
+
+Simulator::~Simulator() {
+	clearDevices();
+}
+
+void Simulator::clearDevices() {
+	for (auto* device : devices) {
+		delete device;
+	}
+	devices.clear();
 }
 
 void Simulator::save() {
@@ -111,9 +116,22 @@ void Simulator::showCurrentConfig() {
 
 void Simulator::configureSimulator() {
 	if (running) {
-		emit statusBarUpdate("Can't configure: simulator running");
+		emit statusBarUpdate("Can't configure - simulator running");
 		return;
 	}
+
+	clearDevices();
+
+	QJsonArray dataArray = QJsonDocument::fromJson(ui.configEdit->toPlainText().toUtf8()).array();
+	if (dataArray.isEmpty()) {
+		emit statusBarUpdate("No devices defined in the config file");
+		return;
+	}
+	for (const auto &data : dataArray) {
+		QJsonObject deviceConfigJson = data.toObject();
+		devices.append(new SimulatorDevice(deviceConfigJson));
+	}
+
 	configured = true;
 	ui.configStatus->setText("Configured");
 	ui.fileStatus->setText("In use");
@@ -121,6 +139,10 @@ void Simulator::configureSimulator() {
 }
 
 void Simulator::startSimulator() {
+	if (!configured) {
+		emit statusBarUpdate("Can't start - simulator not configured");
+		return;
+	}
 	running = true;
 	ui.simStatus->setText("Running");
 	emit statusBarUpdate("Simulator started");

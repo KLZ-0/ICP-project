@@ -73,5 +73,5 @@ private:
 
 private:
 	QTimer timer;
-	DeviceConfig deviceConfig;
+	DeviceConfig deviceConfig = {};
 };
