@@ -16,10 +16,32 @@ Simulator::Simulator() {
 	ui.setupUi(this);
 }
 
-/**
- * @brief Save action
- * Save the simulator config to a previously used savefile or ask the user for a new file
- */
+void Simulator::load() {
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), "",
+													tr("Simulator config files (*.json)"));
+
+	qInfo() << "Loading simulator config from" << filePath;
+	QFile file = QFile(filePath);
+	file.open(QIODevice::ReadOnly);
+
+	if (!file.isOpen()) {
+		qWarning() << "Can't open simulator config file for reading";
+		return;
+	}
+
+	lastSaveFile = filePath;
+	ui.configEdit->setPlainText(file.readAll());
+
+	QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+	QJsonArray dataArray = doc["data"].toArray();
+
+	for (auto item : dataArray) {
+		QJsonObject itemObject = item.toObject();
+	}
+
+	file.close();
+}
+
 void Simulator::save() {
 	if (lastSaveFile == "") {
 		saveAs();
@@ -28,14 +50,9 @@ void Simulator::save() {
 	}
 }
 
-/**
- * @brief Save As action
- * Ask the user for a save file and save the dashboard to it
- */
 void Simulator::saveAs() {
-	QString userFile = QFileDialog::getSaveFileName(this, tr("Save File"),
-													"",
-													tr("Simulator configuration files (*.json)"));
+	QString userFile = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+													tr("Simulator config files (*.json)"));
 
 	if (userFile == "") {
 		return;
@@ -46,21 +63,13 @@ void Simulator::saveAs() {
 	lastSaveFile = userFile;
 }
 
-/**
- * @brief Does the actual saving
- * Saves the dashboard to a JSON file
- * @param filePath path to a savefile
- */
 void Simulator::saveState(const QString &filePath) {
 	qInfo() << "Saving simulator config to" << filePath;
 	QFile file = QFile(filePath);
 	file.open(QIODevice::WriteOnly);
 
 	if (file.isOpen()) {
-		QJsonObject object;
-		// create json on object
-		file.write(QJsonDocument(object).toJson());
-
+		file.write(ui.configEdit->toPlainText().toUtf8());
 		file.close();
 	}
 }

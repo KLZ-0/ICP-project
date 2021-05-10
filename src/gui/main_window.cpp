@@ -1,5 +1,6 @@
 /**
  * @author Adrián Kálazi (xkalaz00)
+ * @author Kevin Lackó (xlacko08)
  */
 
 #include "main_window.hpp"
@@ -30,6 +31,10 @@ MainWindow::MainWindow() {
 	connect(ui.actionSaveDashboard, &QAction::triggered, ui.dahboard_tab, &Dashboard::save);
 	connect(ui.actionSaveDashboard_As, &QAction::triggered, ui.dahboard_tab, &Dashboard::saveAs);
 	connect(ui.actionLoadDashboard, &QAction::triggered, ui.explorer_tab, &Explorer::loadDashboard);
+
+	connect(ui.actionLoadSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::load);
+	connect(ui.actionSaveSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::save);
+	connect(ui.actionSaveSimulator_As, &QAction::triggered, ui.simulator_tab, &Simulator::saveAs);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 

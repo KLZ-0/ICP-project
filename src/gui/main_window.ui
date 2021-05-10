@@ -79,8 +79,18 @@
     <addaction name="actionSaveDashboard"/>
     <addaction name="actionSaveDashboard_As"/>
    </widget>
+   <widget class="QMenu" name="menuSimulator">
+    <property name="title">
+     <string>Simulator</string>
+    </property>
+    <addaction name="actionLoadSimulator"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveSimulator"/>
+    <addaction name="actionSaveSimulator_As"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDashboard"/>
+   <addaction name="menuSimulator"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTopics">
@@ -121,6 +131,21 @@
   <action name="actionLoadDashboard">
    <property name="text">
     <string>Load</string>
+   </property>
+  </action>
+  <action name="actionLoadSimulator">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSaveSimulator">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSaveSimulator_As">
+   <property name="text">
+    <string>Save As...</string>
    </property>
   </action>
  </widget>

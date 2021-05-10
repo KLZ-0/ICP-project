@@ -29,7 +29,24 @@ private:
 	QString lastSaveFile = "";
 
 public slots:
+	/**
+	 * @brief Loads the simulator config from an user selected file
+	*/
+	void load();
+	/**
+	 * @brief Save action
+	 * Save the simulator config to a previously used savefile or ask the user for a new file
+	 */
 	void save();
+	/**
+	 * @brief Save As action
+	 * Ask the user for a save file and save the dashboard to it
+	*/
 	void saveAs();
+	/**
+	 * @brief Does the actual saving
+	 * Saves the dashboard to a JSON file
+	 * @param filePath path to a savefile
+	 */
 	void saveState(const QString &filePath);
 };
