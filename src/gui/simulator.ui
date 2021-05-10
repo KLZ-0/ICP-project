@@ -6,16 +6,180 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>785</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="4" column="0" colspan="2">
+    <layout class="QGridLayout" name="FileLabelGrid">
+     <item row="0" column="0">
+      <widget class="QLabel" name="configFileLabel">
+       <property name="maximumSize">
+        <size>
+         <width>381</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Configuration file:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="openFileName">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0" colspan="7">
     <widget class="QPlainTextEdit" name="configEdit"/>
+   </item>
+   <item row="5" column="7" colspan="3">
+    <layout class="QGridLayout" name="ControlGrid" rowstretch="0,0,0,0,0,0,0,0,1,0,0,0,0,0">
+     <item row="11" column="0">
+      <widget class="QPushButton" name="startButton">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Start Simulator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <layout class="QGridLayout" name="confStatusGrid" columnstretch="0,1">
+       <item row="0" column="0">
+        <widget class="QLabel" name="configStatusLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Config status:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="configStatus">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Unconfigured</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="fillLabel">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <layout class="QGridLayout" name="simStatusGrid" columnstretch="0,0">
+       <item row="0" column="1">
+        <widget class="QLabel" name="simStatus">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Stopped</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="simStatusLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Simulator status:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="12" column="0">
+      <widget class="QPushButton" name="stopButton">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Stop Simulator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QPushButton" name="configButton">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Try to configure simulator with the currently visible json config file.</string>
+       </property>
+       <property name="text">
+        <string>Configure Simulator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <layout class="QGridLayout" name="fileStatusGrid" columnstretch="0,1">
+       <item row="0" column="0">
+        <widget class="QLabel" name="fileStatusLabel">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>File status:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="fileStatus">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Not in use</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
