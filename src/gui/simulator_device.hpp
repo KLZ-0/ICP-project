@@ -53,11 +53,20 @@ public:
 public:
 	SimulatorDevice(const QJsonObject& deviceConfigJson);
 	SimulatorDevice(DeviceConfig deviceConfig);
-
+	/**
+	 * @brief start simulating device
+	*/
 	void start();
-
+	/**
+	 * @brief stop simulating device
+	*/
 	void stop();
-
+	/**
+	 * @brief convert device config to json object
+	 * @param deviceConfig 
+	 * @return jsonObject
+	*/
+	static QJsonObject deviceConfigToJson(const DeviceConfig &deviceConfig);
 	/**
 	 * @brief serialize device config to json
 	 * @return device config as QJsonObject

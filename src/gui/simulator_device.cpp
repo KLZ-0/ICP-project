@@ -15,39 +15,14 @@ SimulatorDevice::SimulatorDevice(DeviceConfig deviceConfig) : deviceConfig(devic
 }
 
 void SimulatorDevice::start() {
+
 }
 
 void SimulatorDevice::stop() {
 }
 
 QJsonObject SimulatorDevice::toJson() const {
-	QJsonObject deviceJson;
-	deviceJson.insert("topic", deviceConfig.topic);
-	deviceJson.insert("deviceType", deviceConfig.deviceType);
-
-	if (deviceConfig.deviceType == "publisher") {
-		deviceJson.insert("interval_ms", deviceConfig.devicePublisher.interval_ms);
-		deviceJson.insert("dataType", deviceConfig.devicePublisher.dataType);
-
-		if (deviceConfig.devicePublisher.dataType == "string") {
-			deviceJson.insert("randomData", deviceConfig.devicePublisher.randomData);
-
-			QJsonArray dataArray;
-			for (const auto &str : deviceConfig.devicePublisher.data) {
-				dataArray.append(str);
-			}
-			deviceJson.insert("data", dataArray);
-
-		} else /* "binary" */ {
-			deviceJson.insert("filePath", deviceConfig.devicePublisher.filePath);
-		}
-
-	} else /* "receiver" */ {
-		deviceJson.insert("targetTopic", deviceConfig.deviceReciever.targetTopic);
-		deviceJson.insert("delay_ms", deviceConfig.deviceReciever.delay_ms);
-	}
-
-	return deviceJson;
+	return deviceConfigToJson(deviceConfig);
 }
 
 void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJson) {
@@ -83,4 +58,34 @@ void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJso
 
 bool SimulatorDevice::isValid() const {
 	return valid;
+}
+
+QJsonObject SimulatorDevice::deviceConfigToJson(const DeviceConfig &deviceConfig) {
+	QJsonObject deviceJson;
+	deviceJson.insert("topic", deviceConfig.topic);
+	deviceJson.insert("deviceType", deviceConfig.deviceType);
+
+	if (deviceConfig.deviceType == "publisher") {
+		deviceJson.insert("interval_ms", deviceConfig.devicePublisher.interval_ms);
+		deviceJson.insert("dataType", deviceConfig.devicePublisher.dataType);
+
+		if (deviceConfig.devicePublisher.dataType == "string") {
+			deviceJson.insert("randomData", deviceConfig.devicePublisher.randomData);
+
+			QJsonArray dataArray;
+			for (const auto &str : deviceConfig.devicePublisher.data) {
+				dataArray.append(str);
+			}
+			deviceJson.insert("data", dataArray);
+
+		} else /* "binary" */ {
+			deviceJson.insert("filePath", deviceConfig.devicePublisher.filePath);
+		}
+
+	} else /* "receiver" */ {
+		deviceJson.insert("targetTopic", deviceConfig.deviceReciever.targetTopic);
+		deviceJson.insert("delay_ms", deviceConfig.deviceReciever.delay_ms);
+	}
+
+	return deviceJson;
 }
