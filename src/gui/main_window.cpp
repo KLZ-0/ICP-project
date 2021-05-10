@@ -35,6 +35,7 @@ MainWindow::MainWindow() {
 	connect(ui.actionLoadSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::load);
 	connect(ui.actionSaveSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::save);
 	connect(ui.actionSaveSimulator_As, &QAction::triggered, ui.simulator_tab, &Simulator::saveAs);
+	connect(ui.simulator_tab, &Simulator::statusBarUpdate, this, &MainWindow::statusBarUpdate);
 
 	client = new Core::Client(QUuid::createUuid().toString().toStdString());
 
@@ -129,4 +130,12 @@ void MainWindow::statusDisconnected(const QString &reason) {
 void MainWindow::openPublishWindow() {
 	auto publishWindow = new PublishWindow(nullptr, client);
 	publishWindow->show();
+}
+
+/**
+ * @brief show any status in statusbar
+ * @param status
+*/
+void MainWindow::statusBarUpdate(const QString &status) {
+	ui.statusbar->showMessage(status, 0);
 }

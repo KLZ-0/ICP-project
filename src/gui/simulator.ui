@@ -42,8 +42,8 @@
     <widget class="QPlainTextEdit" name="configEdit"/>
    </item>
    <item row="5" column="7" colspan="3">
-    <layout class="QGridLayout" name="ControlGrid" rowstretch="0,0,0,0,0,0,0,0,1,0,0,0,0,0">
-     <item row="11" column="0">
+    <layout class="QGridLayout" name="ControlGrid" rowstretch="0,0,0,0,0,0,0,0,1,0,0,0,0,0,0">
+     <item row="12" column="0">
       <widget class="QPushButton" name="startButton">
        <property name="font">
         <font>
@@ -79,7 +79,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Unconfigured</string>
+          <string>Not configured</string>
          </property>
         </widget>
        </item>
@@ -122,7 +122,7 @@
        </item>
       </layout>
      </item>
-     <item row="12" column="0">
+     <item row="13" column="0">
       <widget class="QPushButton" name="stopButton">
        <property name="font">
         <font>
@@ -131,21 +131,6 @@
        </property>
        <property name="text">
         <string>Stop Simulator</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QPushButton" name="configButton">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Try to configure simulator with the currently visible json config file.</string>
-       </property>
-       <property name="text">
-        <string>Configure Simulator</string>
        </property>
       </widget>
      </item>
@@ -178,6 +163,33 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="10" column="0">
+      <widget class="QPushButton" name="configButton">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Try to configure simulator with the currently visible json config file.</string>
+       </property>
+       <property name="text">
+        <string>Configure Simulator</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QPushButton" name="showConfigButton">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show Current Config</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

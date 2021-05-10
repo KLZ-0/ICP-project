@@ -36,6 +36,9 @@ private:
 	bool configured = false;
 	bool justLoaded = false;
 
+signals:
+	void statusBarUpdate(const QString &status);
+
 public slots:
 	/**
 	 * @brief Loads the simulator config from an user selected file
@@ -57,7 +60,13 @@ public slots:
 	 * @param filePath path to a savefile
 	 */
 	void saveState(const QString &filePath);
-
+	/**
+	 * @brief displays the current config in the config editor
+	*/
+	void showCurrentConfig();
+	/**
+	 * @brief configure simulator if possible
+	*/
 	void configureSimulator();
 
 	void startSimulator();

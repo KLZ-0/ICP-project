@@ -16,6 +16,7 @@ Simulator::Simulator() {
 	connect(ui.startButton, SIGNAL(clicked(bool)), this, SLOT(startSimulator()));
 	connect(ui.stopButton, SIGNAL(clicked(bool)), this, SLOT(stopSimulator()));
 	connect(ui.configEdit, SIGNAL(textChanged()), this, SLOT(configChanged()));
+	connect(ui.showConfigButton, SIGNAL(clicked(bool)), this, SLOT(showCurrentConfig()));
 }
 
 void Simulator::load() {
@@ -45,6 +46,7 @@ void Simulator::load() {
 		QJsonObject itemObject = item.toObject();
 	}
 
+	emit statusBarUpdate("Config file loaded");
 	file.close();
 }
 
@@ -79,13 +81,19 @@ void Simulator::saveState(const QString &filePath) {
 		file.write(ui.configEdit->toPlainText().toUtf8());
 		file.close();
 	}
+
+	emit statusBarUpdate("Config file saved");
 }
 
-void Simulator::configureSimulator() {
-	ui.fileStatus->setText("In use");
-}
+void Simulator::showCurrentConfig() {
+	if (!configured) {
+		emit statusBarUpdate("Simulator not configured");
+		return;
+	}
+	fileName = "";
+	lastSaveFile = "";
 
-void Simulator::startSimulator() {
+
 	SimulatorDevice::DeviceConfig config;
 	config.topic = "sr1";
 	config.deviceType = "publisher";
@@ -101,7 +109,27 @@ void Simulator::startSimulator() {
 	ui.configEdit->setPlainText(QJsonDocument(jsonArray).toJson());
 }
 
+void Simulator::configureSimulator() {
+	if (running) {
+		emit statusBarUpdate("Can't configure: simulator running");
+		return;
+	}
+	configured = true;
+	ui.configStatus->setText("Configured");
+	ui.fileStatus->setText("In use");
+	emit statusBarUpdate("Simulator configured");
+}
+
+void Simulator::startSimulator() {
+	running = true;
+	ui.simStatus->setText("Running");
+	emit statusBarUpdate("Simulator started");
+}
+
 void Simulator::stopSimulator() {
+	running = false;
+	ui.simStatus->setText("Stopped");
+	emit statusBarUpdate("Simulator stopped");
 }
 
 void Simulator::configChanged() {
