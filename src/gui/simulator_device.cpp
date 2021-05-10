@@ -7,18 +7,31 @@
 #include <qjsonarray.h>
 #include <qjsonobject.h>
 
-SimulatorDevice::SimulatorDevice(const QJsonObject &deviceConfigJson) {
+SimulatorDevice::SimulatorDevice(Core::Client &client, const QJsonObject &deviceConfigJson)
+	: client(client) {
 	setDeviceConfigfromJson(deviceConfigJson);
+	init();
 }
 
-SimulatorDevice::SimulatorDevice(DeviceConfig deviceConfig) : deviceConfig(deviceConfig) {
+SimulatorDevice::SimulatorDevice(Core::Client &client, DeviceConfig deviceConfig)
+	: client(client), deviceConfig(deviceConfig) {
+	init();
 }
 
 void SimulatorDevice::start() {
-
+	if (deviceConfig.deviceType == "publisher") {
+		startPublisher();
+	} else {
+		startReceiver();
+	}
 }
 
 void SimulatorDevice::stop() {
+	if (deviceConfig.deviceType == "publisher") {
+		stopPublisher();
+	} else {
+		stopReceiver();
+	}
 }
 
 QJsonObject SimulatorDevice::toJson() const {
@@ -88,4 +101,28 @@ QJsonObject SimulatorDevice::deviceConfigToJson(const DeviceConfig &deviceConfig
 	}
 
 	return deviceJson;
+}
+
+void SimulatorDevice::init() {
+	if (deviceConfig.deviceType == "receiver") {
+		client.Subscribe({deviceConfig.topic});
+	}
+}
+
+void SimulatorDevice::startReceiver() {
+	recvConnection = connect(&client, &Core::Client::MessageArrived, this, &SimulatorDevice::receiveMessage);
+}
+
+void SimulatorDevice::stopReceiver() {
+	disconnect(recvConnection);
+}
+
+void SimulatorDevice::startPublisher() {
+}
+
+void SimulatorDevice::stopPublisher() {
+}
+
+void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
+	qDebug() << "Simulator device message recieved";
 }

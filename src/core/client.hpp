@@ -94,5 +94,8 @@ namespace Core
 		ActionListener actionListener_;
 		Callback callback_;
 		static constexpr int kQos = 0;
+
+	public:
+		std::string clientId;
 	};
 } // namespace Core

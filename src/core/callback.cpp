@@ -16,9 +16,9 @@ namespace Core
 		: sig_(caller), client_(client) {
 	}
 	void Callback::on_failure(const mqtt::token &asyncActionToken) {
-		qDebug() << "Connection attempt failed";
+		qDebug() << sig_->clientId.c_str() << "- connection attempt failed";
 		if (++nRetry_ > kRetryLimit) {
-			qDebug() << "Server not available";
+			qDebug() << sig_->clientId.c_str() << "- server not available";
 			emit sig_->ServerUnreachable();
 		}
 		client_.reconnect();
@@ -27,24 +27,24 @@ namespace Core
 		// same as Callback::connected
 	}
 	void Callback::connected(const std::string &cause) {
-		qDebug() << "Connected\tcause: " << cause.c_str();
+		qDebug() << sig_->clientId.c_str() << "- connected\tcause: " << cause.c_str();
 		emit sig_->Connected();
 	}
 	void Callback::connection_lost(const std::string &cause) {
-		qDebug() << "Connection lost";
+		qDebug() << sig_->clientId.c_str() << "- connection lost";
 		emit sig_->ConnectionLost(cause.c_str());
 		if (!cause.empty()) {
 			qDebug() << "\tcause: " << cause.c_str();
 		}
-		qDebug() << "Reconnecting...";
+		qDebug() << sig_->clientId.c_str() << "- reconnecting...";
 		nRetry_ = 0;
 		client_.reconnect();
 	}
 	void Callback::message_arrived(mqtt::const_message_ptr msg) {
-		qDebug() << "Message arrived";
+		qDebug() << sig_->clientId.c_str() << "- message arrived";
 		emit sig_->MessageArrived(msg);
 	}
 	void Callback::delivery_complete(mqtt::delivery_token_ptr tok) {
-		qDebug() << "delivery complete";
+		qDebug() << sig_->clientId.c_str() << "- delivery complete";
 	}
 } // namespace Core

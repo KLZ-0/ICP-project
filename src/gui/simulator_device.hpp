@@ -6,6 +6,8 @@
 #include <qobject.h>
 #include <qtimer.h>
 
+#include "client.hpp"
+
 class SimulatorDevice : public QObject
 {
 	Q_OBJECT
@@ -51,8 +53,8 @@ public:
 	};
 
 public:
-	SimulatorDevice(const QJsonObject& deviceConfigJson);
-	SimulatorDevice(DeviceConfig deviceConfig);
+	SimulatorDevice(Core::Client &client, const QJsonObject &deviceConfigJson);
+	SimulatorDevice(Core::Client &client, DeviceConfig deviceConfig);
 	/**
 	 * @brief start simulating device
 	*/
@@ -82,10 +84,27 @@ private:
 	 * @brief parse json object
 	 * @param  
 	*/
-	void setDeviceConfigfromJson(const QJsonObject& deviceConfigJson);
+	void setDeviceConfigfromJson(const QJsonObject &deviceConfigJson);
+	/**
+	 * @brief initialize client if needed
+	*/
+	void init();
+
+	void startReceiver();
+
+	void stopReceiver();
+
+	void startPublisher();
+
+	void stopPublisher();
 
 private:
 	QTimer timer;
 	DeviceConfig deviceConfig = {};
 	bool valid = true;
+	Core::Client &client;
+	QMetaObject::Connection recvConnection;
+
+private slots:
+	void receiveMessage(mqtt::const_message_ptr message);
 };

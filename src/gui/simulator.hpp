@@ -36,7 +36,7 @@ private:
 
 private:
 	Ui::Simulator ui;
-	Core::Client *client = nullptr;
+	Core::Client client;
 	QString lastSaveFile = "";
 	QString fileName = "";
 	bool running = false;

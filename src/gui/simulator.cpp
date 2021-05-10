@@ -10,8 +10,10 @@
 #include <QJsonObject>
 #include <memory>
 
-Simulator::Simulator() {
+Simulator::Simulator() : client("simulator") {
 	ui.setupUi(this);
+
+	client.Connect();
 
 	connect(ui.configButton, SIGNAL(clicked(bool)), this, SLOT(configureSimulator()));
 	connect(ui.startButton, SIGNAL(clicked(bool)), this, SLOT(startSimulator()));
@@ -45,6 +47,7 @@ void Simulator::load() {
 }
 
 Simulator::~Simulator() {
+	client.Disconnect();
 	clearDevices();
 }
 
@@ -106,7 +109,7 @@ void Simulator::showCurrentConfig() {
 	config.devicePublisher.dataType = "string";
 	config.devicePublisher.interval_ms = 500;
 	config.devicePublisher.data = {"abc", "123", "last one"};
-	SimulatorDevice device(config);
+	SimulatorDevice device(client, config);
 	QJsonObject jsonObject;
 	jsonObject = device.toJson();
 	QJsonArray jsonArray;
@@ -129,7 +132,7 @@ void Simulator::configureSimulator() {
 	}
 	for (const auto &data : dataArray) {
 		QJsonObject deviceConfigJson = data.toObject();
-		devices.append(new SimulatorDevice(deviceConfigJson));
+		devices.append(new SimulatorDevice(client, deviceConfigJson));
 		if (!devices.back()->isValid()) {
 			devices.removeLast();
 		}
@@ -146,6 +149,9 @@ void Simulator::configureSimulator() {
 }
 
 void Simulator::startSimulator() {
+	if (running) {
+		return;
+	}
 	if (!configured) {
 		emit statusBarUpdate("Can't start - simulator not configured");
 		return;
@@ -158,9 +164,13 @@ void Simulator::startSimulator() {
 	running = true;
 	ui.simStatus->setText("Running");
 	emit statusBarUpdate("Simulator started");
+	qDebug() << "Simulator: starting " << devices.size() << "devices";
 }
 
 void Simulator::stopSimulator() {
+	if (!running) {
+		return;
+	}
 
 	for (auto *device : devices) {
 		device->stop();
@@ -169,6 +179,7 @@ void Simulator::stopSimulator() {
 	running = false;
 	ui.simStatus->setText("Stopped");
 	emit statusBarUpdate("Simulator stopped");
+	qDebug() << "Simulator: stopping " << devices.size() << "devices";
 }
 
 void Simulator::configChanged() {

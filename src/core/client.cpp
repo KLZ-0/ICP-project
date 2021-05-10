@@ -13,39 +13,40 @@ namespace Core
 	Client::Client(const std::string &clientId)
 		: client_(kServerUri.data(), clientId + "_" + QUuid::createUuid().toString().toStdString()),
 		  actionListener_(this),
-		  callback_(this, client_) {
+		  callback_(this, client_),
+		  clientId(clientId) {
 		connOpts_.set_clean_session(true);
 		connOpts_.set_keep_alive_interval(20);
 		client_.set_callback(callback_);
 	}
 	void Client::Connect() {
 		try {
-			qDebug() << "Connecting to the MQTT server...\n";
+			qDebug() << clientId.c_str() << "- connecting to the MQTT server...\n";
 			client_.connect(connOpts_, nullptr, callback_);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << "ERROR: Unable to connect to MQTT server: '"
+			qDebug() << "ERROR: " << clientId.c_str() << "- unable to connect to MQTT server: '"
 					 << kServerUri.data() << "'" << exc.what();
 			emit ServerUnreachable();
 		}
 	}
 	void Client::Connect(const std::string_view &serverUri) {
-		auto serverURIs = std::make_shared <mqtt::string_collection>();
+		auto serverURIs = std::make_shared<mqtt::string_collection>();
 		serverURIs->push_back(serverUri.data());
 		connOpts_.set_servers(serverURIs);
 		try {
-			qDebug() << "Connecting to the MQTT server...\n";
+			qDebug() << clientId.c_str() << "- connecting to the MQTT server...\n";
 			client_.connect(connOpts_, nullptr, callback_);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << "ERROR: Unable to connect to MQTT server: '"
+			qDebug() << "ERROR: " << clientId.c_str() << "- unable to connect to MQTT server: '"
 					 << kServerUri.data() << "'" << exc.what();
 			emit ServerUnreachable();
 		}
 	}
 	void Client::Disconnect() {
 		try {
-			qDebug() << "Disconnecting from the chat server...";
+			qDebug() << clientId.c_str() << "- disconnecting from the chat server...";
 			client_.disconnect(nullptr, actionListener_)->wait();
-			qDebug() << "OK";
+			qDebug() << clientId.c_str() << "- OK";
 		} catch (const mqtt::exception &exc) {
 			qDebug() << "disconnect failed: " << exc.what();
 		}
@@ -63,7 +64,7 @@ namespace Core
 		try {
 			client_.subscribe(topicFilters, qos, nullptr, actionListener_);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << "subscribe failed: " << exc.what();
+			qDebug() << clientId.c_str() << "- subscribe failed: " << exc.what();
 		}
 	}
 	void Client::Unsubscribe(const QSet<QString> &topics) {
@@ -79,14 +80,14 @@ namespace Core
 		try {
 			client_.unsubscribe(topicFilters);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << "unsubscribe failed: " << exc.what();
+			qDebug() << clientId.c_str() << "- unsubscribe failed: " << exc.what();
 		}
 	}
 	void Client::Publish(mqtt::const_message_ptr msg) {
 		try {
 			client_.publish(msg);
 		} catch (const mqtt::exception &exc) {
-			qDebug() << "publish failed: " << exc.what();
+			qDebug() << clientId.c_str() << "- publish failed: " << exc.what();
 		}
 	}
 } // namespace Core
