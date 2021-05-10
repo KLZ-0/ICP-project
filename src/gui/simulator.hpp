@@ -25,8 +25,12 @@ public:
 
 private:
 	Ui::Simulator ui;
-	Core::Client *client;
+	Core::Client *client = nullptr;
 	QString lastSaveFile = "";
+	QString fileName = "";
+	bool running = false;
+	bool configured = false;
+	bool justLoaded = false;
 
 public slots:
 	/**
@@ -49,4 +53,12 @@ public slots:
 	 * @param filePath path to a savefile
 	 */
 	void saveState(const QString &filePath);
+
+	void configureSimulator();
+
+	void startSimulator();
+
+	void stopSimulator();
+
+	void configChanged();
 };

@@ -14,6 +14,11 @@
  */
 Simulator::Simulator() {
 	ui.setupUi(this);
+
+	connect(ui.configButton, SIGNAL(clicked(bool)), this, SLOT(configureSimulator()));
+	connect(ui.startButton, SIGNAL(clicked(bool)), this, SLOT(startSimulator()));
+	connect(ui.stopButton, SIGNAL(clicked(bool)), this, SLOT(stopSimulator()));
+	connect(ui.configEdit, SIGNAL(textChanged()), this, SLOT(configChanged()));
 }
 
 void Simulator::load() {
@@ -22,8 +27,12 @@ void Simulator::load() {
 
 	qInfo() << "Loading simulator config from" << filePath;
 	QFile file = QFile(filePath);
-	file.open(QIODevice::ReadOnly);
+	QFileInfo fileInfo(file.fileName());
+	fileName = fileInfo.fileName();
+	justLoaded = true;
+	ui.openFileName->setText(fileName);
 
+	file.open(QIODevice::ReadOnly);
 	if (!file.isOpen()) {
 		qWarning() << "Can't open simulator config file for reading";
 		return;
@@ -53,23 +62,44 @@ void Simulator::save() {
 void Simulator::saveAs() {
 	QString userFile = QFileDialog::getSaveFileName(this, tr("Save File"), "",
 													tr("Simulator config files (*.json)"));
-
 	if (userFile == "") {
 		return;
 	}
 
 	saveState(userFile);
-
 	lastSaveFile = userFile;
 }
 
 void Simulator::saveState(const QString &filePath) {
 	qInfo() << "Saving simulator config to" << filePath;
 	QFile file = QFile(filePath);
-	file.open(QIODevice::WriteOnly);
+	QFileInfo fileInfo(file.fileName());
+	fileName = fileInfo.fileName();
+	ui.openFileName->setText(fileName);
 
+	file.open(QIODevice::WriteOnly);
 	if (file.isOpen()) {
 		file.write(ui.configEdit->toPlainText().toUtf8());
 		file.close();
+	}
+}
+
+void Simulator::configureSimulator() {
+	ui.fileStatus->setText("In use");
+}
+
+void Simulator::startSimulator() {
+}
+
+void Simulator::stopSimulator() {
+}
+
+void Simulator::configChanged() {
+	ui.fileStatus->setText("Not in use");
+	if (!justLoaded) {
+		QString unsavedFileName = fileName + "*";
+		ui.openFileName->setText(unsavedFileName);
+	} else {
+		justLoaded = false;
 	}
 }
