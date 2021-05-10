@@ -1,3 +1,6 @@
+# folder: icp-project/src/gui
+# author: Adrián Kálazi (xkalaz00)
+# author: Kevin Lackó (xlacko08)
 include_directories(gui)
 include_directories(data)
 
@@ -23,6 +26,8 @@ set(SOURCES
     publish_window.hpp
     dashboard_customize_window.cpp
     dashboard_customize_window.hpp
+	simulator.cpp
+	simulator.hpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
