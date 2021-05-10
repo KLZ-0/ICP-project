@@ -3,6 +3,8 @@
  */
 #pragma once
 
+// todo: add device button and window
+// todo: binary data
 
 #include <QJsonDocument>
 #include <QWidget>

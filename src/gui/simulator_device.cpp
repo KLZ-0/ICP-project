@@ -118,11 +118,14 @@ void SimulatorDevice::stopReceiver() {
 }
 
 void SimulatorDevice::startPublisher() {
+	// todo: start publisher
 }
 
 void SimulatorDevice::stopPublisher() {
+	// todo: stop publisher
 }
 
 void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
 	qDebug() << "Simulator device message recieved";
+	// todo: forward message
 }
