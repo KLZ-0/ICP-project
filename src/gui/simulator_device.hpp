@@ -63,6 +63,10 @@ public:
 	 * @return device config as QJsonObject
 	*/
 	QJsonObject toJson() const;
+	/**
+	 * @brief check if the device was constructed correctly
+	*/
+	bool isValid() const;
 
 private:
 	/**
@@ -74,4 +78,5 @@ private:
 private:
 	QTimer timer;
 	DeviceConfig deviceConfig = {};
+	bool valid = true;
 };

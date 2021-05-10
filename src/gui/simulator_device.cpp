@@ -53,6 +53,9 @@ QJsonObject SimulatorDevice::toJson() const {
 void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJson) {
 	const QJsonObject &json = deviceConfigJson;
 	deviceConfig.topic = json["topic"].toString();
+	if (deviceConfig.topic.isEmpty()) {
+		valid = false;
+	}
 	deviceConfig.deviceType = json["deviceType"].toString();
 
 	if (deviceConfig.deviceType == "publisher") {
@@ -64,12 +67,20 @@ void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJso
 			for (const auto &value : dataArray) {
 				deviceConfig.devicePublisher.data.append(value.toString());
 			}
-		} else /* "binary" */ {
+		} else if (deviceConfig.devicePublisher.dataType == "binary") {
 			deviceConfig.devicePublisher.filePath = json["filePath"].toString();
+		} else {
+			valid = false;
 		}
 
-	} else /* "receiver" */ {
+	} else if (deviceConfig.deviceType == "receiver") {
 		deviceConfig.deviceReciever.targetTopic = json["targetTopic"].toString();
 		deviceConfig.deviceReciever.delay_ms = json["delay_ms"].toInt();
+	} else {
+		valid = false;
 	}
+}
+
+bool SimulatorDevice::isValid() const {
+	return valid;
 }

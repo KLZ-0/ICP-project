@@ -130,6 +130,13 @@ void Simulator::configureSimulator() {
 	for (const auto &data : dataArray) {
 		QJsonObject deviceConfigJson = data.toObject();
 		devices.append(new SimulatorDevice(deviceConfigJson));
+		if (!devices.back()->isValid()) {
+			devices.removeLast();
+		}
+	}
+	if (devices.isEmpty()) {
+		emit statusBarUpdate("No valid devices defined in the config file");
+		return;
 	}
 
 	configured = true;
@@ -143,12 +150,22 @@ void Simulator::startSimulator() {
 		emit statusBarUpdate("Can't start - simulator not configured");
 		return;
 	}
+
+	for (auto *device : devices) {
+		device->start();
+	}
+
 	running = true;
 	ui.simStatus->setText("Running");
 	emit statusBarUpdate("Simulator started");
 }
 
 void Simulator::stopSimulator() {
+
+	for (auto *device : devices) {
+		device->stop();
+	}
+
 	running = false;
 	ui.simStatus->setText("Stopped");
 	emit statusBarUpdate("Simulator stopped");
