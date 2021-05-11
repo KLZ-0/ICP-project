@@ -23,7 +23,7 @@ $(BUILD_DIR):
 	mkdir $@
 
 run:
-	./$(TARGET)
+	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/share/Qt-5.5.1/ && ./$(TARGET)
 
 doxygen:
 	doxygen Doxyfile
