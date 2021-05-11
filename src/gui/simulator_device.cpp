@@ -168,4 +168,5 @@ void SimulatorDevice::binaryPublisher() {
 	builder.payload(data.constData(), data.size());
 	client.Publish(builder.finalize());
 	qDebug() << "simulator sent file" << config.topic << fileInfo.fileName();
+	file.close();
 }

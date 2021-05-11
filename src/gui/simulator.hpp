@@ -86,7 +86,6 @@ public slots:
 	 * @brief stop the simulator
 	*/
 	void stopSimulator();
-
 	/**
 	 * @brief update file status when the config in the editor is changed
 	*/

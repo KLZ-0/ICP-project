@@ -97,7 +97,16 @@ private:
 	QMetaObject::Connection recvConnection;
 
 private slots:
+	/**
+	* @brief handle incoming messages for receiver device
+	*/
 	void receiveMessage(mqtt::const_message_ptr message);
+	/**
+	 * @brief hadnle publishing of string data
+	*/
 	void stringPublisher();
+	/**
+	 * @brief handle publishing of binary data
+	*/
 	void binaryPublisher();
 };
