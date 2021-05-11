@@ -1,6 +1,7 @@
 # author: Adrián Kálazi (xkalaz00)
 
 TARGET = mqtt-explorer
+ZIPFILE = 1-xkalaz00-xlacko08.zip
 
 SRC_DIR = src
 BUILD_DIR = build
@@ -28,7 +29,11 @@ doxygen:
 	doxygen Doxyfile
 
 pack:
-	echo TODO
+	zip -r $(ZIPFILE) src examples
+	zip $(ZIPFILE) doc README.txt Makefile CMakeLists.txt Doxyfile
+
+clean-pack:
+	rm -f $(ZIPFILE)
 
 clean:
 	rm -rf $(BUILD_DIR)
