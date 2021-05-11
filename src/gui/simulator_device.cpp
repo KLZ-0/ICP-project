@@ -124,6 +124,9 @@ void SimulatorDevice::init() {
 }
 
 void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
+	if (message->get_topic() != config.topic.toStdString()) {
+		return;
+	}
 	QTimer::singleShot(config.receiver.delay_ms, [message, this]() {
 		mqtt::message_ptr_builder builder;
 		builder.topic(config.receiver.targetTopic.toStdString());
