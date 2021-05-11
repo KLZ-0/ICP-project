@@ -4,6 +4,8 @@
 
 #include "simulator_device.hpp"
 
+#include <qfile.h>
+#include <qfileinfo.h>
 #include <qjsonarray.h>
 #include <qjsonobject.h>
 #include <qrandom.h>
@@ -149,5 +151,18 @@ void SimulatorDevice::stringPublisher() {
 }
 
 void SimulatorDevice::binaryPublisher() {
-	// todo: load file
+	QFile file = QFile(config.publisher.filePath);
+	QFileInfo fileInfo(file.fileName());
+
+	file.open(QIODevice::ReadOnly);
+	if (!file.isOpen()) {
+		qWarning() << "Can't open binary data file" << fileInfo.fileName();
+		return;
+	}
+	mqtt::message_ptr_builder builder;
+	builder.topic(config.topic.toStdString());
+	auto data = file.readAll();
+	builder.payload(data.constData(), data.size());
+	client.Publish(builder.finalize());
+	qDebug() << "simulator sent file" << config.topic << fileInfo.fileName();
 }
