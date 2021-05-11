@@ -11,7 +11,6 @@ BUILDFLAGS = -j 8
 all: Release
 .PHONY: all Release Debug doxygen pack
 
-# TODO: LD_LIBRARY_PATH
 Release Debug: cmake-gen
 	cmake --build $(BUILD_DIR) --config $@ $(BUILDFLAGS)
 	cmake --install $(BUILD_DIR) --config $@
