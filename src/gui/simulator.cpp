@@ -105,10 +105,10 @@ void Simulator::showCurrentConfig() {
 	SimulatorDevice::DeviceConfig config;
 	config.topic = "sr1";
 	config.deviceType = "publisher";
-	config.devicePublisher.randomData = true;
-	config.devicePublisher.dataType = "string";
-	config.devicePublisher.interval_ms = 500;
-	config.devicePublisher.data = {"abc", "123", "last one"};
+	config.publisher.randomData = true;
+	config.publisher.dataType = "string";
+	config.publisher.interval_ms = 500;
+	config.publisher.data = {"abc", "123", "last one"};
 	SimulatorDevice device(client, config);
 	QJsonObject jsonObject;
 	jsonObject = device.toJson();

@@ -13,13 +13,13 @@ SimulatorDevice::SimulatorDevice(Core::Client &client, const QJsonObject &device
 	init();
 }
 
-SimulatorDevice::SimulatorDevice(Core::Client &client, DeviceConfig deviceConfig)
-	: client(client), deviceConfig(deviceConfig) {
+SimulatorDevice::SimulatorDevice(Core::Client &client, DeviceConfig config)
+	: client(client), config(config) {
 	init();
 }
 
 void SimulatorDevice::start() {
-	if (deviceConfig.deviceType == "publisher") {
+	if (config.deviceType == "publisher") {
 		startPublisher();
 	} else {
 		startReceiver();
@@ -27,7 +27,7 @@ void SimulatorDevice::start() {
 }
 
 void SimulatorDevice::stop() {
-	if (deviceConfig.deviceType == "publisher") {
+	if (config.deviceType == "publisher") {
 		stopPublisher();
 	} else {
 		stopReceiver();
@@ -35,35 +35,35 @@ void SimulatorDevice::stop() {
 }
 
 QJsonObject SimulatorDevice::toJson() const {
-	return deviceConfigToJson(deviceConfig);
+	return deviceConfigToJson(config);
 }
 
 void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJson) {
 	const QJsonObject &json = deviceConfigJson;
-	deviceConfig.topic = json["topic"].toString();
-	if (deviceConfig.topic.isEmpty()) {
+	config.topic = json["topic"].toString();
+	if (config.topic.isEmpty()) {
 		valid = false;
 	}
-	deviceConfig.deviceType = json["deviceType"].toString();
+	config.deviceType = json["deviceType"].toString();
 
-	if (deviceConfig.deviceType == "publisher") {
-		deviceConfig.devicePublisher.interval_ms = json["interval_ms"].toInt();
-		deviceConfig.devicePublisher.dataType = json["dataType"].toString();
+	if (config.deviceType == "publisher") {
+		config.publisher.interval_ms = json["interval_ms"].toInt();
+		config.publisher.dataType = json["dataType"].toString();
 
-		if (deviceConfig.devicePublisher.dataType == "string") {
+		if (config.publisher.dataType == "string") {
 			QJsonArray dataArray = json["data"].toArray();
 			for (const auto &value : dataArray) {
-				deviceConfig.devicePublisher.data.append(value.toString());
+				config.publisher.data.append(value.toString());
 			}
-		} else if (deviceConfig.devicePublisher.dataType == "binary") {
-			deviceConfig.devicePublisher.filePath = json["filePath"].toString();
+		} else if (config.publisher.dataType == "binary") {
+			config.publisher.filePath = json["filePath"].toString();
 		} else {
 			valid = false;
 		}
 
-	} else if (deviceConfig.deviceType == "receiver") {
-		deviceConfig.deviceReciever.targetTopic = json["targetTopic"].toString();
-		deviceConfig.deviceReciever.delay_ms = json["delay_ms"].toInt();
+	} else if (config.deviceType == "receiver") {
+		config.receiver.targetTopic = json["targetTopic"].toString();
+		config.receiver.delay_ms = json["delay_ms"].toInt();
 	} else {
 		valid = false;
 	}
@@ -73,39 +73,40 @@ bool SimulatorDevice::isValid() const {
 	return valid;
 }
 
-QJsonObject SimulatorDevice::deviceConfigToJson(const DeviceConfig &deviceConfig) {
+QJsonObject SimulatorDevice::deviceConfigToJson(const DeviceConfig &config) {
 	QJsonObject deviceJson;
-	deviceJson.insert("topic", deviceConfig.topic);
-	deviceJson.insert("deviceType", deviceConfig.deviceType);
+	deviceJson.insert("topic", config.topic);
+	deviceJson.insert("deviceType", config.deviceType);
 
-	if (deviceConfig.deviceType == "publisher") {
-		deviceJson.insert("interval_ms", deviceConfig.devicePublisher.interval_ms);
-		deviceJson.insert("dataType", deviceConfig.devicePublisher.dataType);
+	if (config.deviceType == "publisher") {
+		deviceJson.insert("interval_ms", config.publisher.interval_ms);
+		deviceJson.insert("dataType", config.publisher.dataType);
 
-		if (deviceConfig.devicePublisher.dataType == "string") {
-			deviceJson.insert("randomData", deviceConfig.devicePublisher.randomData);
+		if (config.publisher.dataType == "string") {
+			deviceJson.insert("randomData", config.publisher.randomData);
 
 			QJsonArray dataArray;
-			for (const auto &str : deviceConfig.devicePublisher.data) {
+			for (const auto &str : config.publisher.data) {
 				dataArray.append(str);
 			}
 			deviceJson.insert("data", dataArray);
 
 		} else /* "binary" */ {
-			deviceJson.insert("filePath", deviceConfig.devicePublisher.filePath);
+			deviceJson.insert("filePath", config.publisher.filePath);
 		}
 
 	} else /* "receiver" */ {
-		deviceJson.insert("targetTopic", deviceConfig.deviceReciever.targetTopic);
-		deviceJson.insert("delay_ms", deviceConfig.deviceReciever.delay_ms);
+		deviceJson.insert("targetTopic", config.receiver.targetTopic);
+		deviceJson.insert("delay_ms", config.receiver.delay_ms);
 	}
 
 	return deviceJson;
 }
 
 void SimulatorDevice::init() {
-	if (deviceConfig.deviceType == "receiver") {
-		client.Subscribe({deviceConfig.topic});
+	if (config.deviceType == "receiver") {
+		client.Subscribe({config.topic});
+	} else /* publisher */ {
 	}
 }
 
@@ -126,11 +127,11 @@ void SimulatorDevice::stopPublisher() {
 }
 
 void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
-	QTimer::singleShot(deviceConfig.deviceReciever.delay_ms, [message, this]() {
+	QTimer::singleShot(config.receiver.delay_ms, [message, this]() {
 		mqtt::message_ptr_builder builder;
-		builder.topic(deviceConfig.deviceReciever.targetTopic.toStdString());
+		builder.topic(config.receiver.targetTopic.toStdString());
 		builder.payload(message->get_payload());
 		this->client.Publish(builder.finalize());
-		qDebug() << "simulator device: msg forwarded from" << deviceConfig.topic << "to" << deviceConfig.deviceReciever.targetTopic;
+		qDebug() << "simulator device: msg forwarded from" << config.topic << "to" << config.receiver.targetTopic;
 	});
 }

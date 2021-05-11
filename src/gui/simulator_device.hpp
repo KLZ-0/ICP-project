@@ -47,14 +47,14 @@ public:
 		// select device type ("receiver"/"publisher")
 		QString deviceType;
 		// actual config for publisher
-		DevicePublisher devicePublisher;
+		DevicePublisher publisher;
 		// actual config for receiver
-		DeviceReceiver deviceReciever;
+		DeviceReceiver receiver;
 	};
 
 public:
 	SimulatorDevice(Core::Client &client, const QJsonObject &deviceConfigJson);
-	SimulatorDevice(Core::Client &client, DeviceConfig deviceConfig);
+	SimulatorDevice(Core::Client &client, DeviceConfig config);
 	/**
 	 * @brief start simulating device
 	*/
@@ -68,7 +68,7 @@ public:
 	 * @param deviceConfig 
 	 * @return jsonObject
 	*/
-	static QJsonObject deviceConfigToJson(const DeviceConfig &deviceConfig);
+	static QJsonObject deviceConfigToJson(const DeviceConfig &config);
 	/**
 	 * @brief serialize device config to json
 	 * @return device config as QJsonObject
@@ -100,7 +100,7 @@ private:
 
 private:
 	QTimer timer;
-	DeviceConfig deviceConfig = {};
+	DeviceConfig config = {};
 	bool valid = true;
 	Core::Client &client;
 	QMetaObject::Connection recvConnection;
