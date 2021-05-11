@@ -1,3 +1,5 @@
 /mqtt-explorer
 /build/
+/doc/
+doxygen-warnings.txt
 *.json
