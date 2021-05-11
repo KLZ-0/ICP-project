@@ -90,6 +90,7 @@ private:
 	*/
 	void init();
 private:
+	int fwidx = 0;
 	QTimer timer;
 	DeviceConfig config = {};
 	bool valid = true;

@@ -23,6 +23,11 @@ SimulatorDevice::SimulatorDevice(Core::Client &client, DeviceConfig config)
 
 void SimulatorDevice::start() {
 	if (config.deviceType == "publisher") {
+		if (config.publisher.dataType == "string") {
+			stringPublisher();
+		} else {
+			binaryPublisher();
+		}
 		timer.start();
 	} else {
 		recvConnection = connect(&client, &Core::Client::MessageArrived, this, &SimulatorDevice::receiveMessage);
@@ -144,9 +149,8 @@ void SimulatorDevice::stringPublisher() {
 		int idx = QRandomGenerator::global()->bounded(config.publisher.data.size());
 		payload = config.publisher.data.at(idx);
 	} else {
-		static int idx = 0;
-		payload = config.publisher.data.at(idx);
-		idx = (idx + 1) % config.publisher.data.size();
+		payload = config.publisher.data.at(fwidx);
+		fwidx = (fwidx + 1) % config.publisher.data.size();
 	}
 	builder.payload(payload.toStdString());
 	client.Publish(builder.finalize());
