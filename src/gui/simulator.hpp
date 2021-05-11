@@ -1,4 +1,5 @@
 /**
+ * @file
  * @author Kevin Lackó (xlacko08)
  */
 #pragma once
