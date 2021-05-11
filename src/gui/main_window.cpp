@@ -1,12 +1,12 @@
 /**
  * @author Adrián Kálazi (xkalaz00)
+ * @author Kevin Lackó (xlacko08)
  */
 
 #include "main_window.hpp"
 
 #include <QDebug>
 #include <QPushButton>
-#include <QUuid>
 
 #include "publish_window.hpp"
 #include "topic_selection_window.hpp"
@@ -31,7 +31,12 @@ MainWindow::MainWindow() {
 	connect(ui.actionSaveDashboard_As, &QAction::triggered, ui.dahboard_tab, &Dashboard::saveAs);
 	connect(ui.actionLoadDashboard, &QAction::triggered, ui.explorer_tab, &Explorer::loadDashboard);
 
-	client = new Core::Client(QUuid::createUuid().toString().toStdString());
+	connect(ui.actionLoadSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::load);
+	connect(ui.actionSaveSimulator, &QAction::triggered, ui.simulator_tab, &Simulator::save);
+	connect(ui.actionSaveSimulator_As, &QAction::triggered, ui.simulator_tab, &Simulator::saveAs);
+	connect(ui.simulator_tab, &Simulator::statusBarUpdate, this, &MainWindow::statusBarUpdate);
+
+	client = new Core::Client("explorer");
 
 	qRegisterMetaType<mqtt::const_message_ptr>("mqtt::const_message_ptr");
 	connect(client, &Core::Client::Connected, this, &MainWindow::statusConnected);
@@ -124,4 +129,12 @@ void MainWindow::statusDisconnected(const QString &reason) {
 void MainWindow::openPublishWindow() {
 	auto publishWindow = new PublishWindow(nullptr, client);
 	publishWindow->show();
+}
+
+/**
+ * @brief show any status in statusbar
+ * @param status
+*/
+void MainWindow::statusBarUpdate(const QString &status) {
+	ui.statusbar->showMessage(status, 0);
 }

@@ -9,28 +9,37 @@
 namespace Core
 {
 	class Client;
+	/**
+	 * @class Callback
+	 * @brief Used by the client to recieve messages and info about the connection
+	 */
 	class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_listener
 	{
 	public:
 		Callback() = delete;
+		/**
+		 * @brief Callback constructor
+		 * @param caller	pointer to Core::Client for emitting signals
+		 * @param client	mqtt::client handle
+		*/
 		Callback(Client* caller, mqtt::async_client &client);
 		/**
-		 * This method is called when the client is connected. 
+		 * @brief This method is called when the client is connected. 
 		 * Note that, in response to an initial connect(), the token from the 
 		 * connect call is also signaled with an on_success(). That occurs just 
 		 * before this is called. 
 		 */
 		virtual void connected(const std::string &cause) override;
 		/**
-		 * This method is called when the connection to the server is lost.
+		 * @brief This method is called when the connection to the server is lost.
 		*/
 		virtual void connection_lost(const std::string &cause) override;
 		/**
-		 * This method is called when a message arrives from the server.
+		 * @brief This method is called when a message arrives from the server.
 		 */
 		virtual void message_arrived(mqtt::const_message_ptr msg) override;
 		/**
-		 * Called when delivery for a message has been completed, and all
+		 * @brief Called when delivery for a message has been completed, and all
 		 * acknowledgments have been received.
 		 */
 		virtual void delivery_complete(mqtt::delivery_token_ptr tok) override;
@@ -38,12 +47,12 @@ namespace Core
 		virtual ~Callback() {}
 
 		/**
-		 * This method is invoked when (re)connection fails
+		 * @brief This method is invoked when (re)connection fails
 		 * @param asyncActionToken
 		 */
 		virtual void on_failure(const mqtt::token &asyncActionToken) override;
 		/**
-		 * This method is invoked when an action has completed successfully.
+		 * @brief This method is invoked when an action has completed successfully.
 		 * @param asyncActionToken
 		 */
 		virtual void on_success(const mqtt::token &asyncActionToken) override;

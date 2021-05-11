@@ -1,5 +1,6 @@
 /**
  * @author Adrián Kálazi (xkalaz00)
+ * @author Kevin Lackó (xlacko08)
  */
 
 #ifndef MQTT_EXPLORER_MAIN_WINDOW_HPP
@@ -39,6 +40,7 @@ private slots:
 	void statusConnected();
 	void statusDisconnected(const QString &reason);
 	void openPublishWindow();
+	void statusBarUpdate(const QString &status);
 };
 
 

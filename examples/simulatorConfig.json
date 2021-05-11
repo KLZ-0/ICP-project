@@ -1,0 +1,66 @@
+[
+    {
+        "data": [
+            "23.5°C",
+            "23.6°C",
+            "23.7°C",
+            "23.6°C",
+            "23.6°C",
+            "23.6°C",
+            "23.5°C"
+        ],
+        "dataType": "string",
+        "deviceType": "publisher",
+        "interval_ms": 2000,
+        "randomData": false,
+        "topic": "sr1/aquarium_temperature"
+    },
+	{
+        "data": [
+            "ON",
+            "OFF"
+        ],
+        "dataType": "string",
+        "deviceType": "publisher",
+        "interval_ms": 50000,
+        "randomData": false,
+        "topic": "sr1/aquarium_light"
+    },
+	{
+        "delay_ms": 2000,
+        "deviceType": "receiver",
+        "targetTopic": "sr1/aquarium_light",
+        "topic": "sr1/aquarium_light_switch"
+    },
+	{
+        "data": [
+            "ON",
+            "OFF"
+        ],
+        "dataType": "string",
+        "deviceType": "publisher",
+        "interval_ms": 50000,
+        "randomData": true,
+        "topic": "sr1/livingroom_light"
+    },
+	{
+        "delay_ms": 2000,
+        "deviceType": "receiver",
+        "targetTopic": "sr1/livingroom_light",
+        "topic": "sr1/livingroom_light_switch"
+    },
+	{
+        "data": [
+            "livingroom",
+            "kitchen",
+            "bedroom1",
+            "bedroom2",
+            "front_porch"
+        ],
+        "dataType": "string",
+        "deviceType": "publisher",
+        "interval_ms": 3000,
+        "randomData": true,
+        "topic": "sr1/motionsensor"
+    }
+]

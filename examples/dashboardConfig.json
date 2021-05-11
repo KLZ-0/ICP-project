@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "device_type": "",
+            "last_payload": "23.6°C",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "aquarium_temperature",
+            "topic": "sr1/aquarium_temperature"
+        },
+        {
+            "device_type": "",
+            "last_payload": "OFF",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "aquarium_light",
+            "topic": "sr1/aquarium_light"
+        },
+        {
+            "device_type": "",
+            "last_payload": "ON",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "livingroom_light",
+            "topic": "sr1/livingroom_light"
+        },
+        {
+            "device_type": "",
+            "last_payload": "kitchen",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "motionsensor",
+            "topic": "sr1/motionsensor"
+        },
+		{
+            "device_type": "",
+            "last_payload": "",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "livingroom_light_switch",
+            "topic": "sr1/livingroom_light_switch"
+        },
+		{
+            "device_type": "",
+            "last_payload": "",
+            "last_timestamp": "1620740835",
+            "status_length": 18,
+            "title": "aquarium_light_switch",
+            "topic": "sr1/aquarium_light_switch"
+        }
+    ]
+}
