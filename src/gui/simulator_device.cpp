@@ -6,6 +6,7 @@
 
 #include <qjsonarray.h>
 #include <qjsonobject.h>
+#include <qrandom.h>
 
 SimulatorDevice::SimulatorDevice(Core::Client &client, const QJsonObject &deviceConfigJson)
 	: client(client) {
@@ -20,17 +21,17 @@ SimulatorDevice::SimulatorDevice(Core::Client &client, DeviceConfig config)
 
 void SimulatorDevice::start() {
 	if (config.deviceType == "publisher") {
-		startPublisher();
+		timer.start();
 	} else {
-		startReceiver();
+		recvConnection = connect(&client, &Core::Client::MessageArrived, this, &SimulatorDevice::receiveMessage);
 	}
 }
 
 void SimulatorDevice::stop() {
 	if (config.deviceType == "publisher") {
-		stopPublisher();
+		timer.stop();
 	} else {
-		stopReceiver();
+		disconnect(recvConnection);
 	}
 }
 
@@ -51,12 +52,16 @@ void SimulatorDevice::setDeviceConfigfromJson(const QJsonObject &deviceConfigJso
 		config.publisher.dataType = json["dataType"].toString();
 
 		if (config.publisher.dataType == "string") {
+			config.publisher.randomData = json["randomData"].toBool();
+
 			QJsonArray dataArray = json["data"].toArray();
 			for (const auto &value : dataArray) {
 				config.publisher.data.append(value.toString());
 			}
+
 		} else if (config.publisher.dataType == "binary") {
 			config.publisher.filePath = json["filePath"].toString();
+
 		} else {
 			valid = false;
 		}
@@ -107,23 +112,13 @@ void SimulatorDevice::init() {
 	if (config.deviceType == "receiver") {
 		client.Subscribe({config.topic});
 	} else /* publisher */ {
+		timer.setInterval(config.publisher.interval_ms);
+		if (config.publisher.dataType == "string") {
+			connect(&timer, &QTimer::timeout, this, &SimulatorDevice::stringPublisher);
+		} else /* binary */ {
+			connect(&timer, &QTimer::timeout, this, &SimulatorDevice::binaryPublisher);
+		}
 	}
-}
-
-void SimulatorDevice::startReceiver() {
-	recvConnection = connect(&client, &Core::Client::MessageArrived, this, &SimulatorDevice::receiveMessage);
-}
-
-void SimulatorDevice::stopReceiver() {
-	disconnect(recvConnection);
-}
-
-void SimulatorDevice::startPublisher() {
-	// todo: start publisher
-}
-
-void SimulatorDevice::stopPublisher() {
-	// todo: stop publisher
 }
 
 void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
@@ -134,4 +129,25 @@ void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
 		this->client.Publish(builder.finalize());
 		qDebug() << "simulator device: msg forwarded from" << config.topic << "to" << config.receiver.targetTopic;
 	});
+}
+
+void SimulatorDevice::stringPublisher() {
+	mqtt::message_ptr_builder builder;
+	builder.topic(config.topic.toStdString());
+	QString payload;
+	if (config.publisher.randomData) {
+		int idx = QRandomGenerator::global()->bounded(config.publisher.data.size());
+		payload = config.publisher.data.at(idx);
+	} else {
+		static int idx = 0;
+		payload = config.publisher.data.at(idx);
+		idx = (idx + 1) % config.publisher.data.size();
+	}
+	builder.payload(payload.toStdString());
+	client.Publish(builder.finalize());
+	qDebug() << "simulator sent" << config.topic << payload;
+}
+
+void SimulatorDevice::binaryPublisher() {
+	// todo: load file
 }

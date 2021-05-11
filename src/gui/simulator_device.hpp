@@ -89,15 +89,6 @@ private:
 	 * @brief initialize client if needed
 	*/
 	void init();
-
-	void startReceiver();
-
-	void stopReceiver();
-
-	void startPublisher();
-
-	void stopPublisher();
-
 private:
 	QTimer timer;
 	DeviceConfig config = {};
@@ -107,4 +98,6 @@ private:
 
 private slots:
 	void receiveMessage(mqtt::const_message_ptr message);
+	void stringPublisher();
+	void binaryPublisher();
 };

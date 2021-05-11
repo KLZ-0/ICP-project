@@ -41,6 +41,6 @@ void PublishWindow::sendMessage() {
 
 	client->Publish(builder.finalize());
 
-	qDebug() << "sent" << send_topic << send_payload;
+	qDebug() << "explorer sent" << send_topic << send_payload;
 	close();
 }
