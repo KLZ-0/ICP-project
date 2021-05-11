@@ -126,6 +126,11 @@ void SimulatorDevice::stopPublisher() {
 }
 
 void SimulatorDevice::receiveMessage(mqtt::const_message_ptr message) {
-	qDebug() << "Simulator device message recieved";
-	// todo: forward message
+	QTimer::singleShot(deviceConfig.deviceReciever.delay_ms, [message, this]() {
+		mqtt::message_ptr_builder builder;
+		builder.topic(deviceConfig.deviceReciever.targetTopic.toStdString());
+		builder.payload(message->get_payload());
+		this->client.Publish(builder.finalize());
+		qDebug() << "simulator device: msg forwarded from" << deviceConfig.topic << "to" << deviceConfig.deviceReciever.targetTopic;
+	});
 }
