@@ -102,19 +102,11 @@ void Simulator::showCurrentConfig() {
 	fileName = "";
 	lastSaveFile = "";
 
-
-	SimulatorDevice::DeviceConfig config;
-	config.topic = "sr1";
-	config.deviceType = "publisher";
-	config.publisher.randomData = true;
-	config.publisher.dataType = "string";
-	config.publisher.interval_ms = 500;
-	config.publisher.data = {"abc", "123", "last one"};
-	SimulatorDevice device(client, config);
-	QJsonObject jsonObject;
-	jsonObject = device.toJson();
+	ui.configEdit->clear();
 	QJsonArray jsonArray;
-	jsonArray.append(jsonObject);
+	for (auto &device : devices) {
+		jsonArray.append(device->toJson());
+	}
 	ui.configEdit->setPlainText(QJsonDocument(jsonArray).toJson());
 }
 
