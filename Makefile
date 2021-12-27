@@ -11,18 +11,16 @@ BUILDFLAGS = -j 8
 all: Release
 .PHONY: all Release Debug doxygen pack
 
-Release Debug: cmake-gen
+Release Debug: $(BUILD_DIR) CMakeLists.txt
+	cd $< && cmake -DCMAKE_BUILD_TYPE=$@ ..
 	cmake --build $(BUILD_DIR) --config $@ $(BUILDFLAGS)
 	cmake --install $(BUILD_DIR) --config $@
-
-cmake-gen: $(BUILD_DIR) CMakeLists.txt
-	cd $< && cmake ..
 
 $(BUILD_DIR):
 	mkdir $@
 
 run:
-	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/share/Qt-5.5.1/ && ./$(TARGET)
+	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/:/usr/local/share/Qt-5.5.1/ && ./$(TARGET)
 
 doxygen:
 	doxygen Doxyfile
